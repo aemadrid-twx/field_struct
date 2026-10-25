@@ -437,13 +437,13 @@ RSpec::Core::Runner.run([])  # => 0
 That's the end of the tutorial. You've gone from one typed `Book` to a checkout
 that's composed, tested and running in the background. From here:
 
-- The actionable [USAGE reference](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md)
+- The actionable [USAGE reference](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md)
   covers what this tutorial skipped: ActiveRecord transactions and
   `after_commit` in the
-  [Rails adapter](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#rails-adapter),
-  [batch runs](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#batch-runs),
-  [typed outcomes](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#typed-outcomes)
-  and [outcome coverage](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#outcome-coverage).
-- The field_struct [USAGE reference](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md)
+  [Rails adapter](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#rails-adapter),
+  [batch runs](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#batch-runs),
+  [typed outcomes](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#typed-outcomes)
+  and [outcome coverage](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#outcome-coverage).
+- The field_struct [USAGE reference](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md)
   lists every type and option.
 - The [how-to guides](../../how-to/) have recipes for specific tasks.

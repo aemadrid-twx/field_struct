@@ -79,4 +79,4 @@ IANA name.
 
 ## See also
 
-- field_struct USAGE: [The temporal contract](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md#the-temporal-contract), [Zones](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md#zones-zone)
+- field_struct USAGE: [The temporal contract](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#the-temporal-contract), [Zones](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#zones-zone)

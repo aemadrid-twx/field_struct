@@ -8,8 +8,8 @@ sidebar:
 
 Each guide solves one task in a few steps. They assume you know the basics; if
 you don't yet, start with the [tutorial](../tutorial/bookstore-checkout/).
-Every runnable example is checked in CI against field_struct v0.15.0 and
-actionable v1.9.0.
+Every runnable example is checked in CI against field_struct v0.16.0 and
+actionable v1.10.0.
 
 ## Structs (field_struct)
 
@@ -29,6 +29,6 @@ actionable v1.9.0.
 - [Generate RBS signatures](generate-rbs/): types for your structs and actions.
 - [Lint with the RuboCop cop](catch-misplaced-verbs/): catch a `fail` that doesn't stop the run.
 
-Looking for every option? The [field_struct USAGE](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md)
-and [actionable USAGE](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md)
+Looking for every option? The [field_struct USAGE](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md)
+and [actionable USAGE](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md)
 references list them all.

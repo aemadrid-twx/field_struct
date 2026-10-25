@@ -93,5 +93,5 @@ both a success and a skip.
 
 ## See also
 
-- actionable USAGE: [Declared failures](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#declared-failures), [Declared skips](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#declared-skips), [Results](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#results)
+- actionable USAGE: [Declared failures](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#declared-failures), [Declared skips](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#declared-skips), [Results](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#results)
 - Tutorial: [Placing the order](../../tutorial/placing-the-order/)

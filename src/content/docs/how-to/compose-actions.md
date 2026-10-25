@@ -77,4 +77,4 @@ child had succeeded.
 
 ## See also
 
-- actionable USAGE: [Nested actions](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#nested-actions), [Case steps](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#case-steps) (a branch target can be an action too)
+- actionable USAGE: [Nested actions](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#nested-actions), [Case steps](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#case-steps) (a branch target can be an action too)

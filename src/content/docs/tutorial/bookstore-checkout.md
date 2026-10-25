@@ -29,14 +29,15 @@ service objects on top of FieldStruct.
 
 ## Before you start
 
-You need Ruby 3.2 or newer and both gems in your `Gemfile`:
+You need Ruby 3.3 or newer and both gems in your `Gemfile`:
 
 ```ruby title="Gemfile"
-gem 'field_struct', git: 'https://github.com/Paymentbox-com/field_struct', tag: 'v0.15.0'
-gem 'actionable-rb', git: 'https://github.com/Paymentbox-com/actionable', tag: 'v1.9.0'
+gem 'field_struct', git: 'https://github.com/Paymentbox-com/field_struct', tag: 'v0.16.0'
+gem 'actionable-rb', git: 'https://github.com/Paymentbox-com/actionable', tag: 'v1.10.0'
 ```
 
-Run `bundle install`, then follow along in `bundle exec irb` with
+[Chapter 6](../into-an-app/) also uses `activejob` and `rspec`; it says when to
+add them. Run `bundle install`, then follow along in `bundle exec irb` with
 `require 'field_struct'` and `require 'actionable'`, or in a script.
 
 Every example in this tutorial is run in CI against exactly these releases, and

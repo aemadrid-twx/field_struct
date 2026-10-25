@@ -4,7 +4,7 @@ description: Every type, option, macro and verb in field_struct and actionable.
 ---
 
 The complete API of both gems, for the released versions this site is checked
-against: **field_struct v0.15.0** and **actionable-rb v1.9.0**. Every runnable
+against: **field_struct v0.16.0** and **actionable-rb v1.10.0**. Every runnable
 example on these pages is executed in CI against exactly those releases.
 
 Pages are grouped by gem in the sidebar:
@@ -25,7 +25,7 @@ Wondering *why* something works the way it does? See
 These pages are ported from each gem's own USAGE file and checked against its
 source. The upstream files, at the same tags:
 
-- field_struct: [USAGE](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md),
-  [README](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/README.md)
-- actionable: [USAGE](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md),
-  [README](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/README.md)
+- field_struct: [USAGE](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md),
+  [README](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/README.md)
+- actionable: [USAGE](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md),
+  [README](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/README.md)

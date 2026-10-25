@@ -255,4 +255,4 @@ end
 An empty array raises `ArgumentError` (`no samples to scaffold from`), and so
 does a root that isn't an object or an array of objects.
 
-Upstream: [USAGE, Introspection](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md#introspection) and [RBS for your own classes](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md#rbs-for-your-own-classes).
+Upstream: [USAGE, Introspection](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#introspection) and [RBS for your own classes](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#rbs-for-your-own-classes).

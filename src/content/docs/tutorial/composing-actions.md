@@ -381,9 +381,9 @@ measures about one run in ten, which keeps the cost low in production.
 - A step-by-step history of each run.
 
 More in the actionable USAGE reference:
-[Nested actions](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#nested-actions),
-[Lifecycle hooks](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#lifecycle-hooks)
-and [History & measurement](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#history--measurement).
+[Nested actions](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#nested-actions),
+[Lifecycle hooks](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#lifecycle-hooks)
+and [History & measurement](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#history--measurement).
 
 **Next:** [Into an app](../into-an-app/), where `Checkout` gets a controller, a
 background job and specs.

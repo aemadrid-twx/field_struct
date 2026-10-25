@@ -66,4 +66,4 @@ declares are left to the first-run check.
 
 ## See also
 
-- actionable USAGE: [Where a plain verb may go](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#where-a-plain-verb-may-go) (the full rule table, and how to switch the first-run check off while upgrading)
+- actionable USAGE: [Where a plain verb may go](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#where-a-plain-verb-may-go) (the full rule table, and how to switch the first-run check off while upgrading)

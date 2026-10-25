@@ -179,4 +179,4 @@ with `Actionable.verb_position_check = false`
 ([details](../actions-and-steps/#turning-the-verb-position-check-off)); the
 [RuboCop cop](../rubocop/) applies the same rules as a lint.
 
-Upstream: [USAGE, Control flow](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#control-flow).
+Upstream: [USAGE, Control flow](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#control-flow).

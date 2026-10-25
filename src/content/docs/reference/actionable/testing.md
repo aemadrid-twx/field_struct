@@ -216,4 +216,4 @@ suite, merge the shard files in a later step with
 nothing raises `Actionable::Error`. Set `baseline` only for full runs, and use
 `only_observed = true` for targeted local runs.
 
-Upstream: [USAGE, RSpec integration](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#rspec-integration) and [Outcome coverage](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#outcome-coverage).
+Upstream: [USAGE, RSpec integration](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#rspec-integration) and [Outcome coverage](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#outcome-coverage).

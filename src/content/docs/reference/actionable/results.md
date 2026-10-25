@@ -130,4 +130,4 @@ attributes are `==`. Under [typed outcomes](../declared-outcomes/#typed-outcomes
 Actionable::Success.new(message: 'm') == Actionable::Success.new(message: 'm')   # => true
 ```
 
-Upstream: [USAGE, Results](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#results) and [Serializing a result](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#serializing-a-result).
+Upstream: [USAGE, Results](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#results) and [Serializing a result](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#serializing-a-result).

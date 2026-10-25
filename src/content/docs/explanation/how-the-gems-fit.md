@@ -54,7 +54,7 @@ action's input unchanged.
 
 The original actionable surfaced *every* instance variable a run set, through
 `method_missing` on the result. The
-[first discussion](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/docs/origin/first_discussion.md)
+[first discussion](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/docs/origin/first_discussion.md)
 calls that "convenient, but untyped and invisible". The rebuild keeps the
 convenience (steps still just set `@doubled`) but only fields declared in
 `output` are captured: "declaration + ivar name is the contract" (D6). It's
@@ -115,5 +115,5 @@ actions").
 
 - [Validity is computed on assignment](../validity-on-assignment/)
 - [Success, failure, skip](../three-outcomes/)
-- [USAGE: Input](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#input)
-  and [Output](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#output)
+- [USAGE: Input](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#input)
+  and [Output](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#output)

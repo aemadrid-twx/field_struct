@@ -13,7 +13,7 @@ instead.
 ## The problem they solve
 
 Decision D20 in the
-[design record](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/docs/origin/plan.md)
+[design record](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/docs/origin/plan.md)
 starts from a real case: "A failure's code was open-ended, so an adapter
 couldn't know an action's failure contract." A host app wanted to attach its
 own information to each code (whether it's a rejection, a not-found, and so
@@ -119,5 +119,5 @@ run time, with no source parsing:
 ## Related
 
 - [Success, failure, skip](../three-outcomes/)
-- [USAGE: Declared failures](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#declared-failures)
-  and [Declared skips](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#declared-skips)
+- [USAGE: Declared failures](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#declared-failures)
+  and [Declared skips](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#declared-skips)

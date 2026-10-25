@@ -217,4 +217,4 @@ end
 Response.from_json('{"errors":["boom"]}').errors_field # => ["boom"]
 ```
 
-Upstream: [USAGE, Field options](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md#field-options-any-type).
+Upstream: [USAGE, Field options](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#field-options-any-type).

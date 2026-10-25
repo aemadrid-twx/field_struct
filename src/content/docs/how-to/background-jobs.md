@@ -115,4 +115,4 @@ To decide per code in the action instead, declare `retry: true` or
 
 ## See also
 
-- actionable USAGE: [Background jobs](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#background-jobs)
+- actionable USAGE: [Background jobs](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#background-jobs)
