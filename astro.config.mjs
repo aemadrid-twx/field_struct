@@ -16,7 +16,14 @@ export default defineConfig({
       sidebar: [
         { label: 'Tutorial', items: [{ autogenerate: { directory: 'tutorial' } }] },
         { label: 'How-to guides', items: [{ autogenerate: { directory: 'how-to' } }] },
-        { label: 'Reference', items: [{ autogenerate: { directory: 'reference' } }] },
+        {
+          label: 'Reference',
+          items: [
+            { label: 'Overview', slug: 'reference' },
+            { label: 'field_struct', items: [{ autogenerate: { directory: 'reference/field-struct' } }] },
+            { label: 'actionable', items: [{ autogenerate: { directory: 'reference/actionable' } }] },
+          ],
+        },
         { label: 'Explanation', items: [{ autogenerate: { directory: 'explanation' } }] },
       ],
     }),
