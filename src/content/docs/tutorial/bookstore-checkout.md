@@ -1,6 +1,6 @@
 ---
 title: Build a bookstore checkout
-description: A hands-on introduction to FieldStruct and Actionable, in three short chapters.
+description: A hands-on introduction to FieldStruct and Actionable, in six short chapters.
 sidebar:
   label: Overview
   order: 1
@@ -15,9 +15,15 @@ piece at a time. Each chapter builds on the one before it:
    turn it into JSON and back, rename JSON keys and hide sensitive values.
 3. [Placing the order](../placing-the-order/): write a `PlaceOrder` action with
    steps, typed input and output, and a declared `:out_of_stock` failure.
+4. [When things go wrong](../when-things-go-wrong/): handle every outcome at
+   the call site with skips, metadata, errors as data and `case`/`in`.
+5. [Composing actions](../composing-actions/): split checkout into small
+   actions, run them as steps of one parent, and undo with a hook.
+6. [Into an app](../into-an-app/): call the checkout from a controller, run it
+   in a background job with retries, and test it with RSpec.
 
 Chapters 1 and 2 use [FieldStruct](https://github.com/Paymentbox-com/field_struct),
-which gives you typed plain-Ruby objects. Chapter 3 adds
+which gives you typed plain-Ruby objects. Chapters 3 to 6 add
 [Actionable](https://github.com/Paymentbox-com/actionable), which builds
 service objects on top of FieldStruct.
 

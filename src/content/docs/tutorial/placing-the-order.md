@@ -238,5 +238,5 @@ actions, batches and more. The actionable
 and [USAGE reference](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md)
 cover them.
 
-**Next:** more chapters are on the way. Until then, the
-[how-to guides](../../how-to/) point to recipes for specific tasks.
+**Next:** [When things go wrong](../when-things-go-wrong/), where you handle
+every outcome of `PlaceOrder`, including a new one: a skip.
