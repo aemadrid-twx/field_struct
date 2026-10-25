@@ -2,9 +2,9 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
-// Served by GitHub Pages as a project site: https://paymentbox-com.github.io/field_struct/
+// Served by GitHub Pages from the aemadrid-twx/field_struct fork (ruling R21): https://aemadrid-twx.github.io/field_struct/
 export default defineConfig({
-  site: 'https://paymentbox-com.github.io',
+  site: 'https://aemadrid-twx.github.io',
   base: '/field_struct',
   integrations: [
     starlight({

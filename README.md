@@ -6,7 +6,7 @@ This orphan branch holds the public documentation site for two Ruby gems,
 with the gem's code branches.
 
 - Generator: [Starlight](https://starlight.astro.build) on Astro (`astro` 7.4.2, `@astrojs/starlight` 0.42.7, pinned exactly in `package.json`).
-- Published at <https://paymentbox-com.github.io/field_struct/> by GitHub Actions.
+- Published at <https://aemadrid-twx.github.io/field_struct/> by GitHub Actions, from the `site` branch of the [aemadrid-twx/field_struct](https://github.com/aemadrid-twx/field_struct) fork, where development happens. Releases, and the install lines and links on the site, stay on Paymentbox-com.
 - Pages live in `src/content/docs/`, grouped Diátaxis-style: `tutorial/`, `how-to/`, `reference/`, `explanation/`.
 
 ## Run it locally
