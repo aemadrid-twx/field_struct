@@ -1,50 +1,37 @@
 ---
 title: Build a bookstore checkout
-description: A hands-on introduction to FieldStruct and Actionable.
+description: A hands-on introduction to FieldStruct and Actionable, in three short chapters.
 sidebar:
+  label: Overview
   order: 1
 ---
 
-:::note[Work in progress]
-This tutorial is being written. The first step below runs today; the rest is outlined.
-:::
+In this tutorial you'll build the checkout for a small online bookstore, one
+piece at a time. Each chapter builds on the one before it:
 
-In this tutorial you'll build the checkout for a small online bookstore:
+1. [A typed Book](../a-typed-book/): define a struct with typed fields,
+   required and optional fields, defaults, validation and coercion.
+2. [Orders and JSON](../orders-and-json/): nest line items inside an `Order`,
+   turn it into JSON and back, rename JSON keys and hide sensitive values.
+3. [Placing the order](../placing-the-order/): write a `PlaceOrder` action with
+   steps, typed input and output, and a declared `:out_of_stock` failure.
 
-1. A `Book` struct: typed fields, coercion, validation.
-2. An `Order` with nested line items.
-3. A `PlaceOrder` action that checks the order and returns a typed result.
+Chapters 1 and 2 use [FieldStruct](https://github.com/Paymentbox-com/field_struct),
+which gives you typed plain-Ruby objects. Chapter 3 adds
+[Actionable](https://github.com/Paymentbox-com/actionable), which builds
+service objects on top of FieldStruct.
 
-You need Ruby 3.2 or newer and the two gems in your `Gemfile` (see the [home page](../../)).
+## Before you start
 
-## Step 1: a Book
+You need Ruby 3.2 or newer and both gems in your `Gemfile`:
 
-```ruby title="book.rb" run
-class Book < FieldStruct::Base
-  required :isbn,  :string
-  required :title, :string
-  required :price, :decimal, round: 2
-end
+```ruby title="Gemfile"
+gem 'field_struct', git: 'https://github.com/Paymentbox-com/field_struct', tag: 'v0.15.0'
+gem 'actionable',   git: 'https://github.com/Paymentbox-com/actionable',   tag: 'v1.8.2'
 ```
 
-Values are coerced on the way in, so a price read from a form or a CSV becomes a `BigDecimal`:
+Run `bundle install`, then follow along in `bundle exec irb` with
+`require 'field_struct'` and `require 'actionable'`, or in a script.
 
-```ruby run
-book = Book.new(isbn: '978-1-68050-981-8', title: 'Eloquent Ruby', price: '24.99')
-book.title   # => "Eloquent Ruby"
-book.price   # => BigDecimal('24.99')
-book.valid?  # => true
-```
-
-A missing required field doesn't raise. The object just isn't valid, and says why:
-
-```ruby run
-untitled = Book.new(isbn: '978-1-68050-981-8', price: '5')
-untitled.valid?        # => false
-untitled.errors[:title] # => ["is required"]
-```
-
-## Coming next
-
-- `Order`, holding an array of nested line items.
-- `PlaceOrder`, an `Actionable::Action` that turns an order into a success or a failure.
+Every example in this tutorial is run in CI against exactly these releases, and
+each `# => value` comment is checked. If you see `# =>`, that's what Ruby returns.
