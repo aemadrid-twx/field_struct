@@ -133,7 +133,8 @@ What's new:
   only skip with declared codes.
 - **`skip!`** records the skip and stops, so `check_stock` and
   `reserve_copies` never run. Its keyword arguments become the result's output,
-  so the caller still learns the order number and total.
+  so the caller still learns the order number and total. The `nil` before them
+  is the message argument: `nil` keeps the declared one.
 - **`http_status: 409`** after a failure's message is *metadata*: a free-form
   Hash Actionable stores on the result and never reads. Your app decides what
   the keys mean. You'll use it to pick an HTTP status in a moment.
@@ -230,9 +231,9 @@ checkout_message(sold_out)  # => "Sorry, only 1 left of Eloquent Ruby."
 checkout_message(bad)       # => "Please check your order: Order is invalid"
 ```
 
-A result matches on `code`, `message`, `output` and `history`. `errors` and
-`metadata` aren't pattern keys, so read them off the result, as the last branch
-does.
+A result matches on its fields: `code`, `message`, `output`, `history` and, on a
+failure or skip, `metadata` (so `in Actionable::Failure(metadata: { http_status: })`
+works). `errors` isn't a field, so read it off the result, as the last branch does.
 
 There's no `else`, on purpose. If the action someday gains an outcome this
 method doesn't handle, `case`/`in` raises `NoMatchingPatternError` instead of
@@ -241,11 +242,12 @@ quietly doing the wrong thing:
 ```ruby run
 surprise = Actionable::Failure.new(code: :card_declined)
 
-begin
+error = begin
   checkout_message(surprise)
 rescue NoMatchingPatternError => e
-  e.class   # => NoMatchingPatternError
+  e
 end
+error.class   # => NoMatchingPatternError
 ```
 
 `Actionable::Failure.new` builds a result by hand, without running an action,
@@ -323,11 +325,12 @@ fresh = Order.new(
   lines: [{ book: { isbn: '978-1-68050-981-8', title: 'Eloquent Ruby', price: '24.99' }, quantity: 1 }]
 )
 
-begin
+error = begin
   PlaceOrder.run(order: fresh)
 rescue FrozenError => e
-  e.class   # => FrozenError
+  e
 end
+error.class   # => FrozenError
 
 PLACED    # => ["A-1001"]
 ```

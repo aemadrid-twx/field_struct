@@ -266,11 +266,12 @@ class ForgetfulCheckout < Actionable::Action
   end
 end
 
-begin
+error = begin
   ForgetfulCheckout.run(order: declined)
 rescue Actionable::DefinitionError => e
-  e.class   # => Actionable::DefinitionError
+  e
 end
+error.class   # => Actionable::DefinitionError
 ```
 
 ## Undo with an `on_failure` hook

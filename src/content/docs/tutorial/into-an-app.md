@@ -8,7 +8,7 @@ sidebar:
 
 `Checkout` works in a script. Now it needs to live in an app: a JSON endpoint
 that places orders, a background job for when the payment gateway is slow, and
-specs. This chapter uses Rails' conventions, but the only Rails pieces it needs
+specs. This chapter uses Rails' conventions, but the only extra gems it needs
 are ActiveJob and RSpec, so every example still runs on its own. To follow
 along, add `gem 'activejob'` and `gem 'rspec'` to your `Gemfile` (the examples
 are checked against ActiveJob 8 and RSpec 3.13).
@@ -175,16 +175,20 @@ The browser posts the order as JSON, with the camelCase keys you set up in
 `Order.from_json` turns it into an `Order`, the controller runs `Checkout`, and
 `case`/`in` turns the result into a response.
 
-So this page runs without Rails, a tiny `ApplicationController` stands in for
-`ActionController::API`. It holds the request body and records what `render`
-was called with:
+So that this page runs without Rails, a tiny `ApplicationController` stands in
+for `ActionController::API`. Like Rails, it gives you `request.body` as an IO,
+and it records what `render` was called with:
 
 ```ruby title="stand-in for Rails" run
+require 'stringio'
+
 class ApplicationController
-  attr_reader :request_body, :response
+  Request = Struct.new(:body)
+
+  attr_reader :request, :response
 
   def initialize(request_body)
-    @request_body = request_body
+    @request = Request.new(StringIO.new(request_body))
   end
 
   def render(json:, status:)
@@ -193,13 +197,12 @@ class ApplicationController
 end
 ```
 
-The controller is what you'd write in a Rails app, where `request.body.read`
-gives you the JSON:
+The controller is what you'd write in a Rails app:
 
 ```ruby title="app/controllers/orders_controller.rb" run
 class OrdersController < ApplicationController
   def create
-    result = Checkout.run(order: Order.from_json(request_body))
+    result = Checkout.run(order: Order.from_json(request.body.read))
 
     case result
     in Actionable::Success(output: { order_number:, charge_id: })
@@ -269,7 +272,7 @@ class CheckoutJob < ActiveJob::Base
     run_actionable(Checkout, order: Order.from_json(order_json))
   end
 
-  def actionable_permanent_codes = %i[invalid_input invalid_output out_of_stock card_declined]
+  def actionable_permanent_codes = Actionable::Job::DEFAULT_PERMANENT_CODES + %i[out_of_stock card_declined]
 end
 ```
 
@@ -335,7 +338,8 @@ Without the job's own list, a declined card would be retried too. That's why
 ## Specs
 
 Actionable ships an RSpec matcher and stub helpers. In `spec/spec_helper.rb`,
-load them after RSpec:
+load them after RSpec. (The specs below reuse the `order_json` helper from the
+job section; in your app, put it in `spec/support/`.)
 
 ```ruby title="spec/spec_helper.rb" run
 require 'rspec'
