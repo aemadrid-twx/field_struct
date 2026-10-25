@@ -11,7 +11,7 @@ with the gem's code branches.
 
 ## Run it locally
 
-Needs Node 22.23+ (CI uses 24) and Ruby 3.2+ (CI uses 3.4).
+Needs Node 22.23+ (CI uses 24) and Ruby 3.3+ (CI uses 3.4).
 
 ```sh
 npm ci
@@ -24,8 +24,8 @@ npm run check:code   # same as: bundle exec ruby bin/check-code-blocks
 ## Runnable code blocks
 
 Docs must never go stale, so code examples are executed in CI against the
-**released** gems pinned in `Gemfile` (field_struct `v0.15.0`, actionable
-`v1.9.0`, installed from their git tags). When a gem ships a new release, bump
+**released** gems pinned in `Gemfile` (field_struct `v0.16.0`, actionable
+`v1.10.0`, installed from their git tags). When a gem ships a new release, bump
 the tag in `Gemfile`, run `bundle lock`, and fix whatever the checker reports.
 
 Mark a block runnable by adding the word `run` to its fence:

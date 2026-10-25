@@ -169,4 +169,4 @@ end
 The same check applies to the output blocks of `fails` and `skips`. Input
 fields aren't checked: they're read as `input.x`.
 
-Upstream: [USAGE, Output](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#output) and [Input](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#input).
+Upstream: [USAGE, Output](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#output) and [Input](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#input).

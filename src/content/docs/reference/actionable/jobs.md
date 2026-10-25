@@ -133,4 +133,4 @@ QuietReindex.honor_retry_metadata?   # => false
 `honor_retry_metadata?` is inherited and defaults to `false`; a subclass backs
 out with `honor_retry_metadata(enabled: false)`.
 
-Upstream: [USAGE, Background jobs](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#background-jobs).
+Upstream: [USAGE, Background jobs](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#background-jobs).

@@ -126,5 +126,5 @@ transaction instead.
 
 ## See also
 
-- actionable USAGE: [Rails adapter](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#rails-adapter)
-- actionable [getting started, part 2: Rails](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/docs/getting_started.md#part-2--rails)
+- actionable USAGE: [Rails adapter](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#rails-adapter)
+- actionable [getting started, part 2: Rails](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/docs/getting_started.md#part-2--rails)

@@ -113,7 +113,7 @@ odd.errors[:pages] # => ["could not be coerced: Integer fields expect a base-10 
 The message names the type and the input's class, never the value itself, so it's
 safe to log. You can change this per class or per field with `coercion_policy`
 (`:replace` stores `nil`, `:raise` raises `FieldStruct::CoercionError`); see
-[Coercion failure policy](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md#coercion-failure-policy).
+[Coercion failure policy](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#coercion-failure-policy).
 
 ## What you built
 
@@ -125,7 +125,7 @@ A `Book` that:
 - reports what's wrong in `errors` instead of raising.
 
 The full list of types and options is in the field_struct
-[USAGE reference](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md#types).
+[USAGE reference](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#types).
 
 **Next:** [Orders and JSON](../orders-and-json/), where books go into an order
 and the order goes over the wire as JSON.

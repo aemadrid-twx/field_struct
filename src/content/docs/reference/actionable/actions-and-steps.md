@@ -301,4 +301,4 @@ Off, `.run` never parses source or loads Prism, and the
 [`Actionable/VerbNotLast` cop](../rubocop/) is the only guard. A class that ran
 while the check was off is checked on its first run after it's back on.
 
-Upstream: [USAGE, Steps](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#steps).
+Upstream: [USAGE, Steps](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#steps).

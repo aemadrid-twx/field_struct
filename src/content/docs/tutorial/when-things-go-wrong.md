@@ -339,7 +339,7 @@ PLACED    # => ["A-1001"]
 was undone, though: an action has no transaction of its own. If `reserve_copies`
 had changed some rows before it raised, they would stay changed. With
 ActiveRecord, Actionable's Rails adapter can wrap a run in a transaction; see
-[Rails adapter](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#rails-adapter).
+[Rails adapter](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#rails-adapter).
 
 Let exceptions reach your error tracker. Rescue one inside a step only when it's
 a case you can name, and turn it into a declared failure with `fail!`.
@@ -354,7 +354,7 @@ a case you can name, and turn it into a declared failure with `fail!`.
   outages you let raise).
 
 More on skips, metadata and the verbs in the actionable
-[USAGE reference](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#declared-skips).
+[USAGE reference](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#declared-skips).
 
 **Next:** [Composing actions](../composing-actions/), where checkout splits
 into smaller actions for stock, payment and the receipt.

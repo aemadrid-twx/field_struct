@@ -438,4 +438,4 @@ through the parent's `coercion_policy`.
 Any `FieldStruct::Types::Base` subclass can be a type. See
 [Registries and custom types](../registries-and-custom-types/).
 
-Upstream: [USAGE, Types](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md#types).
+Upstream: [USAGE, Types](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#types).

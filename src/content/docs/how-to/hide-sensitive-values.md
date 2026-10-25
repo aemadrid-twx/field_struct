@@ -69,5 +69,5 @@ the mapped key names too.
 
 ## See also
 
-- field_struct USAGE: [Log safety: error messages and sensitive fields](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md#log-safety-error-messages-and-sensitive-fields), [Field options](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md#field-options-any-type)
+- field_struct USAGE: [Log safety: error messages and sensitive fields](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#log-safety-error-messages-and-sensitive-fields), [Field options](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#field-options-any-type)
 - Tutorial: [Keep secrets out of your logs](../../tutorial/orders-and-json/#keep-secrets-out-of-your-logs)

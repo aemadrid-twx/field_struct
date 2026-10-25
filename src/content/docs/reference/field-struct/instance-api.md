@@ -218,4 +218,4 @@ name.plural    # => "line_addresss"
 LineAddress.new.to_model.class # => LineAddress
 ```
 
-Upstream: [USAGE, Instance surface](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md#instance-surface).
+Upstream: [USAGE, Instance surface](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#instance-surface).

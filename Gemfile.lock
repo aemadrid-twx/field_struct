@@ -1,18 +1,18 @@
 GIT
   remote: https://github.com/Paymentbox-com/actionable
-  revision: e528641bec71926de6363fa32efd8cffb04f10fe
-  tag: v1.9.0
+  revision: e9a575ef44f06d9f894071556b8686dfa3c0f108
+  tag: v1.10.0
   specs:
-    actionable-rb (1.9.0)
+    actionable-rb (1.10.0)
       field_struct (>= 0.12)
       oj (>= 3.0)
 
 GIT
   remote: https://github.com/Paymentbox-com/field_struct
-  revision: 6c129b2be43789cb7222617682cc2f33546fe420
-  tag: v0.15.0
+  revision: 77c8aab047c54d9d029d98d0687fb390aa9e9455
+  tag: v0.16.0
   specs:
-    field_struct (0.15.0)
+    field_struct (0.16.0)
       bigdecimal (>= 3.0)
       oj (>= 3.11.2)
       tzinfo (~> 2.0)
@@ -100,7 +100,7 @@ DEPENDENCIES
   sqlite3 (~> 2.0)
 
 CHECKSUMS
-  actionable-rb (1.9.0)
+  actionable-rb (1.10.0)
   activejob (8.1.4) sha256=4ed5b2ed8d4cc5c8f5f09becfef8346f202a4884eee0c8c73cae5ac378824099
   activemodel (8.1.4) sha256=9a0906c127bd118aa5f06157db12b8f750da83dccee72db2f658547a0ae7a0e8
   activerecord (8.1.4) sha256=3b4957ea7f246c9231bd7faa909312eac03a9101aaf87977b6c52733ff00b04f
@@ -112,7 +112,7 @@ CHECKSUMS
   connection_pool (3.0.2) sha256=33fff5ba71a12d2aa26cb72b1db8bba2a1a01823559fb01d29eb74c286e62e0a
   diff-lcs (1.6.2) sha256=9ae0d2cba7d4df3075fe8cd8602a8604993efc0dfa934cff568969efb1909962
   drb (2.2.3) sha256=0b00d6fdb50995fe4a45dea13663493c841112e4068656854646f418fda13373
-  field_struct (0.15.0)
+  field_struct (0.16.0)
   globalid (1.4.0) sha256=037f12fbf1d9d7a014d501c2d5c77356fd4ddd96d7a7991d6700bba96706f427
   i18n (1.15.2) sha256=00f9eb62412fe593b2a65a97daa75300d37abb8f7202ec748e94b6d46a9dd1b5
   json (3.1.0) sha256=3ce7ccf8fde58960177a3a756c31f292a4c1e1dedee884547096a5b0604e3bd8

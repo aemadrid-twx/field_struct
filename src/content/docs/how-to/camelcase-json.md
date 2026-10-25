@@ -84,5 +84,5 @@ ImportRow.new(errors_field: 'none').to_json                # => '{"errors":"none
 
 ## See also
 
-- field_struct USAGE: [JSON & serialization](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md#json--serialization), [Gotchas](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/USAGE.md#gotchas--invariants) (reserved field names)
+- field_struct USAGE: [JSON & serialization](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#json--serialization), [Gotchas](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#gotchas--invariants) (reserved field names)
 - Tutorial: [Orders and JSON](../../tutorial/orders-and-json/#use-the-json-keys-your-api-expects)
