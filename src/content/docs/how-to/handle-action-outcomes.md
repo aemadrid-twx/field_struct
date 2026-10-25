@@ -67,7 +67,9 @@ ChargeCustomer.run(customer_id: 1).charge_id  # => "ch_1"
 Each outcome is its own class (`Actionable::Success`, `Actionable::Skipped`,
 `Actionable::Failure`), and results support pattern matching on `code`,
 `message`, `output` and (for a failure or skip) `metadata`. So one `case`/`in` covers every outcome,
-including the gem's own `:invalid_input`:
+including the gem's own `:invalid_input`. Keep an `else`: a failure without
+`http:` metadata (`:invalid_output`, or a code from an action that declares
+none) would otherwise raise `NoMatchingPatternError`:
 
 ```ruby run
 def respond_to_charge(result)
@@ -76,6 +78,7 @@ def respond_to_charge(result)
   in Actionable::Skipped       then [200, { note: result.message }]
   in { code: :invalid_input }  then [422, { errors: result.errors.to_h }]
   in { metadata: { http: } }   then [http, { error: result.message }]
+  else                              [500, { error: result.message }]
   end
 end
 

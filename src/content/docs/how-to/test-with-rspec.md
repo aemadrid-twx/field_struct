@@ -64,8 +64,9 @@ end
 
 `perform_actionable(...)` runs the action with those arguments. Chain
 `and_succeed`, `and_fail(code)`, `and_skip(code)` or `and_raise(ErrorClass)`;
-a message argument is matched with `===`, so a Regexp works. A block gets the
-result for anything else you want to check:
+a message argument is matched with `===`, so a Regexp works. A block gets
+`(result, exception)` for anything else you want to check, and must return a
+truthy value for the spec to pass:
 
 ```ruby title="spec/charge_spec.rb" run
 RSpec.describe Charge do
