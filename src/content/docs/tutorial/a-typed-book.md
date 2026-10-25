@@ -31,7 +31,8 @@ end
   (decimal places), `in:` (allowed range), `enum:` (allowed values) and `default:`.
 
 `in: (0..)` means "zero or more". The parentheses matter: a bare `0..` at the end
-of a line makes Ruby read the next line as the end of the range.
+of a line makes Ruby read the next line as the end of the range. Here that's a
+syntax error, reported on the *following* line, which is confusing to debug.
 
 ## Values are coerced on the way in
 
@@ -40,14 +41,14 @@ converts each value to the field's type when you assign it:
 
 ```ruby run
 book = Book.new(isbn: '978-1-68050-981-8', title: 'Eloquent Ruby',
-                price: '24.999', pages: '320', format: 'hardcover')
-book.price   # => BigDecimal('25.00')
+                price: '24.985', pages: '320', format: 'hardcover')
+book.price   # => BigDecimal('24.99')
 book.pages   # => 320
 book.format  # => :hardcover
 book.valid?  # => true
 ```
 
-`'24.999'` became `25.00`: `round: 2` rounds half up. String and symbol keys both
+`'24.985'` became `24.99`: `round: 2` rounds half up. String and symbol keys both
 work in `new`.
 
 ## Optional fields and defaults

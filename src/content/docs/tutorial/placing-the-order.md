@@ -103,8 +103,8 @@ Here's what each part does:
 
 - **`fails :out_of_stock, '…'`** declares a way this action can fail, with a
   default message. Once an action declares a failure code, it can only fail with
-  declared codes; any other code raises `Actionable::DefinitionError`, so typos
-  surface right away.
+  declared codes; any other code raises `Actionable::DefinitionError` the first
+  time that `fail!` runs, so a typo can't quietly become a new failure code.
 - **`input { … }`** declares the arguments `.run` takes, with the same DSL as a
   FieldStruct. Here it takes one `Order`.
 - **`output { … }`** declares what a success returns. At the end of the run,
@@ -146,6 +146,9 @@ result.order_number   # => "A-1001"
 
 Output fields are on `result.output`, and also directly on the result as a
 shortcut: `result.order_number` is `result.output.order_number`.
+
+`status` is the outcome: one of `:success`, `:failure` or `:skipped`. On a
+failure, `code` adds the specific reason, as you'll see next.
 
 The steps really ran, so the copies are reserved:
 
@@ -195,7 +198,9 @@ broken.errors[:order]    # => ["is invalid"]
 
 `:invalid_input` is one of the codes Actionable produces itself, so you don't
 have to declare it with `fails`. The input coerces hashes just like a struct, so
-`broken` was built into an `Order`, found invalid, and stopped there.
+`broken` was built into an `Order`, found invalid, and stopped there. The result
+only knows that `order` was invalid. For the field-level detail, build the
+`Order` first (chapter 2) and read its `errors` before you call `run`.
 
 ## Branch on the result
 

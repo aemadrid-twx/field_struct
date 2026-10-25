@@ -41,7 +41,7 @@ class LineItem < FieldStruct::Base
   required :book,     Book
   required :quantity, :integer, in: (1..)
 
-  def subtotal = book.price * quantity
+  def subtotal = book.price * quantity # `def name = expr`: Ruby's one-line method
 end
 
 class Order < FieldStruct::Base
@@ -160,7 +160,7 @@ order.as_json[:lines].first[:book][:format]  # => "paperback"
 
 ## Use the JSON keys your API expects
 
-Say your frontend expects camelCase keys like `orderNumber`. Map each field to
+Say your API's clients expect camelCase keys like `orderNumber`. Map each field to
 its external name with `serialize :json`. In `order.rb` you would add this line
 inside `class Order`, after the fields. Here we reopen the class to add it:
 
@@ -202,7 +202,9 @@ working:
 order.to_json.include?('tok_4242')  # => true
 ```
 
-Filter it yourself before you log JSON or send it to a browser.
+Filter it yourself before you log JSON or send it to a browser, for example
+`order.as_json.except(:paymentToken)`. `as_json` and `to_json` take no
+`only:` / `except:` options.
 :::
 
 ## What you built
