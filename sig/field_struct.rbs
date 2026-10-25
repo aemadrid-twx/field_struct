@@ -385,9 +385,9 @@ module FieldStruct
     def self.serialize: ((Symbol | String) name, **(String | Symbol) mapping) -> self
 
     # Resolve a type name through the registry chain visible to this
-    # class. Walks the containing modules of the class's name in
-    # outermost-first order, looking for the nearest one that responds
-    # to +field_types+. Falls back to {FieldStruct.types}.
+    # class. Walks the containing modules of the class's name from the
+    # innermost outward and uses the first one that responds to
+    # +field_types+. Falls back to {FieldStruct.types}.
     # 
     # _@param_ `type_name`
     # 
@@ -542,7 +542,7 @@ module FieldStruct
     # _@param_ `options` — mutated in place (keys deleted)
     def self.extract_description!: (::Hash[Symbol, Object?] options) -> String?
 
-    # Three-way option check (design invariant 7): validate native, pass
+    # Three-way option check (design invariant 8): validate native, pass
     # through foreign. For each declared option:
     # 
     # 1. **Native to this type** (in its +option_schema+) → validate the
@@ -759,7 +759,7 @@ module FieldStruct
     # +#<ClassName field: value, ...>+. An *invalid* instance additionally
     # surfaces its errors — +#<ClassName name: "" errors: {name: ["is
     # required"]}>+ — so the most-read debug output never hides invalidity
-    # (design invariant 7). This reads the current {#errors}; it does not
+    # (design invariant 8). This reads the current {#errors}; it does not
     # re-run validation, so printing an instance never mutates it.
     # 
     # A +sensitive: true+ field renders {FieldStruct::FILTERED} in place of
@@ -2836,7 +2836,8 @@ module FieldStruct
     # _@return_ — last segment, snake_case (e.g. "user_account")
     attr_reader singular: String
 
-    # _@return_ — naive +s+-suffixed plural of {#singular}
+    # _@return_ — naive +s+-suffixed plural of {#singular} — no English
+    # rules, so +Address+ gives +"addresss"+ and +Person+ gives +"persons"+
     attr_reader plural: String
 
     # _@return_ — same as {#singular} (the AM convention for last segment)

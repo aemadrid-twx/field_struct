@@ -15,7 +15,8 @@ module FieldStruct
     # @return [String] last segment, snake_case (e.g. "user_account")
     attr_reader :singular
 
-    # @return [String] naive +s+-suffixed plural of {#singular}
+    # @return [String] naive +s+-suffixed plural of {#singular} — no English
+    #   rules, so +Address+ gives +"addresss"+ and +Person+ gives +"persons"+
     attr_reader :plural
 
     # @return [String] same as {#singular} (the AM convention for last segment)

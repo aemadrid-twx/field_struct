@@ -6,6 +6,26 @@ adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Documentation
+
+- USAGE spells out the `:boolean` strings: by default only `"true"`, `"1"`,
+  `"false"`, `"0"` (case-insensitive); `"yes"` needs `values: :english_yes_no`,
+  and a `values:` Hash replaces the defaults rather than adding to them. Doctested.
+- USAGE lists `format:` (Regexp) and `enum:` for `:binary`, which it already
+  accepted and enforced.
+- USAGE says which RFC 3339 forms `format: :iso8601` reads: lowercase `t` / `z`
+  and a `±hhmm` offset are accepted along with `T`, `Z` and `±hh:mm`.
+- USAGE notes that `Z` under `format: :iso8601` gives a fixed `+00:00` offset
+  (`utc?` is false, `zone: 'UTC'` doesn't change it), with a doctest.
+- USAGE "Introspection" shows that `metadata.to_h` renders an array of structs
+  as `of_type: "Nested"` without the class, and how to read the class. Doctested.
+- README, USAGE and the `ModelName#plural` YARD note that the plural only
+  appends "s" (`Address` → `"addresss"`).
+- Fixed a missing comma in USAGE's `inspect` example, the `Base.resolve_type`
+  YARD (lookup goes innermost module first, not outermost), and invariant
+  numbers that didn't match `.claude/project_intent.md` (ActiveSupport parity
+  is 7, self-explaining surface is 8) in USAGE and two `base.rb` comments.
+
 ## [0.16.0] - 2026-10-25
 
 Ruby 3.3 or newer is now required; the library itself is unchanged, so on
