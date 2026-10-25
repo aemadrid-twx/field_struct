@@ -65,7 +65,7 @@ invariant 3: "No 'capture every instance variable' magic."
 Output is validated through field_struct, but only on a success. D6 explains
 why a success that breaks its schema turns into a failure: "the run can't truly
 have succeeded, so it becomes a `Failure` with code `:invalid_output`." A
-failure or skip is captured best-effort and never validated, because callers
+failure or skip is captured best-effort and never validated, and callers
 should treat that output as possibly incomplete.
 
 ```ruby run

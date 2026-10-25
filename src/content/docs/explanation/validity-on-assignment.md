@@ -47,8 +47,6 @@ The design records give two reasons.
 - **Coercion must hold after construction, not only during it.** The very
   first design notes say so: "Setters must coerce after initialization, not
   only at construction time" ([first discussion](https://github.com/Paymentbox-com/field_struct/blob/v0.15.0/docs/origin/first_discussion.md)).
-  Once the setter coerces, checking the coerced value in the same place is the
-  natural next step.
 - **There's nothing left to compute later.** D5: "`valid?` is a cheap read of
   `errors.empty?`, no recomputation. Lazy/eager distinction doesn't apply
   because validation is already a side effect of mutation."
@@ -84,8 +82,7 @@ broken.valid?    # => false
 
 ## An invalid object never looks fine
 
-If an object can be invalid, the place you'll most often notice is when you
-print it. So `inspect` shows the errors too. A valid object reads cleanly; an
+`inspect` shows the errors too. A valid object reads cleanly; an
 invalid one appends what's wrong:
 
 ```ruby run

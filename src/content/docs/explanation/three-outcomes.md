@@ -93,7 +93,7 @@ may go").
 ## Halting with throw, not exceptions
 
 The bang verbs stop the pipeline with `throw :actionable_halt`, caught by the
-runner. They don't raise. And the runner never rescues anything, so a genuine
+runner. They don't raise. And the runner never rescues your exceptions, so a genuine
 error reaches you untouched:
 
 ```ruby run

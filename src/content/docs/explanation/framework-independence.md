@@ -81,7 +81,7 @@ invalid in another." Use the IANA name instead (`"America/Denver"`).
 ## actionable: a pure-Ruby core with opt-in adapters
 
 actionable makes the same split at the gem level. Its core "depends only on
-`field_struct`", and nothing under the core load path requires ActiveModel,
+`field_struct`" (plus `oj`, which field_struct already pulls in), and nothing under the core load path requires ActiveModel,
 ActiveSupport or ActiveRecord (decision D8 and invariant 4 in the actionable
 [design record](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/docs/origin/plan.md)).
 Rails pieces live behind explicit requires:
