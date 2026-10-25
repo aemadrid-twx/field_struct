@@ -123,6 +123,7 @@ A type is a subclass of `FieldStruct::Types::Base`:
 | `.own_option_schema` | no | `{name => option(type: [...], required: false, presets: [])}`. These options are then checked at declaration. Merged with the parent class's schema. |
 | `.resolve_options(options)` | no | Rewrite a field's options once, at declaration (for example a preset Symbol into its value). Default: unchanged. |
 | `.default_format` | no | If defined, a field with no `format:` gets this one (how `:uuid` / `:url` / `:email` get their regex). |
+| `.resolve_format(format)` | no | Expand a declared `format:` into the strftime String `to_json` renders a date or time with. A type with format presets needs it for `to_json` to honour a preset Symbol. Default: a String passes through, a Symbol raises `ArgumentError` (`… has no format presets`). |
 
 Write refusal messages that name the value's class, not its contents, so they
 stay safe to log. A Class passed as the type is instantiated once per field.

@@ -124,7 +124,7 @@ Api.new(at: '2026-07-03T24:00:00Z').errors[:at]           # => ["could not be co
 Api.new(at: '2026-02-30T10:00:00Z').errors[:at]           # => ["could not be coerced: invalid date"]
 ```
 
-`zone:` has no effect with `format: :iso8601`, which always carries an offset.
+`zone:` has no effect on string input with `format: :iso8601`, which always carries an offset; a `Date` still becomes midnight in that zone.
 
 ## `in:`
 

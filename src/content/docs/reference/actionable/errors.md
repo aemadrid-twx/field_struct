@@ -38,7 +38,7 @@ reaches the caller of `.run`.
 | a `fail` / `skip` call under typed outcomes | output for a code without a schema | `DefinitionError` |
 | same | `output:` that isn't a Hash or a FieldStruct | `ArgumentError` |
 | `fail_with(…, output:)` | without typed outcomes | `ArgumentError` |
-| end of a step | `@result` set to something other than a result | `DefinitionError` |
+| after the steps (after each step when measuring) | `@result` set to something other than a result | `DefinitionError` |
 | declaring `after_commit` (Rails adapter) | ActiveRecord missing or older than 7.2 | `DefinitionError` |
 
 ```ruby run

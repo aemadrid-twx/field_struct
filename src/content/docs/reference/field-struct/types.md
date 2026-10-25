@@ -203,6 +203,7 @@ Blob.new(bytes: '  ').valid?         # => true
 | Integer | itself |
 | String | parsed in base 10 (or `base:`). Surrounding whitespace and digit underscores are fine. `"010"` is 10, not octal; `"0x1A"`, `"3.14"`, `"1e3"` are refused. |
 | Float, BigDecimal, Rational | truncated (`12.7` → 12) |
+| BigDecimal with more than 4300 integer digits | refused (`Integer fields read a decimal of at most 4300 digits, got a larger BigDecimal`), so untrusted input can't burn CPU |
 | NaN, ±Infinity | refused |
 | Time | its epoch seconds |
 | anything else (`true`, a Hash, …) | refused |

@@ -167,7 +167,13 @@ These raise `ArgumentError` when the class body runs:
 | Bad `sensitive:` | `sensitive: must be true or false, got Integer` |
 | Bad `rbs_type:` | `rbs_type: must be a non-empty String of RBS (e.g. rbs_type: '::ActiveRecord::Relation'), got ""` |
 | `:array` without `of:` | `array field requires an `of:` option naming the element type` |
+| `:union` without `of:` | `union field requires an `of: [...]` option naming the member types` |
+| `:union` with `of:` that isn't an Array | `union `of:` must be an Array of member types` |
 | `:union` with fewer than two members | `union `of:` must have at least two members` |
+| `:integer` with `base:` outside 2..36 | `base: on Integer expects an Integer from 2 to 36, got 37` |
+| `:boolean` with an unknown `values:` preset | `unknown :boolean values preset :nope. Available: [:english_yes_no, :english, :numeric]` |
+| `:boolean` with `values:` neither a Hash nor a Symbol | `boolean values: must be a Hash {truthy:, falsy:} or a preset Symbol` |
+| `:date` / `:time` / `:datetime` with `format:` of the wrong class | `format: must be a String, Regexp, or Symbol — got Integer` |
 
 An unknown type name raises `KeyError`, not `ArgumentError`.
 

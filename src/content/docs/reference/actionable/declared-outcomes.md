@@ -178,6 +178,21 @@ The rules:
 | `fail` / `fail!` | `output:` is reserved as the failure's output (typed outcomes only) |
 | `fail_with` / `fail_with!` | take `output:` as a keyword; `ArgumentError` without typed outcomes |
 
+Without typed outcomes only `skip` can supply output to a schema; a `fails`
+schema with required fields needs `typed_outcomes`. There `output:` is just
+another error field, so the failure's output stays empty and breaks the schema:
+
+```ruby run
+class RejectKey < Actionable::Action
+  fails(:bad) { required :id, :integer }
+  step :reject
+  def reject = fail!(:bad, output: { id: 1 })
+end
+
+RejectKey.typed_outcomes? # => false
+RejectKey.run.code        # => :invalid_output
+```
+
 `.run` returns the action's own `Success`, `Failure` and `Skipped`, constants
 defined inside it. Each subclasses the gem class, or the parent action's own
 class for a subclass, so `result.is_a?(Actionable::Failure)` still holds. An
@@ -192,7 +207,7 @@ ActivateKey::Failure.superclass                      # => Actionable::Failure
 
 A nested failure that crosses into a typed parent becomes the parent's own
 `Failure`; its output is judged by the schema the parent declares for the code.
-A parent without typed outcomes gets a plain `Actionable::Failure`.
+A parent without typed outcomes gets a plain `Actionable::Failure` from a typed child.
 `typed_outcomes enabled: false` turns it off again for a subclass.
 
 Results compare by class, so under typed outcomes
