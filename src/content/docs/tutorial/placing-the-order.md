@@ -118,7 +118,7 @@ Here's what each part does:
 Bang verbs (`fail!`, `succeed!`, `skip!`) stop the run. Plain ones (`fail`,
 `succeed`, `skip`) record an outcome and let the next steps run, so a plain verb
 must be the last expression in its method. `succeed` in `confirm` is. See
-[Control flow](https://github.com/Paymentbox-com/actionable/blob/v1.8.2/USAGE.md#control-flow).
+[Control flow](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md#control-flow).
 :::
 
 ## Run it
@@ -234,8 +234,8 @@ A `PlaceOrder` action that:
 
 Actions can do much more: skips for "nothing to do", lifecycle hooks, nested
 actions, batches and more. The actionable
-[getting started guide](https://github.com/Paymentbox-com/actionable/blob/v1.8.2/docs/getting_started.md)
-and [USAGE reference](https://github.com/Paymentbox-com/actionable/blob/v1.8.2/USAGE.md)
+[getting started guide](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/docs/getting_started.md)
+and [USAGE reference](https://github.com/Paymentbox-com/actionable/blob/v1.9.0/USAGE.md)
 cover them.
 
 **Next:** more chapters are on the way. Until then, the

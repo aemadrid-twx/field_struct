@@ -25,7 +25,7 @@ npm run check:code   # same as: bundle exec ruby bin/check-code-blocks
 
 Docs must never go stale, so code examples are executed in CI against the
 **released** gems pinned in `Gemfile` (field_struct `v0.15.0`, actionable
-`v1.8.2`, installed from their git tags). When a gem ships a new release, bump
+`v1.9.0`, installed from their git tags). When a gem ships a new release, bump
 the tag in `Gemfile`, run `bundle lock`, and fix whatever the checker reports.
 
 Mark a block runnable by adding the word `run` to its fence:
