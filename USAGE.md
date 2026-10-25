@@ -37,7 +37,7 @@ as `nil`). "Missing" is what counts as absent for presence checks.
 | `:integer` | `Integer` | strings in base 10 (`"010"` → 10; `"0x1A"`/`"3.14"` raise), or `base:`; floats truncate (`strict: true`: refused unless whole) | `in:`, `base:`, `strict:` | nil |
 | `:float` | `Float` | `Kernel.Float` (strict; base-10 strings only — `"0x1A"` raises; NaN/±Infinity refused) | `round:`, `in:` | nil |
 | `:big_decimal` (alias `:decimal`) | `BigDecimal` | BigDecimal/Integer/Float/numeric string (NaN/±Infinity refused) | `round:`, `in:` | nil |
-| `:boolean` | `true`/`false` | `true`/`false`, `1`/`0`, truthy/falsy strings | `values:` | nil |
+| `:boolean` | `true`/`false` | `true`/`false`, `1`/`0`, and only the strings `"true"`/`"1"`/`"false"`/`"0"` (case-insensitive; `"yes"` needs `values:`, see below) | `values:` | nil |
 | `:date` | `Date` | `Date`, `DateTime`/`Time` (narrowed), String | `format:`, `in:` | nil |
 | `:time` | `Time` | `Time`, `Date`/`DateTime` (from components), String | `format:`, `in:` | nil |
 | `:datetime` | `DateTime` | `DateTime`, `Date`/`Time` (from components), String | `format:`, `in:` | nil |
@@ -45,7 +45,7 @@ as `nil`). "Missing" is what counts as absent for presence checks.
 | `:uuid` | `String` | `to_s` | `format:` (`:any_version`/`:v4`/`:v7`), `enum:`, `strict:` | nil / empty / whitespace |
 | `:url` | `String` | `to_s` | `format:` (`:http`/`:https_only`/`:any_scheme`), `enum:`, `strict:` | nil / empty / whitespace |
 | `:email` | `String` | `to_s` | `format:` (`:permissive`/`:default`/`:strict`), `enum:`, `strict:` | nil / empty / whitespace |
-| `:binary` | `String` (ASCII-8BIT) | `to_s`, forced to binary encoding | `strict:` | nil / empty (**whitespace bytes are kept**) |
+| `:binary` | `String` (ASCII-8BIT) | `to_s`, forced to binary encoding | `format:` (Regexp), `enum:`, `strict:` | nil / empty (**whitespace bytes are kept**) |
 | `:value` | `Object` (untyped) | pass-through, no coercion | — | nil |
 | `:array` | `Array` | each element coerced through `of:` (with `element:` options) | `of:` (**required**), `element:` | nil / empty |
 | `:union` | first matching member | tries each member type | `of:` (**Array, ≥2**) | nil |
@@ -186,6 +186,31 @@ Charge.new(reference: { id: 1 }, cents: 1).valid?     # => false
 Charge.new(reference: 'ord_1', cents: 12.5).valid?    # => false
 ```
 
+**`:boolean` strings.** By default a `:boolean` field takes `true`, `false`, `1`,
+`0` and exactly four strings, matched case-insensitively and not stripped:
+`"true"`, `"1"`, `"false"`, `"0"`. `"yes"`, `"on"` and `"t"` are coercion failures.
+To accept them, name a preset — `values: :english_yes_no` (alias `:english`) takes
+`true/yes/y/on/1` and `false/no/n/off/0`; `:numeric` takes only `"1"`/`"0"` — or
+pass a Hash `{truthy: [...], falsy: [...]}`. A Hash **replaces** the default strings
+rather than adding to them: with `values: {truthy: %w[si], falsy: %w[no]}`,
+`"true"` is refused. The literals `true`/`false`/`1`/`0` are always accepted.
+
+<!-- doctest -->
+```ruby
+class Prefs < FieldStruct::Base
+  optional :plain, :boolean
+  optional :yn,    :boolean, values: :english_yes_no
+  optional :es,    :boolean, values: { truthy: %w[si], falsy: %w[no] }
+end
+
+Prefs.new(plain: 'TRUE').plain   # => true
+Prefs.new(plain: 'yes').valid?   # => false
+Prefs.new(yn: 'yes').yn          # => true
+Prefs.new(es: 'SI').es           # => true
+Prefs.new(es: 'true').valid?     # => false
+Prefs.new(es: true).es           # => true
+```
+
 ### The temporal contract
 
 Three rules apply to `:date` / `:time` / `:datetime`, and they exist because the
@@ -210,15 +235,41 @@ A blank string is a coercion failure, as it already was for `:integer`, `:float`
 contract and what JSON Schema's `date-time` refers to. FieldStruct parses and
 renders it itself rather than delegating to `Time.iso8601` / `DateTime.iso8601`,
 which disagree with each other (and `Time.iso8601` reads `2026-02-30T10:30:00Z`
-as 2 March). It accepts full-width fields, a `T` separator, whole seconds,
-optional fractional seconds, and a **mandatory** offset (`Z` or `±hh:mm`); it
-refuses `2026-7-3`, `+2026-07-03`, `20261-07-03`, `20260703`, week and ordinal
+as 2 March). It accepts full-width fields, a `T` separator (or lowercase `t`), whole seconds,
+optional fractional seconds, and a **mandatory** offset: `Z` (or `z`), `±hh:mm`,
+or `±hhmm` without the colon (FieldStruct 0.9.0 wrote that form, so it still
+reads it back); it refuses `2026-7-3`, `+2026-07-03`, `20261-07-03`, `20260703`, week and ordinal
 dates, a missing offset, hour 24 and second 60. Output is `Z` for UTC and
 `+HH:MM` otherwise.
 
 ```ruby
 required :on, :date,     format: :iso8601   # 2026-07-03 exactly, and a real day
 required :at, :datetime, format: :iso8601   # 2026-07-03T10:30:00Z, offset required
+```
+
+**A `Z` under `format: :iso8601` is a fixed `+00:00` offset, not UTC.** On a
+`:time` field the result has `utc_offset == 0` but `utc? == false` (it is the same
+instant, and `==` still holds). `zone: 'UTC'` does not change that: it only fills
+in a *missing* offset, and an RFC 3339 string always has one. If you need `utc?`,
+call `.utc` on the value, or leave `format:` off — the default parser reads `Z` as
+UTC — and add `zone: 'UTC'` if zone-less strings should land in UTC too.
+
+<!-- doctest -->
+```ruby
+class Stamp < FieldStruct::Base
+  optional :rfc,   :time, format: :iso8601
+  optional :rfc_u, :time, format: :iso8601, zone: 'UTC'
+  optional :plain, :time, zone: 'UTC'
+end
+
+s = Stamp.new(rfc: '2026-07-03T10:30:00Z', rfc_u: '2026-07-03T10:30:00Z',
+              plain: '2026-07-03T10:30:00Z')
+s.rfc.utc_offset            # => 0
+s.rfc.utc?                  # => false
+s.rfc_u.utc?                # => false
+s.plain.utc?                # => true
+s.rfc == s.plain            # => true
+Stamp.new(plain: '2026-07-03 10:30').plain.utc?   # => true
 ```
 
 That strictness is the point: it is what lets you declare the field instead of
@@ -403,8 +454,10 @@ u.attribute_names   # => [:name, :age]
 u.valid?            # runs cross-field validators, then errors.empty?
 u.invalid?
 u.errors            # FieldStruct::Errors
-u.inspect           # #<User name: "Alice" age: 31>; an invalid instance appends
+u.inspect           # #<User name: "Alice", age: 31>; an invalid instance appends
                     #   `errors: {name: ["is required"]}` so it never looks fine
+u.model_name        # FieldStruct::ModelName (name/singular/plural/element); plural
+                    #   just appends "s": Address → "addresss", Person → "persons"
 u == other          # value equality (same class + same attributes; errors ignored)
 u.as_json           # JSON-ready Hash with :json mapping applied
 u.to_json           # String (via Oj)
@@ -731,6 +784,28 @@ field = User.metadata[:age]
 field.name; field.type; field.required?; field.default; field.options; field.type_instance.ruby_type
 ```
 
+`metadata.to_h` gives each field as a plain Hash of strings and primitives, for
+reading in a console. Classes and type objects in options are shortened to their
+type name, so an array of structs shows `of_type: "Nested"` — **without** the
+struct's class. A single nested field does name it, in `ruby_type`. To get the
+element class of an array, read the live option instead:
+
+<!-- doctest -->
+```ruby
+class Address < FieldStruct::Base
+  optional :city, :string
+end
+
+class Person < FieldStruct::Base
+  optional :home,  Address
+  optional :addrs, :array, of: Address
+end
+
+Person.metadata.to_h[:home][:ruby_type]            # the class name: "Address"
+Person.metadata.to_h[:addrs][:options]             # => { of_type: "Nested" }
+Person.metadata[:addrs].options[:of_type].struct_class  # => Address
+```
+
 ---
 
 ## RBS for your own classes
@@ -814,7 +889,7 @@ the README "Type signatures" section for a Rake-task wiring example.
 - **`nil` passes through coercion as `nil`** for essentially every type.
 - **Temporal coercion behaves the same with or without ActiveSupport loaded.**
   That is a deliberate invariant, not a coincidence — see `.claude/project_intent.md`
-  invariant 8. Coercion dispatches on explicit stdlib classes rather than on
+  invariant 7. Coercion dispatches on explicit stdlib classes rather than on
   `respond_to?(:to_date)` and friends, which ActiveSupport defines on every String.
 - `:array` requires `of:`; `:union` requires `of: [...]` with ≥2 members. Options for
   each array element go in `element: { ... }`, not on the field.

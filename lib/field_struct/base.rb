@@ -269,9 +269,9 @@ module FieldStruct
       end
 
       # Resolve a type name through the registry chain visible to this
-      # class. Walks the containing modules of the class's name in
-      # outermost-first order, looking for the nearest one that responds
-      # to +field_types+. Falls back to {FieldStruct.types}.
+      # class. Walks the containing modules of the class's name from the
+      # innermost outward and uses the first one that responds to
+      # +field_types+. Falls back to {FieldStruct.types}.
       #
       # @param type_name [Symbol]
       # @return [Class] a Types::Base subclass
@@ -577,7 +577,7 @@ module FieldStruct
       UNIVERSAL_FIELD_OPTIONS = %i[required default coercion_policy description desc rbs_type sensitive].freeze
       private_constant :UNIVERSAL_FIELD_OPTIONS
 
-      # Three-way option check (design invariant 7): validate native, pass
+      # Three-way option check (design invariant 8): validate native, pass
       # through foreign. For each declared option:
       #
       # 1. **Native to this type** (in its +option_schema+) → validate the
@@ -984,7 +984,7 @@ module FieldStruct
     # +#<ClassName field: value, ...>+. An *invalid* instance additionally
     # surfaces its errors — +#<ClassName name: "" errors: {name: ["is
     # required"]}>+ — so the most-read debug output never hides invalidity
-    # (design invariant 7). This reads the current {#errors}; it does not
+    # (design invariant 8). This reads the current {#errors}; it does not
     # re-run validation, so printing an instance never mutates it.
     #
     # A +sensitive: true+ field renders {FieldStruct::FILTERED} in place of

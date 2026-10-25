@@ -507,7 +507,8 @@ u.to_h             # alias of #attributes
 u.as_json          # JSON-ready hash (Date/Time -> ISO-8601, BigDecimal -> string)
 u.to_json          # via Oj
 u.inspect          # #<User name: "Alice">  (appends `errors: {…}` when invalid)
-u.model_name       # FieldStruct::ModelName  (name / singular / plural / element)
+u.model_name       # FieldStruct::ModelName  (name / singular / plural / element);
+                   #   plural only appends "s" (Address → "addresss")
 u.to_model         # self
 u == other         # structural equality (class + attributes)
 ```
