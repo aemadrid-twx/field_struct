@@ -1,0 +1,135 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Runs every runnable Ruby code block on the site against the released gems
+# pinned in the Gemfile, so the docs can't silently go stale.
+#
+# A block is runnable when its fence is ```ruby with the word `run` in its meta:
+#
+#   ```ruby run
+#   ```ruby title="book.rb" run
+#
+# Rules (adapted from field_struct's spec/docs_examples_spec.rb doctest harness):
+# - All runnable blocks of ONE page run in order in one fresh Ruby process,
+#   sharing state (classes, constants, local variables), so tutorials can build
+#   up step by step. Pages are isolated from each other.
+# - `field_struct` and `actionable` are already required.
+# - A line `expr # => expected` asserts: both sides are evaluated and compared
+#   with `==`. If `expected` isn't valid Ruby (e.g. `#<Book ...>` inspect output)
+#   the line still runs, it just isn't asserted.
+# - Any exception fails the check.
+#
+# Usage: bundle exec ruby bin/check-code-blocks [FILE...]
+#   (default: every .md/.mdx file under src/content/docs)
+
+require 'open3'
+require 'rbconfig'
+
+module CodeBlocks
+  Block = Struct.new(:path, :first_line, :source)
+
+  FENCE_OPEN = /\A\s*```ruby(?<meta>[ \t].*)?\s*\z/
+  RUN_WORD = /(?:\A|\s)run(?:\s|\z)/
+
+  module_function
+
+  # Runnable blocks of one page, in document order.
+  def blocks(path)
+    lines = File.readlines(path)
+    found = []
+    index = 0
+    while index < lines.length
+      match = lines[index].match(FENCE_OPEN)
+      unless match && match[:meta].to_s.match?(RUN_WORD)
+        index += 1
+        next
+      end
+
+      close = index + 1
+      close += 1 until close >= lines.length || lines[close].strip == '```'
+      found << Block.new(path, index + 2, lines[(index + 1)...close].join)
+      index = close + 1
+    end
+    found
+  end
+
+  # Can the documented expected value be evaluated as Ruby?
+  def assertable?(expected)
+    return false if expected.start_with?('#<') # inspect form, not eval-able
+
+    RubyVM::InstructionSequence.compile("(#{expected}\n)")
+    true
+  rescue SyntaxError, StandardError
+    false
+  end
+
+  # Rewrite `expr # => expected` lines into assertions; keep line numbers stable.
+  def to_runnable(block)
+    block.source.each_line.with_index.map do |line, offset|
+      match = line.match(/\A(\s*)(\S.*?)\s*#\s*=>\s*(.+?)\s*\R?\z/)
+      next line unless match && assertable?(match[3])
+
+      label = "#{block.path}:#{block.first_line + offset}"
+      %(#{match[1]}__doc_eq((#{match[2]}), (#{match[3]}), #{label.inspect}, #{match[2].inspect}, #{match[3].inspect})\n)
+    end.join
+  end
+
+  # Child mode: run one page's blocks in sequence in this process.
+  def run_page(path)
+    require 'field_struct'
+    require 'actionable'
+    Object.define_method(:__doc_eq) do |actual, expected, label, expr, expected_src|
+      next if actual == expected
+
+      raise DocMismatch, "#{label}\n    #{expr}\n    documented: # => #{expected_src}  (#{expected.inspect})\n" \
+                         "    actual:                #{actual.inspect}"
+    end
+    Object.send(:private, :__doc_eq)
+
+    blocks(path).each do |block|
+      eval(to_runnable(block), TOPLEVEL_BINDING, block.path, block.first_line) # rubocop:disable Security/Eval
+    end
+  rescue DocMismatch => e
+    warn "FAIL #{e.message}"
+    exit 1
+  rescue Exception => e # rubocop:disable Lint/RescueException
+    where = e.backtrace&.find { |frame| frame.start_with?(path) } || e.backtrace&.first
+    warn "FAIL #{where}\n    #{e.class}: #{e.message}"
+    exit 1
+  end
+
+  class DocMismatch < StandardError; end
+end
+
+if ARGV.first == '--page'
+  CodeBlocks.run_page(ARGV[1])
+  exit 0
+end
+
+root = File.expand_path('..', __dir__)
+files = ARGV.empty? ? Dir.glob(File.join('src/content/docs', '**', '*.{md,mdx}'), base: root).sort : ARGV
+Dir.chdir(root)
+
+total = 0
+failures = 0
+files.each do |file|
+  count = CodeBlocks.blocks(file).size
+  next if count.zero?
+
+  total += count
+  _out, err, status = Open3.capture3(RbConfig.ruby, __FILE__, '--page', file)
+  if status.success?
+    puts "ok   #{file} (#{count} block#{"s" unless count == 1})"
+  else
+    failures += 1
+    puts err
+  end
+end
+
+if total.zero?
+  warn 'No runnable ```ruby run blocks found; the checker would be checking nothing.'
+  exit 1
+end
+
+puts "\n#{total} runnable blocks, #{failures} failing page(s)"
+exit(failures.zero? ? 0 : 1)

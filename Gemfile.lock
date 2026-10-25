@@ -1,0 +1,51 @@
+GIT
+  remote: https://github.com/Paymentbox-com/actionable
+  revision: 2bbae7a0046ab37914ce4fbbccb32641cadd95a0
+  tag: v1.8.2
+  specs:
+    actionable (1.8.2)
+      field_struct (>= 0.12)
+      oj (>= 3.0)
+
+GIT
+  remote: https://github.com/Paymentbox-com/field_struct
+  revision: 6c129b2be43789cb7222617682cc2f33546fe420
+  tag: v0.15.0
+  specs:
+    field_struct (0.15.0)
+      bigdecimal (>= 3.0)
+      oj (>= 3.11.2)
+      tzinfo (~> 2.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    bigdecimal (4.1.3)
+    concurrent-ruby (1.3.8)
+    oj (3.17.7)
+      bigdecimal (>= 3.0)
+      ostruct (>= 0.2)
+    ostruct (0.6.3)
+    tzinfo (2.0.6)
+      concurrent-ruby (~> 1.0)
+
+PLATFORMS
+  arm64-darwin-23
+  ruby
+  x86_64-linux
+
+DEPENDENCIES
+  actionable!
+  field_struct!
+
+CHECKSUMS
+  actionable (1.8.2)
+  bigdecimal (4.1.3) sha256=61ebe1e5e559bdc3cc6f2c0ee7f427321fc838f59611c294356eb04d6e21cf66
+  concurrent-ruby (1.3.8) sha256=b2f1be836e968ccc78ccfce277ea79c72a88633f22306782c16ff23fb415d1e1
+  field_struct (0.15.0)
+  oj (3.17.7) sha256=7a21d3ac8e544a850f1cdaf711b0c8144ba587d14d3e4917c0855fd7b0483db7
+  ostruct (0.6.3) sha256=95a2ed4a4bd1d190784e666b47b2d3f078e4a9efda2fccf18f84ddc6538ed912
+  tzinfo (2.0.6) sha256=8daf828cc77bcf7d63b0e3bdb6caa47e2272dcfaf4fbfe46f8c3a9df087a829b
+
+BUNDLED WITH
+  4.0.20

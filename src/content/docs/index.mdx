@@ -1,0 +1,73 @@
+---
+title: FieldStruct & Actionable
+description: Two small Ruby gems — typed POROs and typed service objects.
+template: splash
+hero:
+  tagline: Two small Ruby gems. FieldStruct gives you typed plain-Ruby objects; Actionable builds typed service objects on top of it.
+  actions:
+    - text: Start the tutorial
+      link: tutorial/bookstore-checkout/
+      icon: right-arrow
+    - text: field_struct on GitHub
+      link: https://github.com/Paymentbox-com/field_struct
+      icon: external
+      variant: minimal
+    - text: actionable on GitHub
+      link: https://github.com/Paymentbox-com/actionable
+      icon: external
+      variant: minimal
+---
+
+## FieldStruct: typed POROs
+
+Declare fields with types; values are coerced on assignment and the object
+knows whether it's valid. No database, no Rails required.
+
+```ruby title="FieldStruct" run
+class User < FieldStruct::Base
+  required :name, :string
+  optional :age,  :integer
+end
+
+u = User.new(name: 'Alice', age: '30')
+u.age         # => 30
+u.valid?      # => true
+u.attributes  # => { name: "Alice", age: 30 }
+
+u.name = ''
+u.errors.full_messages # => ["Name is required"]
+```
+
+## Actionable: service objects
+
+Subclass `Actionable::Action`, list the steps, implement each as a method.
+A run returns one result: a success, a failure, or a skip.
+
+```ruby title="Actionable" run
+class Charge < Actionable::Action
+  input { required :amount, :integer }
+
+  step :validate
+  step :charge
+
+  def validate
+    fail!(:invalid_amount, 'must be positive') unless input.amount.positive?
+  end
+
+  def charge = succeed("charged #{input.amount}")
+end
+
+Charge.run(amount: 10).message  # => "charged 10"
+Charge.run(amount: -5).code     # => :invalid_amount
+```
+
+## Install
+
+Neither gem is on RubyGems yet. Install both from GitHub, pinned to a release tag:
+
+```ruby title="Gemfile"
+gem 'field_struct', git: 'https://github.com/Paymentbox-com/field_struct', tag: 'v0.15.0'
+gem 'actionable',   git: 'https://github.com/Paymentbox-com/actionable',   tag: 'v1.8.2'
+```
+
+Every runnable example on this site is executed in CI against exactly these releases.
