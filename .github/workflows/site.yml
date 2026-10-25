@@ -17,19 +17,28 @@ concurrency:
 jobs:
   build:
     name: Build and check code blocks
-    runs-on: ubuntu-latest
+    # Ruling R27: CI runs on our p01 runners. Only this job; deploy stays
+    # GitHub-hosted (it needs the Pages OIDC token, and p01 holds no secrets).
+    runs-on: [self-hosted, afs-ci]
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v7
+      # p01 has no hostedtoolcache and gha-ci no sudo, so setup-ruby can not
+      # run there; mise installs Node and Ruby into the runner's persistent
+      # ~/.local/share/mise. Pinned like the gem CI and quantum-enclave's.
+      - name: Set up Node and Ruby (mise)
+        uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5.2.0
         with:
-          node-version: 24
-          cache: npm
+          version: 2026.10.3
+          sha256: 8d48bc510b7d844fad0bc7156c0855c2a1e7230c51e498a7f6b63b021f8b57c5
+          cache: false
+          mise_toml: |
+            [tools]
+            node = "24"
+            ruby = "3.4"
 
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.4'
-          bundler-cache: true
+      - name: Install gems
+        run: bundle install --jobs 4
 
       - run: npm ci
 
