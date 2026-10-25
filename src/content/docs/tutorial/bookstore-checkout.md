@@ -27,7 +27,7 @@ You need Ruby 3.2 or newer and both gems in your `Gemfile`:
 
 ```ruby title="Gemfile"
 gem 'field_struct', git: 'https://github.com/Paymentbox-com/field_struct', tag: 'v0.15.0'
-gem 'actionable',   git: 'https://github.com/Paymentbox-com/actionable',   tag: 'v1.8.2'
+gem 'actionable-rb', git: 'https://github.com/Paymentbox-com/actionable', tag: 'v1.9.0'
 ```
 
 Run `bundle install`, then follow along in `bundle exec irb` with

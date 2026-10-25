@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/Paymentbox-com/actionable
-  revision: 2bbae7a0046ab37914ce4fbbccb32641cadd95a0
-  tag: v1.8.2
+  revision: e528641bec71926de6363fa32efd8cffb04f10fe
+  tag: v1.9.0
   specs:
-    actionable (1.8.2)
+    actionable-rb (1.9.0)
       field_struct (>= 0.12)
       oj (>= 3.0)
 
@@ -35,11 +35,11 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  actionable!
+  actionable-rb!
   field_struct!
 
 CHECKSUMS
-  actionable (1.8.2)
+  actionable-rb (1.9.0)
   bigdecimal (4.1.3) sha256=61ebe1e5e559bdc3cc6f2c0ee7f427321fc838f59611c294356eb04d6e21cf66
   concurrent-ruby (1.3.8) sha256=b2f1be836e968ccc78ccfce277ea79c72a88633f22306782c16ff23fb415d1e1
   field_struct (0.15.0)
