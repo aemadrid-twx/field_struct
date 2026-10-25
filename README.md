@@ -50,7 +50,9 @@ How the checker (`bin/check-code-blocks`) runs them:
 - All runnable blocks of one page run **in order, in one fresh Ruby process**,
   sharing classes, constants and local variables, so a tutorial can build up step
   by step. Pages don't see each other.
-- `field_struct` and `actionable` are already required.
+- `field_struct` and `actionable` are already required. A page that needs more
+  `require`s it in a block (the how-to guides use `activerecord` + `sqlite3`,
+  `activejob` and `rspec`, which the `Gemfile` adds for that).
 - A line `expr # => expected` is an assertion: both sides are evaluated as Ruby
   and compared with `==` (so `{ a: 1 }` and `{a: 1}` both match). Keep the
   expression on one line. If `expected` isn't valid Ruby, such as `#<Book ...>`
