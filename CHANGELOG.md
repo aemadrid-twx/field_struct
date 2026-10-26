@@ -18,8 +18,8 @@ adheres to [Semantic Versioning](https://semver.org/).
   runtime dependency; the spec checks generated schemas against `to_json`
   output with `json_schemer` (dev only).
 - `FieldStruct::JSONSchema.pattern_for(regexp)`: a Ruby Regexp as an ECMA-262
-  pattern that matches the same strings with or without the `u` flag (`.`,
-  `\s`, `^` / `$` and `/i` keep Ruby's meaning), or `nil` when there's no exact
+  pattern that matches the same strings under the `u` flag (`.`, `\s`, `^` /
+  `$` and `/i` keep Ruby's meaning), or `nil` when there's no exact
   translation. Every built-in UUID, URL and Email format translates.
 
 ### Changed

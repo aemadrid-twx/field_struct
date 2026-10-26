@@ -949,12 +949,16 @@ schema['$defs'].values.first['properties']['born']  # => {"type" => ["string", "
 - **Constraints:** `enum:` → `enum`; `in:` Range → `minimum` / `maximum` /
   `exclusiveMaximum` (an infinite end stays open), `in:` Array → `enum`; a
   Regexp `format:` → `pattern`. `FieldStruct::JSONSchema.pattern_for(regexp)`
-  translates it to an ECMA-262 pattern that matches the same strings, with or
-  without the `u` flag: `\A` / `\z` → `^` / `$`, `.` and `\s` keep Ruby's
-  meaning, `/i` is spelled out (`ok` → `[oO][kK]`). A Regexp with no exact
-  translation (possessive quantifiers, atomic groups, `\p{…}`, POSIX brackets,
-  `/x`) becomes `x-ruby-pattern` with the Ruby source: an annotation, not
-  checked by validators, and more Regexps may translate in later versions.
+  translates it to an ECMA-262 pattern that matches the same strings under the
+  `u` flag (what Ajv and JSON Schema 2020-12 use): `\A` / `\z` → `^` / `$`,
+  `.`, `\s`, `^` and `$` keep Ruby's meaning, and `/i` is spelled out with
+  Ruby's extra folds (`ok` → `[oO][kKK]`, the last being the Kelvin sign).
+  A Regexp with no exact translation becomes `x-ruby-pattern` with the Ruby
+  source: an annotation, not checked by validators. That includes
+  possessive quantifiers, atomic groups, backreferences, `\p{…}`, POSIX
+  brackets, `/x`, and under `/i` non-ASCII letters and letter pairs Ruby
+  matches as one character (`/fi/i` matches `ﬁ`, so `/\Afile\z/i` doesn't
+  translate). More Regexps may translate in later versions.
   `in:` on dates, times and decimals has no keyword and is left out.
 - **Nested structs** go in `$defs` under their class name and are referenced with
   `$ref`; the root itself is `#`, so recursive structs work. An anonymous nested
