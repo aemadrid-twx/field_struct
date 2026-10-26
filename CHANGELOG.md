@@ -6,6 +6,22 @@ adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `FieldStruct::JSONSchema.generate(klass)` and `Klass.to_json_schema`: a JSON
+  Schema (draft 2020-12) of the JSON a class writes with `to_json`. Covers every
+  built-in type, `serialize :json` names, `enum:` / `in:` / Regexp `format:`
+  (translated to ECMA-262, else kept as `x-ruby-pattern`), nested structs in
+  `$defs` (recursion via `$ref: "#"`), arrays, unions, `description:`, literal
+  defaults, `sensitive:` and `unknown_attributes :raise`. Overrides: a field's
+  `json_schema:` option and a custom type's new `Types::Base#json_schema`. No
+  runtime dependency; the spec checks generated schemas against `to_json`
+  output with `json_schemer` (dev only).
+- `FieldStruct::JSONSchema.pattern_for(regexp)`: a Ruby Regexp as an ECMA-262
+  pattern that matches the same strings under the `u` flag (`.`, `\s`, `^` /
+  `$` and `/i` keep Ruby's meaning), or `nil` when there's no exact
+  translation. Every built-in UUID, URL and Email format translates.
+
 ### Changed
 
 - `describe` shows each field's `desc:` after its type (`name (String, required) — "Full legal name" — accepts …`), and a nested struct field names its class (`home (Address, optional)`, was `home (Nested, optional)`), so a reader knows which class to `describe` next. An anonymous nested struct still shows `Nested`. <!-- upgrading: none -->
