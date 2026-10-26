@@ -12,6 +12,8 @@ adheres to [Semantic Versioning](https://semver.org/).
 
 ### Documentation
 
+- The README shows the field_struct logo ("Rows & Steps": three field rows on an
+  ultramarine tile), from `docs/assets/field-struct-mark.svg`.
 - USAGE spells out the `:boolean` strings: by default only `"true"`, `"1"`,
   `"false"`, `"0"` (case-insensitive); `"yes"` needs `values: :english_yes_no`,
   and a `values:` Hash replaces the defaults rather than adding to them. Doctested.
