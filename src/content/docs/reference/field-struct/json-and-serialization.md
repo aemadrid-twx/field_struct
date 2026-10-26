@@ -168,4 +168,4 @@ ExportV2.new(first_name: 'Al').to_json # => '{"given_name":"Al"}'
 Export.new(first_name: 'Al').to_json   # => '{"firstName":"Al"}'
 ```
 
-Upstream: [USAGE, JSON & serialization](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#json--serialization).
+Upstream: [USAGE, JSON & serialization](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#json--serialization).

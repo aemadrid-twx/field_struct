@@ -71,4 +71,4 @@ rescue ArgumentError => e
 end
 ```
 
-Upstream: [USAGE, Guardrails](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#guardrails-definitionerror).
+Upstream: [USAGE, Guardrails](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#guardrails-definitionerror).

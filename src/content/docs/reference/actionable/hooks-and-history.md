@@ -130,4 +130,4 @@ Sampled.measure_rate                   # => 1.0
 Sampled.run.history.steps.map(&:name)  # => [:work]
 ```
 
-Upstream: [USAGE, Lifecycle hooks](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#lifecycle-hooks) and [History & measurement](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#history--measurement).
+Upstream: [USAGE, Lifecycle hooks](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#lifecycle-hooks) and [History & measurement](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#history--measurement).

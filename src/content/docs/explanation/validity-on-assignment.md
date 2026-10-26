@@ -14,7 +14,7 @@ field is assigned, that field is checked, and the result is kept in `errors`.
 Each setter runs the same pipeline: coerce the value, store it, check presence,
 check `format:` / `enum:` / `in:`, and rewrite that field's entry in `errors`
 (decision D5 in the
-[design record](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/docs/origin/plan.md)).
+[design record](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/docs/origin/plan.md)).
 The setter *owns* its field's errors: it clears them and writes them again on
 every assignment, whatever was there before.
 
@@ -46,7 +46,7 @@ The design records give two reasons.
 
 - **Coercion must hold after construction, not only during it.** The very
   first design notes say so: "Setters must coerce after initialization, not
-  only at construction time" ([first discussion](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/docs/origin/first_discussion.md)).
+  only at construction time" ([first discussion](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/docs/origin/first_discussion.md)).
 - **There's nothing left to compute later.** D5: "`valid?` is a cheap read of
   `errors.empty?`, no recomputation. Lazy/eager distinction doesn't apply
   because validation is already a side effect of mutation."
@@ -65,7 +65,7 @@ class."
 Because validation happens as data arrives, bad data doesn't stop `new`. You
 get an object back, and it tells you what's wrong. The design record keeps the
 two apart on purpose: the
-[USAGE mental model](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md)
+[USAGE mental model](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md)
 says "Construction and validity are *separate*: you can build an invalid
 instance; ask `valid?`."
 
@@ -93,7 +93,7 @@ User.new(name: '', age: 30).inspect       # => '#<User name: "", age: 30 errors:
 This is one of field_struct's design invariants: "The public surface explains
 itself without source. Errors render as full sentences; `inspect` shows state
 *and* validity"
-([project intent](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/.claude/project_intent.md)).
+([project intent](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/.claude/project_intent.md)).
 It serves the gem's stated primary goal, legibility for both human and AI
 readers. `inspect` only reads `errors`; printing an object never re-runs
 validation or changes it.
@@ -133,4 +133,4 @@ the only way to change it is through a setter.
 
 - [Coercion vs. validation](../coercion-and-validation/): what the pipeline's
   two halves each check.
-- [USAGE: Validity is computed on assignment](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#validity-is-computed-on-assignment-shallow-valid-staleness)
+- [USAGE: Validity is computed on assignment](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#validity-is-computed-on-assignment-shallow-valid-staleness)

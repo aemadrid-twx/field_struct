@@ -65,4 +65,4 @@ Rescue `FieldStruct::Error` to catch FieldStruct's own runtime errors in one
 clause. Declaration errors are plain `ArgumentError` / `KeyError`, raised when
 the class body runs.
 
-Upstream: [USAGE, Log safety](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#log-safety-error-messages-and-sensitive-fields).
+Upstream: [USAGE, Log safety](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#log-safety-error-messages-and-sensitive-fields).

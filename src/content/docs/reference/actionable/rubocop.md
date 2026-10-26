@@ -98,4 +98,4 @@ When the first-run check is switched off with
 `Actionable.verb_position_check = false`, this cop is the only guard, so keep it
 in CI.
 
-Upstream: [USAGE, Control flow](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#where-a-plain-verb-may-go).
+Upstream: [USAGE, Control flow](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#where-a-plain-verb-may-go).

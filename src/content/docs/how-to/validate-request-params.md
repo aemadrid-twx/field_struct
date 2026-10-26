@@ -137,5 +137,5 @@ Signup.run(params).errors.to_h  # => { email: ["is required"], age: ["is require
 
 ## See also
 
-- field_struct USAGE: [Payment and API boundaries](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#payment-and-api-boundaries-unknown_attributes-raise), [Validation semantics](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#validation-semantics-important)
-- actionable USAGE: [Input](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#input), [Serializing a result](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#serializing-a-result)
+- field_struct USAGE: [Payment and API boundaries](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#payment-and-api-boundaries-unknown_attributes-raise), [Validation semantics](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#validation-semantics-important)
+- actionable USAGE: [Input](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#input), [Serializing a result](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#serializing-a-result)

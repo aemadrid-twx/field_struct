@@ -11,7 +11,7 @@ export default defineConfig({
       title: 'FieldStruct & Actionable',
       description: 'Typed POROs and typed service objects for Ruby.',
       social: [
-        { icon: 'github', label: 'field_struct on GitHub', href: 'https://github.com/Paymentbox-com/field_struct' },
+        { icon: 'github', label: 'field_struct on GitHub', href: 'https://github.com/aemadrid-twx/field_struct' },
       ],
       sidebar: [
         { label: 'Tutorial', items: [{ autogenerate: { directory: 'tutorial' } }] },

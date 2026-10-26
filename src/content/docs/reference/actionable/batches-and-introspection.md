@@ -127,4 +127,4 @@ Actionable.registry.keys.include?('Probe')             # => true
 `Actionable.registry` answers `[]` (a name, or anything whose `to_s` is the
 name), `each`, `keys`, `values`, `size` and `empty?`.
 
-Upstream: [USAGE, Batch runs](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#batch-runs), [Registry](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#registry), [Introspection](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#introspection--actiondescribe).
+Upstream: [USAGE, Batch runs](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#batch-runs), [Registry](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#registry), [Introspection](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#introspection--actiondescribe).

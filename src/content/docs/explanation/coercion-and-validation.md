@@ -127,5 +127,5 @@ input value**." It applies to `errors` entries, raised errors and their
 ## Related
 
 - [Validity is computed on assignment](../validity-on-assignment/)
-- [USAGE: Coercion failure policy](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#coercion-failure-policy)
-  and [Strict coercion](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#strict-coercion-strict-true)
+- [USAGE: Coercion failure policy](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#coercion-failure-policy)
+  and [Strict coercion](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#strict-coercion-strict-true)

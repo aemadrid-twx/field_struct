@@ -22,9 +22,9 @@ piece at a time. Each chapter builds on the one before it:
 6. [Into an app](../into-an-app/): call the checkout from a controller, run it
    in a background job with retries, and test it with RSpec.
 
-Chapters 1 and 2 use [FieldStruct](https://github.com/Paymentbox-com/field_struct),
+Chapters 1 and 2 use [FieldStruct](https://github.com/aemadrid-twx/field_struct),
 which gives you typed plain-Ruby objects. Chapters 3 to 6 add
-[Actionable](https://github.com/Paymentbox-com/actionable), which builds
+[Actionable](https://github.com/aemadrid-twx/actionable), which builds
 service objects on top of FieldStruct.
 
 ## Before you start
@@ -32,8 +32,8 @@ service objects on top of FieldStruct.
 You need Ruby 3.3 or newer and both gems in your `Gemfile`:
 
 ```ruby title="Gemfile"
-gem 'field_struct', git: 'https://github.com/Paymentbox-com/field_struct', tag: 'v0.16.0'
-gem 'actionable-rb', git: 'https://github.com/Paymentbox-com/actionable', tag: 'v1.10.0'
+gem 'field_struct', git: 'https://github.com/aemadrid-twx/field_struct', tag: 'v0.16.0'
+gem 'actionable-rb', git: 'https://github.com/aemadrid-twx/actionable', tag: 'v1.10.0'
 ```
 
 [Chapter 6](../into-an-app/) also uses `activejob` and `rspec`; it says when to

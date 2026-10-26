@@ -13,7 +13,7 @@ mostly about the third, and about how a step stops the run.
 
 Sometimes an action has nothing to do: the record it would update doesn't
 exist yet, or the work was already done. Decision D17 in the
-[design record](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/docs/origin/plan.md)
+[design record](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/docs/origin/plan.md)
 puts it like this: a skip "is *not* a failure (no error, no retry/alert) and
 *not* a success (no real work), so conflating it with either loses information
 for observability, retries, and composition."
@@ -114,7 +114,7 @@ error.message   # => "a real bug"
 This was one of the reasons for rebuilding the gem. The original
 "short-circuited via exceptions caught by a bare `rescue Exception` in the
 runner, which also swallowed genuine errors and resisted typing"
-([first discussion](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/docs/origin/first_discussion.md)).
+([first discussion](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/docs/origin/first_discussion.md)).
 It's now design invariant 2: "Control flow is `throw`/`catch`, never
 exceptions."
 
@@ -125,4 +125,4 @@ crash is an exception, and stays one.
 
 - [Declared failures and result codes](../declared-outcomes/): listing every
   code an action can end with.
-- [USAGE: Control flow](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#control-flow)
+- [USAGE: Control flow](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#control-flow)

@@ -8,7 +8,7 @@ sidebar:
 
 You can model an order. Now you need to *place* it: check that the books are in
 stock, set the copies aside and confirm. In this chapter you'll write that as an
-[Actionable](https://github.com/Paymentbox-com/actionable) action.
+[Actionable](https://github.com/aemadrid-twx/actionable) action.
 
 An action is a service object. You subclass `Actionable::Action`, list its
 steps, write each step as a method, and call `.run`. Every run returns one
@@ -118,7 +118,7 @@ Here's what each part does:
 Bang verbs (`fail!`, `succeed!`, `skip!`) stop the run. Plain ones (`fail`,
 `succeed`, `skip`) record an outcome and let the next steps run, so a plain verb
 must be the last expression in its method. `succeed` in `confirm` is. See
-[Control flow](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#control-flow).
+[Control flow](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#control-flow).
 :::
 
 ## Run it
@@ -234,8 +234,8 @@ A `PlaceOrder` action that:
 
 Actions can do much more: skips for "nothing to do", lifecycle hooks, nested
 actions, batches and more. The actionable
-[getting started guide](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/docs/getting_started.md)
-and [USAGE reference](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md)
+[getting started guide](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/docs/getting_started.md)
+and [USAGE reference](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md)
 cover them.
 
 **Next:** [When things go wrong](../when-things-go-wrong/), where you handle

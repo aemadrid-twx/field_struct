@@ -213,4 +213,4 @@ A parent without typed outcomes gets a plain `Actionable::Failure` from a typed 
 Results compare by class, so under typed outcomes
 `ActivateKey.run(id: 2) == Actionable::Success.new(...)` is false.
 
-Upstream: [USAGE, Declared failures](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#declared-failures), [Declared skips](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#declared-skips), [Typed outcomes](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#typed-outcomes).
+Upstream: [USAGE, Declared failures](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#declared-failures), [Declared skips](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#declared-skips), [Typed outcomes](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#typed-outcomes).
