@@ -566,6 +566,26 @@ namespace :field_struct do
 end
 ```
 
+## JSON Schema
+
+`FieldStruct::JSONSchema.generate(User)`, or `User.to_json_schema`, returns a JSON Schema (draft 2020-12) of the JSON the class writes with `to_json` and reads with `from_json`. Use it for API docs, validators in other languages, LLM tool parameters (RubyLLM accepts any object that responds to `to_json_schema`) or TypeScript types. It has no dependency.
+
+```ruby
+class User < FieldStruct::Base
+  required :first_name, :string
+  optional :age,        :integer, in: 0..150
+  serialize :json, first_name: 'firstName'
+end
+
+User.to_json_schema
+# => {"$schema"=>"https://json-schema.org/draft/2020-12/schema", "title"=>"User", "type"=>"object",
+#     "properties"=>{"firstName"=>{"type"=>"string"},
+#                    "age"=>{"type"=>["integer", "null"], "minimum"=>0, "maximum"=>150}},
+#     "required"=>["firstName"]}
+```
+
+Property names follow `serialize :json`. Nested structs go in `$defs`. `enum:`, `in:` and Regexp `format:` become `enum`, `minimum`/`maximum` and an ECMA-262 `pattern`. Override a field with `json_schema: {...}`, or a custom type with `def json_schema`. Details are in [USAGE.md](USAGE.md#json-schema-for-your-own-classes).
+
 ## Scaffolding a class from JSON
 
 `FieldStruct::Scaffold.from_json` turns a JSON example (or several) into starter FieldStruct source — handy when modeling an existing API or webhook. It's a **working prototype you refine**: it nails the structure and the obvious types and flags the rest with comments, leaving enums, descriptions, and final scalar types to you.

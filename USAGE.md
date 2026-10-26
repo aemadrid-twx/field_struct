@@ -874,6 +874,71 @@ FieldStruct::RBS.type_for(Order.metadata[:id], nullable: true)     # => "::Strin
 Generate RBS for nested/element classes too so `::LineItem` references resolve. See
 the README "Type signatures" section for a Rake-task wiring example.
 
+## JSON Schema for your own classes
+
+`FieldStruct::JSONSchema.generate(klass)` (or `Klass.to_json_schema`) returns a
+JSON Schema (draft 2020-12) of the JSON the class writes with `to_json` and reads
+back with `from_json`: for API docs, other-language validators, LLM tool
+parameters (RubyLLM takes any object responding to `to_json_schema`), TypeScript
+types. It returns a Hash with String keys; `Oj.dump` it. No dependency.
+
+<!-- doctest -->
+```ruby
+class Pet < FieldStruct::Base
+  required :name, :string, description: 'Call name'
+  optional :born, :date
+end
+
+class Owner < FieldStruct::Base
+  required :first_name, :string
+  optional :plan, :string, enum: %w[free pro], default: 'free'
+  optional :age,  :integer, in: 0..150
+  optional :pets, :array, of: Pet
+  serialize :json, first_name: 'firstName'
+end
+
+schema = Owner.to_json_schema
+schema['type']                    # => "object"
+schema['required']                # => ["firstName"]
+schema['properties']['firstName'] # => {"type" => "string"}
+schema['properties']['age']       # => {"type" => ["integer", "null"], "minimum" => 0, "maximum" => 150}
+schema['properties']['plan']      # => {"default" => "free", "type" => ["string", "null"], "enum" => ["free", "pro", nil]}
+schema['properties']['pets']['items'].keys          # => ["$ref"]
+schema['$defs'].values.first['properties']['born']  # => {"type" => ["string", "null"], "format" => "date"}
+```
+
+- **It describes the canonical JSON, not every input the setters coerce.**
+  `age: "30"` is a fine assignment but not valid against `"type": "integer"`.
+  BigDecimal is a decimal string (`"pattern": "^-?[0-9]+\\.[0-9]+$"`, as `to_json`
+  writes it); dates are `"format": "date"`, times and datetimes `"date-time"`
+  (only for the default or `:iso8601` format: a `:db`, `:rfc2822` or strftime
+  format is a plain string); `:uuid` / `:url` / `:email` carry `uuid` / `uri` /
+  `email`; `:value` is `{}` (anything).
+- **Property names** are the `serialize :json` names; `generate(klass,
+  serialization: :xml)` uses another format's.
+- **`required`** lists required fields without a `default:` (a default fills a
+  missing key). Optional fields also accept `null`, and so do an array's scalar
+  elements (`["x", null]` is valid); nested elements don't.
+- **Constraints:** `enum:` → `enum`; `in:` Range → `minimum` / `maximum` /
+  `exclusiveMaximum`, `in:` Array → `enum`; a Regexp `format:` → `pattern`,
+  translated to ECMA-262 (`\A` / `\z` → `^` / `$`). A Regexp JSON Schema can't
+  express (flags like `/i`, possessive quantifiers, atomic groups, `\h`, POSIX
+  brackets) becomes `x-ruby-pattern` with the Ruby source, so nothing is silently
+  dropped. `in:` on dates, times and decimals has no keyword and is left out.
+- **Nested structs** go in `$defs` under their class name and are referenced with
+  `$ref`; the root itself is `#`, so recursive structs work. An anonymous nested
+  struct is inlined.
+- **Annotations:** `description:` → `description`; a literal JSON `default:` →
+  `default` (a callable default is left out); `sensitive: true` → `x-sensitive`
+  (`to_json` still writes the value). `unknown_attributes :raise` →
+  `"additionalProperties": false`.
+- **Overrides:** a field's `json_schema: {...}` option beats the type's
+  `json_schema` method (define it on a custom type: `def json_schema = {'type' =>
+  'string'}`), which beats the derived schema. A custom type with neither is
+  unconstrained and named: `{"x-ruby-type" => "Money"}`.
+
+---
+
 ---
 
 ## Gotchas / invariants

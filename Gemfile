@@ -22,3 +22,8 @@ gem 'sord', '~> 7.0', require: false
 # Pulled in transitively by sord, but we depend on it directly through
 # the docs:* and release:check rake tasks.
 gem 'yard', '~> 0.9', require: false
+
+# The FieldStruct::JSONSchema spec validates to_json output against generated
+# schemas with an independent validator. Dev only: the generator itself has no
+# dependency.
+gem 'json_schemer', '~> 2.5', require: false

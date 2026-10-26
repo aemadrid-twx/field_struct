@@ -415,6 +415,14 @@ module FieldStruct
     # source. See {Metadata#describe} for the field-line format.
     def self.describe: () -> String
 
+    # The JSON Schema (draft 2020-12) of this class's JSON; see
+    # {FieldStruct::JSONSchema.generate}. The method name is the one tool
+    # libraries look for (RubyLLM takes any object that responds to it as
+    # tool parameters).
+    # 
+    # _@param_ `serialization` — the +serialize+ format whose external names become property names
+    def self.to_json_schema: (?serialization: Symbol) -> ::Hash[String, Object]
+
     # Parse a JSON string and build an instance.
     # 
     #   Person.from_json('{"name":"Alice","address":{"street":"1","city":"NYC"}}')
@@ -1720,6 +1728,15 @@ module FieldStruct
       # +Hash+): the RBS is emitted inside the struct's module nesting.
       def rbs_type: () -> ::String?
 
+      # The JSON Schema {FieldStruct::JSONSchema} emits for fields of this
+      # type, or +nil+ (the default) to derive one. Override in a custom type
+      # so its JSON is described instead of left unconstrained:
+      # 
+      #   def json_schema = {'type' => 'string', 'pattern' => '^[0-9]+\.[0-9]{2}$'}
+      # 
+      # A field's own +json_schema:+ option wins over this. Use String keys.
+      def json_schema: () -> ::Hash[::String, Object]?
+
       # Concise type-instance representation. The default shows just the
       # type-class name (e.g. +#<FieldStruct::Types::String>+). Subclasses
       # that carry parameter state (Nested, Union, …) override to surface
@@ -2842,5 +2859,166 @@ module FieldStruct
 
     # _@return_ — same as {#singular} (the AM convention for last segment)
     attr_reader element: String
+  end
+
+  # Generates a JSON Schema (draft 2020-12) describing the JSON a
+  # {FieldStruct::Base} subclass reads and writes: what +to_json+ emits for a
+  # valid instance, which +from_json+ reads back. Other tools take it from
+  # there: API docs, validators in other languages, LLM tool definitions,
+  # TypeScript types.
+  # 
+  #   class User < FieldStruct::Base
+  #     required :name, :string
+  #     optional :age,  :integer, in: 0..150
+  #   end
+  # 
+  #   FieldStruct::JSONSchema.generate(User)
+  #   # => {"$schema"=>"https://json-schema.org/draft/2020-12/schema",
+  #   #     "title"=>"User", "type"=>"object",
+  #   #     "properties"=>{"name"=>{"type"=>"string"},
+  #   #                    "age"=>{"type"=>["integer", "null"], "minimum"=>0, "maximum"=>150}},
+  #   #     "required"=>["name"]}
+  # 
+  # Design choices:
+  # 
+  # * **The schema describes the canonical JSON, not every input the
+  #   setters coerce.** +age: "30"+ is a valid assignment but not valid
+  #   against +"type": "integer"+. BigDecimal is a string (as +to_json+
+  #   writes it), times are RFC 3339 +date-time+ strings.
+  # * **Property names** are the +serialize :json+ external names (see
+  #   {Base.serialize}); pass +serialization:+ to describe another format's.
+  # * **Required** lists required fields without a +default:+; a required
+  #   field with a default may be left out of the input. Optional fields
+  #   accept +null+, and an array's scalar elements may be +null+ (nested
+  #   elements may not, as a +nil+ nested element is invalid).
+  # * **Constraints** map where JSON Schema has a keyword: +enum:+ → +enum+,
+  #   an +in:+ Range → +minimum+ / +maximum+ / +exclusiveMaximum+, an +in:+
+  #   Array → +enum+, a Regexp +format:+ → +pattern+ (translated to ECMA-262:
+  #   +\A+ / +\z+ become +^+ / +$+). A Regexp JSON Schema can't express
+  #   (flags, possessive quantifiers, atomic groups, +\h+, POSIX brackets)
+  #   is kept as +x-ruby-pattern+ instead. +in:+ on dates, times and
+  #   decimals has no keyword and is left out.
+  # * **Nested structs** go in +$defs+ under their class name and are
+  #   referenced with +$ref+; the root class is +#+, so recursive structs
+  #   work. An anonymous nested struct is inlined.
+  # * **Annotations:** +description:+ → +description+; a literal +default:+
+  #   that is a JSON value → +default+ (a callable default is left out);
+  #   +sensitive: true+ → +x-sensitive+ (+to_json+ still writes the value).
+  # * **Overrides:** a field's +json_schema:+ option, then the type's
+  #   {Types::Base#json_schema}, replace the derived schema verbatim. A
+  #   custom type with neither is unconstrained (+{}+) and named with
+  #   +x-ruby-type+. +unknown_attributes :raise+ sets
+  #   +additionalProperties: false+.
+  module JSONSchema
+    DRAFT: String
+    DECIMAL_PATTERN: String
+    RUBY_ONLY_SYNTAX: Regexp
+    RUBY_ONLY_ESCAPES: ::Array[String]
+    UNSUPPORTED_OPTIONS: Integer
+
+    # Generate the JSON Schema for a FieldStruct subclass.
+    # 
+    # _@param_ `klass`
+    # 
+    # _@param_ `serialization` — the +serialize+ format whose external names become property names
+    # 
+    # _@return_ — the schema, with String keys, ready for
+    # +Oj.dump+
+    def self.generate: (singleton(FieldStruct::Base) klass, ?serialization: Symbol) -> ::Hash[String, Object]
+
+    # Translate a Regexp to an ECMA-262 +pattern+ string.
+    # 
+    # _@param_ `regexp`
+    # 
+    # _@return_ — the pattern, or +nil+ when JSON Schema can't
+    # express the Regexp
+    def self.pattern_for: (Regexp regexp) -> String?
+
+    # Walks one root class, collecting named nested structs into +$defs+.
+    # @api private
+    class Builder
+      # _@param_ `root`
+      # 
+      # _@param_ `serialization`
+      def initialize: (singleton(FieldStruct::Base) root, Symbol serialization) -> void
+
+      def schema: () -> ::Hash[String, Object]
+
+      # _@param_ `klass`
+      def object_schema: (singleton(FieldStruct::Base) klass) -> ::Hash[String, Object]
+
+      # _@param_ `field`
+      def property_schema: (Field field) -> ::Hash[String, Object]
+
+      # _@param_ `field`
+      def annotations: (Field field) -> ::Hash[String, Object]
+
+      # _@param_ `value`
+      # 
+      # _@return_ — whether +value+ is a non-nil JSON value
+      def json_value?: (Object value) -> bool
+
+      # _@param_ `type`
+      # 
+      # _@param_ `options`
+      def value_schema: (Types::Base _type, ::Hash[Symbol, Object] options) -> ::Hash[String, Object]
+
+      # _@param_ `options` — the array field's options
+      def array_schema: (::Hash[Symbol, Object] options) -> ::Hash[String, Object]
+
+      # _@param_ `union`
+      # 
+      # _@return_ — +{}+ when a member accepts anything
+      def union_schema: (Types::Union union) -> ::Hash[String, Object]
+
+      # _@param_ `klass`
+      def ref_for: (singleton(FieldStruct::Base) klass) -> ::Hash[String, Object]
+
+      # _@param_ `klass` — an anonymous struct
+      def inline: (singleton(FieldStruct::Base) klass) -> ::Hash[String, Object]
+
+      # _@param_ `type`
+      # 
+      # _@param_ `options`
+      def scalar_schema: (Types::Base _type, ::Hash[Symbol, Object] options) -> ::Hash[String, Object]
+
+      # _@param_ `type` — a String-family type
+      # 
+      # _@param_ `options`
+      def string_schema: (Types::String _type, ::Hash[Symbol, Object] options) -> ::Hash[String, Object]
+
+      # _@param_ `type`
+      # 
+      # _@param_ `format`
+      # 
+      # _@return_ — whether +format+ is the type's own default (UUID,
+      # URL, Email), which its +format+ keyword already describes
+      def default_format?: (Types::String _type, Regexp format) -> bool
+
+      # _@param_ `format` — the JSON Schema format of the canonical output
+      # 
+      # _@param_ `option` — the field's +format:+
+      # 
+      # _@param_ `canonical` — presets that write the canonical form
+      def temporal: (String format, (String | Symbol)? option, ::Array[Symbol] canonical) -> ::Hash[String, Object]
+
+      # _@param_ `schema`
+      # 
+      # _@param_ `values`
+      def enum: (::Hash[String, Object] schema, ::Array[Object]? values) -> ::Hash[String, Object]
+
+      # _@param_ `schema`
+      # 
+      # _@param_ `bound` — an +in:+ option
+      def range: (::Hash[String, Object] schema, (::Range[Numeric] | ::Array[Object])? bound) -> ::Hash[String, Object]
+
+      # _@param_ `type` — a type FieldStruct doesn't ship
+      def custom_schema: (Types::Base _type) -> ::Hash[String, Object]
+
+      # _@param_ `schema`
+      # 
+      # _@return_ — +schema+ also accepting +null+
+      def nullable: (::Hash[String, Object] schema) -> ::Hash[String, Object]
+    end
   end
 end

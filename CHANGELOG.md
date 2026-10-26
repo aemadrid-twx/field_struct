@@ -6,6 +6,18 @@ adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `FieldStruct::JSONSchema.generate(klass)` and `Klass.to_json_schema`: a JSON
+  Schema (draft 2020-12) of the JSON a class writes with `to_json`. Covers every
+  built-in type, `serialize :json` names, `enum:` / `in:` / Regexp `format:`
+  (translated to ECMA-262, else kept as `x-ruby-pattern`), nested structs in
+  `$defs` (recursion via `$ref: "#"`), arrays, unions, `description:`, literal
+  defaults, `sensitive:` and `unknown_attributes :raise`. Overrides: a field's
+  `json_schema:` option and a custom type's new `Types::Base#json_schema`. No
+  runtime dependency; the spec checks generated schemas against `to_json`
+  output with `json_schemer` (dev only).
+
 ### Documentation
 
 - USAGE spells out the `:boolean` strings: by default only `"true"`, `"1"`,
