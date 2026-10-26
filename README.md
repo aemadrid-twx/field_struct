@@ -1,3 +1,5 @@
+<img src="docs/assets/field-struct-mark.svg" alt="field_struct logo" width="64">
+
 # FieldStruct
 
 Typed POROs for Ruby — declare fields with enforced types, presence checks, and per-field validation. Mirrors the ActiveModel interface shape where it helps adoption, but reuses none of its code.
