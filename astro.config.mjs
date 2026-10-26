@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightLlmsTxt from 'starlight-llms-txt';
 
 // Served by GitHub Pages from the aemadrid-twx/field_struct fork (ruling R21): https://aemadrid-twx.github.io/field_struct/
 export default defineConfig({
@@ -22,6 +23,22 @@ export default defineConfig({
       ],
       social: [
         { icon: 'github', label: 'field_struct on GitHub', href: 'https://github.com/aemadrid-twx/field_struct' },
+      ],
+      // llms.txt, llms-full.txt and llms-small.txt for agents, plus one file per gem's reference.
+      plugins: [
+        starlightLlmsTxt({
+          projectName: 'field_struct & actionable',
+          details: [
+            'field_struct (gem `field_struct`) gives Ruby POROs typed, coerced, validated fields with JSON round-trips.',
+            'actionable (gem `actionable-rb`) builds typed service objects from steps that return declared outcomes.',
+            'The runnable Ruby examples are executed in CI against the released gems, so `# => value` comments show real results.',
+          ].join(' '),
+          promote: ['index*', 'tutorial/**'],
+          customSets: [
+            { label: 'field_struct reference', paths: ['reference/field-struct/**'], description: 'every field_struct type, option and API' },
+            { label: 'actionable reference', paths: ['reference/actionable/**'], description: 'every actionable macro, outcome and API' },
+          ],
+        }),
       ],
       sidebar: [
         { label: 'Tutorial', items: [{ autogenerate: { directory: 'tutorial' } }] },
