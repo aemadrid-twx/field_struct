@@ -209,4 +209,4 @@ when a field declares an IANA name. On a system without zoneinfo (Windows, slim
 containers) such a declaration raises `ArgumentError` asking you to add the
 `tzinfo-data` gem.
 
-Upstream: [USAGE, The temporal contract](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#the-temporal-contract) and [Zones](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#zones-zone).
+Upstream: [USAGE, The temporal contract](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#the-temporal-contract) and [Zones](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#zones-zone).

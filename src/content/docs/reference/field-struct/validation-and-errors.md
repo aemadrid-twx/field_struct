@@ -243,4 +243,4 @@ errors.empty?            # => false
 `dup` / `clone` of a record copy its errors: the copy starts with the same
 messages but owns them.
 
-Upstream: [USAGE, Validation semantics](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#validation-semantics-important).
+Upstream: [USAGE, Validation semantics](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#validation-semantics-important).

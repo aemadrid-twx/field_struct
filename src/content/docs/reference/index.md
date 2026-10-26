@@ -25,7 +25,7 @@ Wondering *why* something works the way it does? See
 These pages are ported from each gem's own USAGE file and checked against its
 source. The upstream files, at the same tags:
 
-- field_struct: [USAGE](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md),
-  [README](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/README.md)
-- actionable: [USAGE](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md),
-  [README](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/README.md)
+- field_struct: [USAGE](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md),
+  [README](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/README.md)
+- actionable: [USAGE](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md),
+  [README](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/README.md)

@@ -14,13 +14,13 @@ behaviour surprises you, or before you argue with it.
 Each page is grounded in the gems' own design records, which keep the reasoning
 behind every locked decision:
 
-- field_struct: [`docs/origin/plan.md`](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/docs/origin/plan.md)
+- field_struct: [`docs/origin/plan.md`](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/docs/origin/plan.md)
   (decisions D1–D15, plus the Phase 2 decisions such as N3 and S1) and the
-  [project intent](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/.claude/project_intent.md)
+  [project intent](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/.claude/project_intent.md)
   (its design invariants).
-- actionable: [`docs/origin/plan.md`](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/docs/origin/plan.md)
+- actionable: [`docs/origin/plan.md`](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/docs/origin/plan.md)
   (decisions D1–D23) and the
-  [project intent](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/.claude/project_intent.md).
+  [project intent](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/.claude/project_intent.md).
 
 When a page cites "D17" or "invariant 3", that's where to look. Where the
 records describe a behaviour without saying why, these pages say so instead of

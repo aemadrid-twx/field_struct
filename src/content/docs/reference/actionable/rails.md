@@ -101,4 +101,4 @@ validator.formatted_errors   # => { amount: ["can't be blank"] }  (runs valid? f
 `fail!(:invalid, nil, **validator.formatted_errors)`. `delegate` returns the
 wrapped object.
 
-Upstream: [USAGE, Rails adapter](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#rails-adapter).
+Upstream: [USAGE, Rails adapter](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#rails-adapter).

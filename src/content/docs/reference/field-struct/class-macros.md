@@ -186,4 +186,4 @@ Guest.immutable?          # => true
 Because `immutable!` and `frozen!` can't be undone, put them on the leaf classes
 that need them rather than on a shared parent.
 
-Upstream: [USAGE, Class macros](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#class-macros).
+Upstream: [USAGE, Class macros](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#class-macros).

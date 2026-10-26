@@ -79,5 +79,5 @@ to make changed copies. Then every change goes through a setter.
 
 ## See also
 
-- field_struct USAGE: [Nested, arrays, unions](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#nested-arrays-unions), [Element options](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#element-options-element), [Validity is computed on assignment](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#validity-is-computed-on-assignment-shallow-valid-staleness)
+- field_struct USAGE: [Nested, arrays, unions](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#nested-arrays-unions), [Element options](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#element-options-element), [Validity is computed on assignment](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#validity-is-computed-on-assignment-shallow-valid-staleness)
 - Tutorial: [Orders and JSON](../../tutorial/orders-and-json/#nest-a-struct-inside-a-struct)

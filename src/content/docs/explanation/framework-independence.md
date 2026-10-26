@@ -14,7 +14,7 @@ them.
 ## The shape, not the code
 
 Decision D8 in the field_struct
-[design record](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/docs/origin/plan.md):
+[design record](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/docs/origin/plan.md):
 "We mirror the shape so Rails-adjacent developers feel at home, but we do not
 reuse `ActiveModel::*` code." It's also a design invariant: "Mirroring the
 interface shape is fine; including modules or copying internals is not."
@@ -41,7 +41,7 @@ Some ActiveModel methods are left out on purpose. D8 skips `to_key`,
 encode a persistence/identity model FieldStruct does not have." That matches
 what the project says it isn't: "Not a database layer. Not a form object. Not
 an ActiveModel replacement"
-([project intent](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/.claude/project_intent.md)).
+([project intent](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/.claude/project_intent.md)).
 
 The records state the no-reuse rule but don't spell out a further reason for
 it. What they do record is the outcome: field_struct's only runtime
@@ -83,7 +83,7 @@ invalid in another." Use the IANA name instead (`"America/Denver"`).
 actionable makes the same split at the gem level. Its core "depends only on
 `field_struct`" (plus `oj`, which field_struct already pulls in), and nothing under the core load path requires ActiveModel,
 ActiveSupport or ActiveRecord (decision D8 and invariant 4 in the actionable
-[design record](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/docs/origin/plan.md)).
+[design record](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/docs/origin/plan.md)).
 Rails pieces live behind explicit requires:
 
 | Require | Adds |
@@ -97,9 +97,9 @@ This one has a reason on record. The original actionable "always loaded
 ActiveModel/ActiveSupport and hard-wired ActiveRecord transactions"; the
 rebuild moved them to an opt-in adapter as one of four fixes for code that was
 "hard to type and hard for both humans and coding agents to reason about"
-([first discussion](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/docs/origin/first_discussion.md)).
+([first discussion](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/docs/origin/first_discussion.md)).
 
 ## Related
 
 - [How the two gems fit together](../how-the-gems-fit/)
-- [USAGE: Zones](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#zones-zone)
+- [USAGE: Zones](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#zones-zone)

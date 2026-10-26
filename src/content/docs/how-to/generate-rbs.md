@@ -94,5 +94,5 @@ second declaration.
 
 ## See also
 
-- field_struct USAGE: [RBS for your own classes](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#rbs-for-your-own-classes)
-- actionable USAGE: [RBS for your actions](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#rbs-for-your-actions)
+- field_struct USAGE: [RBS for your own classes](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#rbs-for-your-own-classes)
+- actionable USAGE: [RBS for your actions](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#rbs-for-your-actions)

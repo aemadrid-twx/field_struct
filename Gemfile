@@ -4,8 +4,8 @@
 # Pin to the RELEASED tags the docs describe; bump these when a new release ships.
 source 'https://rubygems.org'
 
-gem 'field_struct', git: 'https://github.com/Paymentbox-com/field_struct', tag: 'v0.16.0'
-gem 'actionable-rb', git: 'https://github.com/Paymentbox-com/actionable', tag: 'v1.10.0'
+gem 'field_struct', git: 'https://github.com/aemadrid-twx/field_struct', tag: 'v0.16.0'
+gem 'actionable-rb', git: 'https://github.com/aemadrid-twx/actionable', tag: 'v1.10.0'
 
 # Extra gems some how-to guides need so their examples run too (they are only
 # required by the pages that use them): the Rails adapter's transactions and

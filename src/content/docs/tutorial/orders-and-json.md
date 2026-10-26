@@ -108,7 +108,7 @@ A required `:array` also counts as missing when it's empty, so an order with
 Validity is worked out when a field is **assigned**. If you change a nested
 struct in place (`order.lines.first.quantity = 0`), the order doesn't notice.
 Assign the field again (`order.lines = order.lines`) to re-check it. See
-[shallow `valid?` staleness](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#validity-is-computed-on-assignment-shallow-valid-staleness).
+[shallow `valid?` staleness](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#validity-is-computed-on-assignment-shallow-valid-staleness).
 :::
 
 ## To JSON and back
@@ -215,7 +215,7 @@ Filter it yourself before you log JSON or send it to a browser, for example
 - A payment token that stays out of `inspect` output.
 
 More on nested structs, arrays and JSON in the field_struct
-[README](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/README.md#nested-fieldstructs).
+[README](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/README.md#nested-fieldstructs).
 
 **Next:** [Placing the order](../placing-the-order/), where an Actionable action
 checks stock and turns an order into a success or a failure.

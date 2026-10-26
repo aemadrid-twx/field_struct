@@ -156,4 +156,4 @@ byte-identical and RBS merges them. A namespace that is a class opens as `class`
 action subclasses its parent's result classes
 (`class Success < ::Billing::BaseAction::Success`).
 
-Upstream: [USAGE, RBS for your actions](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#rbs-for-your-actions).
+Upstream: [USAGE, RBS for your actions](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#rbs-for-your-actions).

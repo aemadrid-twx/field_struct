@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/Paymentbox-com/actionable
+  remote: https://github.com/aemadrid-twx/actionable
   revision: e9a575ef44f06d9f894071556b8686dfa3c0f108
   tag: v1.10.0
   specs:
@@ -8,7 +8,7 @@ GIT
       oj (>= 3.0)
 
 GIT
-  remote: https://github.com/Paymentbox-com/field_struct
+  remote: https://github.com/aemadrid-twx/field_struct
   revision: 77c8aab047c54d9d029d98d0687fb390aa9e9455
   tag: v0.16.0
   specs:

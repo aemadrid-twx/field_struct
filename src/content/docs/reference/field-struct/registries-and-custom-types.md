@@ -180,4 +180,4 @@ end
 err.message # => "::String is already defined (String); not aliasing FieldStruct"
 ```
 
-Upstream: [USAGE, Custom types & namespaces](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md#custom-types--namespaces).
+Upstream: [USAGE, Custom types & namespaces](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#custom-types--namespaces).

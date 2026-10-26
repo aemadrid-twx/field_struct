@@ -29,6 +29,6 @@ actionable v1.10.0.
 - [Generate RBS signatures](generate-rbs/): types for your structs and actions.
 - [Lint with the RuboCop cop](catch-misplaced-verbs/): catch a `fail` that doesn't stop the run.
 
-Looking for every option? The [field_struct USAGE](https://github.com/Paymentbox-com/field_struct/blob/v0.16.0/USAGE.md)
-and [actionable USAGE](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md)
+Looking for every option? The [field_struct USAGE](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md)
+and [actionable USAGE](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md)
 references list them all.

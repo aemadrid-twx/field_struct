@@ -124,4 +124,4 @@ RSpec::Core::Runner.run([])  # => 0
 
 ## See also
 
-- actionable USAGE: [RSpec integration](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#rspec-integration), [Outcome coverage](https://github.com/Paymentbox-com/actionable/blob/v1.10.0/USAGE.md#outcome-coverage) (find the declared outcomes no spec reaches)
+- actionable USAGE: [RSpec integration](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#rspec-integration), [Outcome coverage](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#outcome-coverage) (find the declared outcomes no spec reaches)
