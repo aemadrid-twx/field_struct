@@ -1,0 +1,109 @@
+/*
+ * Ultramarine & Marigold — Direction A's type and structure with a royal-blue
+ * accent (Adrian's pick, 2026-10-25). Ultramarine is the site and field_struct
+ * colour; marigold is actionable's, and the spark in the logo's key dots.
+ * Every text pair below clears WCAG AA (body 13.8:1 light, 12.0:1 dark).
+ */
+:root {
+  --sl-font: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --sl-font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --af-font-heading: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+}
+
+/* Dark is Starlight's default scheme. */
+:root {
+  --sl-color-accent-low: #1b2356;
+  --sl-color-accent: #93a4ff;
+  --sl-color-accent-high: #93a4ff;
+  --sl-color-white: #f2f4fb;
+  --sl-color-gray-1: #e1e5f2;
+  --sl-color-gray-2: #c8cee2;
+  --sl-color-gray-3: #9aa2bc;
+  --sl-color-gray-4: #5d6582;
+  --sl-color-gray-5: #293049;
+  --sl-color-gray-6: #151a2c;
+  --sl-color-black: #0e1120;
+  --af-gem-field-struct: #93a4ff;
+  --af-gem-actionable: #ffb547;
+  --af-spark: #ffb547;
+  --af-success: #6fdc93;
+  --af-success-bg: #14301f;
+  --af-failure: #ff8c9e;
+  --af-failure-bg: #3a1520;
+  --af-skipped: #aeb6c8;
+  --af-skipped-bg: #1e2435;
+}
+
+:root[data-theme='light'] {
+  --sl-color-accent-low: #e5e8fd;
+  --sl-color-accent: #2337d4;
+  --sl-color-accent-high: #16248f;
+  --sl-color-white: #0f1322;
+  --sl-color-gray-1: #1b2030;
+  --sl-color-gray-2: #252a3a;
+  --sl-color-gray-3: #565d72;
+  --sl-color-gray-4: #8a90a3;
+  --sl-color-gray-5: #dadded;
+  --sl-color-gray-6: #f1f2f9;
+  --sl-color-gray-7: #f6f7fc;
+  --sl-color-black: #fbfbfe;
+  --af-gem-field-struct: #2337d4;
+  --af-gem-actionable: #975300;
+  --af-spark: #e8961a; /* decoration only: 3:1 graphic contrast, not text */
+  --af-success: #146c34;
+  --af-success-bg: #e3f3e8;
+  --af-failure: #b0213b;
+  --af-failure-bg: #fbe6ea;
+  --af-skipped: #545c6e;
+  --af-skipped-bg: #eceef3;
+}
+
+/* Headings in Bricolage: tight and characterful at h1, calm further down. */
+.site-title,
+h1#_top,
+.sl-markdown-content :is(h1, h2, h3, h4, h5) {
+  font-family: var(--af-font-heading);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+h1#_top {
+  letter-spacing: -0.03em;
+}
+
+/* Keep Ruby operators literal: no => / != ligatures. */
+.expressive-code,
+code,
+kbd {
+  font-variant-ligatures: none;
+}
+
+/* The touch of personality: a marigold key dot before each h2, echoing the
+   logo's field rows. */
+.sl-markdown-content h2::before {
+  content: '';
+  display: inline-block;
+  width: 0.42em;
+  height: 0.42em;
+  margin-right: 0.45em;
+  border-radius: 0.12em;
+  background: var(--af-spark);
+  vertical-align: 0.14em;
+}
+
+/* Per-gem accent: links on actionable pages take marigold. */
+:root:has(.sidebar-content a[aria-current='page'][href*='/actionable/']) .sl-markdown-content {
+  --sl-color-text-accent: var(--af-gem-actionable);
+}
+
+/* `# => value` lines are each example's payoff (and checked in CI): show them
+   as results, upright, in the result colour. Tagged by ec.config.mjs. */
+:root {
+  --af-result: #86e3b3;
+}
+:root[data-theme='light'] {
+  --af-result: #0e6a3d;
+}
+.expressive-code .af-result {
+  color: var(--af-result) !important;
+  font-style: normal !important;
+}

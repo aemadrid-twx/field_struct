@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="actionable">
+  <!-- Single colour: the steps are cut out of the tile, so it takes currentColor anywhere. -->
+  <mask id="act-steps" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+    <rect width="32" height="32" fill="#fff"/>
+    <g fill="#000">
+      <rect x="7" y="8.3" width="9.6" height="3.4" rx="1.7"/>
+      <rect x="11.2" y="14.3" width="9.6" height="3.4" rx="1.7"/>
+      <rect x="15.4" y="20.3" width="9.6" height="3.4" rx="1.7"/>
+    </g>
+  </mask>
+  <rect x="2" y="2" width="28" height="28" rx="7" fill="currentColor" mask="url(#act-steps)"/>
+</svg>
