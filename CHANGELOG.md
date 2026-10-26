@@ -22,6 +22,10 @@ adheres to [Semantic Versioning](https://semver.org/).
   `\s`, `^` / `$` and `/i` keep Ruby's meaning), or `nil` when there's no exact
   translation. Every built-in UUID, URL and Email format translates.
 
+### Changed
+
+- `describe` shows each field's `desc:` after its type (`name (String, required) — "Full legal name" — accepts …`), and a nested struct field names its class (`home (Address, optional)`, was `home (Nested, optional)`), so a reader knows which class to `describe` next. An anonymous nested struct still shows `Nested`. <!-- upgrading: none -->
+
 ### Documentation
 
 - USAGE spells out the `:boolean` strings: by default only `"true"`, `"1"`,

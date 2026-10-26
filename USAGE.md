@@ -806,6 +806,25 @@ Person.metadata.to_h[:addrs][:options]             # => { of_type: "Nested" }
 Person.metadata[:addrs].options[:of_type].struct_class  # => Address
 ```
 
+`describe` is the readable version: one line per field, with its `desc:` and,
+for a nested struct, the class to `describe` next:
+
+<!-- doctest -->
+```ruby
+class Address < FieldStruct::Base
+  optional :city, :string
+end
+
+class Customer < FieldStruct::Base
+  required :name, :string, desc: 'Full legal name'
+  optional :home, Address
+end
+
+lines = Customer.describe.lines.map(&:strip)
+lines[1].start_with?('name (String, required) — "Full legal name"')  # => true
+lines[2]                                    # => "home (Address, optional)"
+```
+
 ---
 
 ## RBS for your own classes

@@ -1254,19 +1254,30 @@ module FieldStruct
     def pretty_print: (Object pp) -> void
 
     # Human/agent-readable summary of the declared fields: one line each
-    # with the field's type, required-ness, and the native options its type
+    # with the field's type (a nested struct's class name), required-ness,
+    # its +desc:+, and the native options its type
     # accepts (with value shapes, required options starred, and any presets).
     # Answers "what can I put here?" without reading source. For the
     # structured form use {#to_h}; for a class-titled version use
     # {Base.describe}.
     # 
-    #   name (String, required) — accepts format (Regexp | Symbol), enum (Array)
+    #   name (String, required) — "Full name" — accepts format (Regexp | Symbol), enum (Array)
+    #   address (Address, optional)
     def describe: () -> String
 
     # _@param_ `field`
     # 
     # _@return_ — one +describe+ line for a field
     def describe_field: (Field field) -> String
+
+    # A nested struct field names its class (+Address+), not the generic
+    # +Nested+, so the reader knows which class to +describe+ next. An
+    # anonymous struct has no name to give, so it stays +Nested+.
+    # 
+    # _@param_ `field`
+    # 
+    # _@return_ — the type shown in a +describe+ line
+    def type_label: (Field field) -> String
 
     # What this field actually declares, as written.
     # 

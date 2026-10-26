@@ -109,3 +109,36 @@ RSpec.describe FieldStruct::Base, 'describe renders declared options' do
     expect(klass.describe).to match(/on \(Date, required\) — format: :iso8601 — accepts format \(/)
   end
 end
+
+# Agents read `describe` to learn a model without opening its source. It
+# dropped the field's `desc:` (the one line written for exactly that reader)
+# and showed a nested struct field as a bare "Nested", hiding which class to
+# describe next.
+RSpec.describe 'FieldStruct::Base.describe: descriptions and nested classes' do
+  before do
+    stub_const('Address', Class.new(FieldStruct::Base) { required :city, :string })
+    stub_const('Customer', Class.new(FieldStruct::Base) do
+      required :name, :string, desc: 'Full legal name'
+      optional :address, Address
+      optional :nickname, :string
+    end)
+  end
+
+  it "shows the field's description after its type" do
+    expect(Customer.describe).to include('name (String, required) — "Full legal name" — accepts')
+  end
+
+  it 'leaves the line unchanged for a field without a description' do
+    expect(Customer.describe).to match(/^  nickname \(String, optional\) — accepts/)
+  end
+
+  it 'names the nested struct class so the reader knows what to describe next' do
+    expect(Customer.describe).to include('address (Address, optional)')
+  end
+
+  it 'still says Nested for an anonymous nested struct' do
+    anon = Class.new(FieldStruct::Base) { required :x, :integer }
+    holder = Class.new(FieldStruct::Base) { optional :inner, anon }
+    expect(holder.describe).to include('inner (Nested, optional)')
+  end
+end
