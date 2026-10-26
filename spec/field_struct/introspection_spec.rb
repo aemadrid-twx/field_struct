@@ -64,6 +64,15 @@ RSpec.describe FieldStruct::Introspection do
       expect(grid.element.element).to be_nil
     end
 
+    it 'builds an element only when it is read' do
+      klass = struct('Shielded') { optional :xs, :array, of: FieldStruct::Types::Nested, json_schema: {'type' => 'array'} }
+
+      node = node_for(klass, :xs)
+
+      expect { node.element }.to raise_error(ArgumentError)
+      expect(klass.to_json_schema['properties']['xs']).to eq('type' => %w[array null])
+    end
+
     it "lists a union's members in declared order" do
       klass = struct('Either') { required :id, :union, of: %i[integer string array] }
 

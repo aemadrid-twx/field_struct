@@ -17,14 +17,22 @@ module FieldStruct
   # * {ScalarNode}: any single value (+:string+, +:integer+, +:value+, a
   #   custom type); +type+ and +options+ hold the rest.
   # * {ArrayNode}: +element+ is the element's node, or +nil+ when the field
-  #   records no element type (an array of arrays or of unions).
+  #   records no element type (an array of unions, whose members aren't
+  #   recorded; an array of arrays has an element {ArrayNode} whose own
+  #   +element+ is +nil+). It is built when first read, so an exporter that
+  #   uses a field-level override never instantiates the element type.
   # * {UnionNode}: +members+ are the member types' nodes, in declared order.
   # * {StructNode}: a nested struct. +klass+ is a reference, never expanded,
   #   so a recursive struct is the exporter's to handle (for example with
   #   {.named?} and a definitions table).
   #
   # Policy stays with the exporter: what +null+ means, which defaults to
-  # write, how overrides work.
+  # write, how overrides work. {.node} builds the node for a type and
+  # options of your own.
+  #
+  # +options+ are the struct's own option hashes, frozen but not deeply:
+  # treat them as read-only (changing an +enum:+ Array would change what the
+  # struct accepts).
   module Introspection
     # One field of a struct, as an exporter sees it.
     class Property
@@ -66,20 +74,25 @@ module FieldStruct
     class ArrayNode
       # @return [Types::Array]
       attr_reader :type
-      # @return [Hash{Symbol=>Object}] the array field's options
+      # @return [Hash{Symbol=>Object}] the options this array was declared
+      #   with (+{}+ for an array that is an element or a union member)
       attr_reader :options
-      # @return [ScalarNode, ArrayNode, UnionNode, StructNode, nil] each
-      #   element's node, or +nil+ when no element type is recorded
-      attr_reader :element
 
       # @param type [Types::Array]
       # @param options [Hash{Symbol=>Object}]
-      # @param element [ScalarNode, ArrayNode, UnionNode, StructNode, nil]
+      # @param element [Proc] builds the element node on first read
       def initialize(type, options, element)
         @type = type
         @options = options
-        @element = element
+        @build_element = element
+        @memo = {}
         freeze
+      end
+
+      # @return [ScalarNode, ArrayNode, UnionNode, StructNode, nil] each
+      #   element's node, or +nil+ when no element type is recorded
+      def element
+        @memo.fetch(:element) { @memo[:element] = @build_element.call }
       end
     end
 
@@ -136,7 +149,7 @@ module FieldStruct
     # @return [ScalarNode, ArrayNode, UnionNode, StructNode]
     def self.node(type, options = {})
       case type
-      when FieldStruct::Types::Array then ArrayNode.new(type, options, element_node(options))
+      when FieldStruct::Types::Array then ArrayNode.new(type, options, -> { element_node(options) })
       when FieldStruct::Types::Union then UnionNode.new(type, type.member_types.map { |member| node(member) })
       when FieldStruct::Types::Nested then StructNode.new(type, type.struct_class)
       else ScalarNode.new(type, options)
@@ -147,7 +160,8 @@ module FieldStruct
     # @return [ScalarNode, ArrayNode, UnionNode, StructNode, nil]
     def self.element_node(options)
       of_type = options[:of_type]
-      # An array of unions records only the Union class, not its members.
+      # An array of unions records only the Union class, not its members
+      # (so even a Union subclass's #json_schema isn't reachable here).
       return nil if of_type.nil? || (of_type.is_a?(::Class) && of_type <= FieldStruct::Types::Union)
 
       node(of_type.is_a?(::Class) ? of_type.new : of_type, options[:element] || {})

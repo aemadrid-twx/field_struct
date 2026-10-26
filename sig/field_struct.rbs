@@ -3241,14 +3241,22 @@ module FieldStruct
   # * {ScalarNode}: any single value (+:string+, +:integer+, +:value+, a
   #   custom type); +type+ and +options+ hold the rest.
   # * {ArrayNode}: +element+ is the element's node, or +nil+ when the field
-  #   records no element type (an array of arrays or of unions).
+  #   records no element type (an array of unions, whose members aren't
+  #   recorded; an array of arrays has an element {ArrayNode} whose own
+  #   +element+ is +nil+). It is built when first read, so an exporter that
+  #   uses a field-level override never instantiates the element type.
   # * {UnionNode}: +members+ are the member types' nodes, in declared order.
   # * {StructNode}: a nested struct. +klass+ is a reference, never expanded,
   #   so a recursive struct is the exporter's to handle (for example with
   #   {.named?} and a definitions table).
   # 
   # Policy stays with the exporter: what +null+ means, which defaults to
-  # write, how overrides work.
+  # write, how overrides work. {.node} builds the node for a type and
+  # options of your own.
+  # 
+  # +options+ are the struct's own option hashes, frozen but not deeply:
+  # treat them as read-only (changing an +enum:+ Array would change what the
+  # struct accepts).
   module Introspection
     # The fields of +klass+, in declaration order.
     # 
@@ -3310,17 +3318,18 @@ module FieldStruct
       # 
       # _@param_ `options`
       # 
-      # _@param_ `element`
-      def initialize: (Types::Array _type, ::Hash[Symbol, Object] options, (ScalarNode | ArrayNode | UnionNode | StructNode)? element) -> void
-
-      attr_reader type: Types::Array
-
-      # _@return_ — the array field's options
-      attr_reader options: ::Hash[Symbol, Object]
+      # _@param_ `element` — builds the element node on first read
+      def initialize: (Types::Array _type, ::Hash[Symbol, Object] options, Proc element) -> void
 
       # _@return_ — each
       # element's node, or +nil+ when no element type is recorded
-      attr_reader element: (ScalarNode | ArrayNode | UnionNode | StructNode)?
+      def element: () -> (ScalarNode | ArrayNode | UnionNode | StructNode)?
+
+      attr_reader type: Types::Array
+
+      # _@return_ — the options this array was declared
+      # with (+{}+ for an array that is an element or a union member)
+      attr_reader options: ::Hash[Symbol, Object]
     end
 
     # A union: the value is one of the members.
