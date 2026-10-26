@@ -45,7 +45,14 @@ ships today:
   user-defined subclasses, `Scaffold.from_json`, `metadata.to_h` introspection.
 
 **Still deferred (Phase 2+ backlog):** custom Metadata→docs generation;
-conversion to/from CSV, XML, Avro, JSON-schema (likely separate gems).
+conversion to/from CSV, XML, Avro, Protobuf (separate `field_struct-<format>`
+gems: they carry dependencies).
+
+**JSON Schema export is core** (ruled 2026-10-25): `FieldStruct::JSONSchema`
+sits beside `FieldStruct::RBS` because it has no dependency and actionable needs
+it for action contracts (tool and API schemas). It describes the canonical
+`to_json` output; it does not make FieldStruct a schema validator (see "What
+FieldStruct isn't").
 
 ---
 
