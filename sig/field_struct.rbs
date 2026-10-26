@@ -2976,8 +2976,8 @@ module FieldStruct
       # _@param_ `klass`
       def object_schema: (singleton(FieldStruct::Base) klass) -> ::Hash[String, Object]
 
-      # _@param_ `field`
-      def property_schema: (Field field) -> ::Hash[String, Object]
+      # _@param_ `property`
+      def property_schema: (Introspection::Property property) -> ::Hash[String, Object]
 
       # An optional field's schema: +null+ too (an override describes a
       # present value, so it gets +null+ like any other), plus a blank string
@@ -3003,27 +3003,22 @@ module FieldStruct
       # _@return_ — whether +value+ is a non-nil JSON value
       def json_value?: (Object value) -> bool
 
-      # _@param_ `type`
+      # The node's schema: its type's own {Types::Base#json_schema} when it
+      # has one, else derived from the node.
       # 
-      # _@param_ `options`
-      def value_schema: (Types::Base _type, ::Hash[Symbol, Object] options) -> ::Hash[String, Object]
+      # _@param_ `node`
+      def node_schema: ((Introspection::ScalarNode | Introspection::ArrayNode | Introspection::UnionNode | Introspection::StructNode) node) -> ::Hash[String, Object]
 
-      # _@param_ `options` — the array field's options
-      def array_schema: (::Hash[Symbol, Object] options) -> ::Hash[String, Object]
+      # _@param_ `node`
+      def array_schema: (Introspection::ArrayNode node) -> ::Hash[String, Object]
 
-      # _@param_ `union`
+      # _@param_ `node`
       # 
       # _@return_ — +{}+ when a member accepts anything
-      def union_schema: (Types::Union union) -> ::Hash[String, Object]
+      def union_schema: (Introspection::UnionNode node) -> ::Hash[String, Object]
 
       # _@param_ `klass`
       def ref_for: (singleton(FieldStruct::Base) klass) -> ::Hash[String, Object]
-
-      # _@param_ `klass`
-      # 
-      # _@return_ — whether +klass+ has a name usable as a +$defs+ key
-      # and title (one under an anonymous module reads "#<Module:0x…>::Addr")
-      def named?: (singleton(FieldStruct::Base) klass) -> bool
 
       # _@param_ `klass` — an anonymous struct
       def inline: (singleton(FieldStruct::Base) klass) -> ::Hash[String, Object]
@@ -3227,6 +3222,129 @@ module FieldStruct
       # Raised internally when the source has no exact translation.
       class Unsupported < StandardError
       end
+    end
+  end
+
+  # A format-neutral view of a struct's fields, for code that exports structs
+  # to another schema language. {FieldStruct::JSONSchema} is built on it, and
+  # so can an Avro or Protobuf exporter in its own gem:
+  # 
+  #   FieldStruct::Introspection.properties(Invoice).each do |property|
+  #     property.key            # => "total" (the serialize name, as a String)
+  #     property.field          # => the FieldStruct::Field (required?, default, …)
+  #     property.node           # => what the value is, one of the node classes below
+  #   end
+  # 
+  # A node says what shape a value has and keeps the type instance and
+  # options that shape came from, so nothing is lost on the way:
+  # 
+  # * {ScalarNode}: any single value (+:string+, +:integer+, +:value+, a
+  #   custom type); +type+ and +options+ hold the rest.
+  # * {ArrayNode}: +element+ is the element's node, or +nil+ when the field
+  #   records no element type (an array of arrays or of unions).
+  # * {UnionNode}: +members+ are the member types' nodes, in declared order.
+  # * {StructNode}: a nested struct. +klass+ is a reference, never expanded,
+  #   so a recursive struct is the exporter's to handle (for example with
+  #   {.named?} and a definitions table).
+  # 
+  # Policy stays with the exporter: what +null+ means, which defaults to
+  # write, how overrides work.
+  module Introspection
+    # The fields of +klass+, in declaration order.
+    # 
+    # _@param_ `klass`
+    # 
+    # _@param_ `serialization` — the +serialize+ format whose names become each property's +key+ (an undeclared format keeps the field names, as its serializer does)
+    def self.properties: (singleton(FieldStruct::Base) klass, ?serialization: Symbol) -> ::Array[Property]
+
+    # The node for a value of +type+ checked with +options+.
+    # 
+    # _@param_ `type`
+    # 
+    # _@param_ `options`
+    def self.node: (Types::Base _type, ?::Hash[Symbol, Object] options) -> (ScalarNode | ArrayNode | UnionNode | StructNode)
+
+    # _@param_ `options` — an array field's options
+    def self.element_node: (::Hash[Symbol, Object] options) -> (ScalarNode | ArrayNode | UnionNode | StructNode)?
+
+    # Whether +klass+ has a name an exporter can use as a definition key or
+    # title. A class under an anonymous module has a name, but one that reads
+    # +"#<Module:0x…>::Addr"+.
+    # 
+    # _@param_ `klass`
+    def self.named?: (Class klass) -> bool
+
+    # One field of a struct, as an exporter sees it.
+    class Property
+      # _@param_ `field`
+      # 
+      # _@param_ `key`
+      # 
+      # _@param_ `node`
+      def initialize: (Field field, ::String key, (ScalarNode | ArrayNode | UnionNode | StructNode) node) -> void
+
+      attr_reader field: Field
+
+      # _@return_ — the field's name in the chosen serialization
+      attr_reader key: ::String
+
+      attr_reader node: (ScalarNode | ArrayNode | UnionNode | StructNode)
+    end
+
+    # A single value: any type that isn't an array, union or nested struct.
+    class ScalarNode
+      # _@param_ `type`
+      # 
+      # _@param_ `options`
+      def initialize: (Types::Base _type, ::Hash[Symbol, Object] options) -> void
+
+      attr_reader type: Types::Base
+
+      # _@return_ — the options the value is checked with
+      attr_reader options: ::Hash[Symbol, Object]
+    end
+
+    # An array.
+    class ArrayNode
+      # _@param_ `type`
+      # 
+      # _@param_ `options`
+      # 
+      # _@param_ `element`
+      def initialize: (Types::Array _type, ::Hash[Symbol, Object] options, (ScalarNode | ArrayNode | UnionNode | StructNode)? element) -> void
+
+      attr_reader type: Types::Array
+
+      # _@return_ — the array field's options
+      attr_reader options: ::Hash[Symbol, Object]
+
+      # _@return_ — each
+      # element's node, or +nil+ when no element type is recorded
+      attr_reader element: (ScalarNode | ArrayNode | UnionNode | StructNode)?
+    end
+
+    # A union: the value is one of the members.
+    class UnionNode
+      # _@param_ `type`
+      # 
+      # _@param_ `members`
+      def initialize: (Types::Union _type, ::Array[(ScalarNode | ArrayNode | UnionNode | StructNode)] members) -> void
+
+      attr_reader type: Types::Union
+
+      attr_reader members: ::Array[(ScalarNode | ArrayNode | UnionNode | StructNode)]
+    end
+
+    # A nested struct, by reference.
+    class StructNode
+      # _@param_ `type`
+      # 
+      # _@param_ `klass`
+      def initialize: (Types::Nested _type, singleton(FieldStruct::Base) klass) -> void
+
+      attr_reader type: Types::Nested
+
+      attr_reader klass: singleton(FieldStruct::Base)
     end
   end
 end

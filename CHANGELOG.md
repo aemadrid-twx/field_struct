@@ -21,6 +21,11 @@ adheres to [Semantic Versioning](https://semver.org/).
   pattern that matches the same strings under the `u` flag (`.`, `\s`, `^` /
   `$` and `/i` keep Ruby's meaning), or `nil` when there's no exact
   translation. Every built-in UUID, URL and Email format translates.
+- `FieldStruct::Introspection`: the field walk `JSONSchema` is built on, for
+  writing exporters of your own (Avro, Protobuf). `properties(klass,
+  serialization:)` gives each field's serialize name, its `Field`, and a node
+  (`ScalarNode`, `ArrayNode` with its element, `UnionNode` with its members,
+  `StructNode` by reference) that keeps the type and options it came from.
 
 ### Changed
 
