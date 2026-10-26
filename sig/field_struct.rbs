@@ -2945,7 +2945,7 @@ module FieldStruct
     def self.generate: (singleton(FieldStruct::Base) klass, ?serialization: (Symbol | String)) -> ::Hash[String, Object]
 
     # Translate a Regexp to an ECMA-262 +pattern+ string that matches the
-    # same strings, with or without the +u+ flag. See {Pattern} for the rules.
+    # same strings under the +u+ flag. See {Pattern} for the rules.
     # 
     #   FieldStruct::JSONSchema.pattern_for(/\A\d+\.\d+\z/)  # => "^\\d+\\.\\d+$"
     #   FieldStruct::JSONSchema.pattern_for(/\A\h+\z/i)      # => "^[0-9a-fA-F]+$"
@@ -3095,17 +3095,20 @@ module FieldStruct
     # * An escaped non-syntax character (+\-+, +\ +, +\@+) loses its
     #   backslash outside a class, since +u+ mode rejects it.
     # * Case-insensitive (+/i+) is spelled out for ASCII letters, with Ruby's
-    #   extra folds (+s+ also matches +\u017F+, +k+ the Kelvin sign): +ok+ becomes
-    #   +[oO][kKK]+, +[a-f]+ becomes +[a-fA-F]+.
+    #   extra folds (+s+ also matches the long s U+017F, +k+ the Kelvin sign
+    #   U+212A): +[a-f]+ becomes +[a-fA-F]+.
     # * Gives up on: Ruby-only escapes (+\Z+, +\G+, +\p{…}+, +\e+, …),
     #   backreferences, groups other than +(?:+, +(?=+, +(?!+, +(?<=+,
     #   +(?<!+ and +(?<name>+, possessive or stacked quantifiers, +{n}?+
     #   (optional in Ruby, lazy in JavaScript), a quantified anchor or
     #   lookaround, +{,n}+, nested classes and +&&+, a leading +]+ in a
-    #   class, non-ASCII bytes in +\x+, astral characters in a class, and
-    #   under +/i+: non-ASCII letters, +\x+ / +\u+ escapes, ranges whose ends
-    #   aren't both letters but which cover letters, and letter pairs Ruby
-    #   folds to one character (+ss+ matches +ß+, +fi+ matches +ﬁ+).
+    #   class, non-ASCII bytes in +\x+, astral characters in a class, +\b+ /
+    #   +\B+ outside a class (Unicode-aware in Ruby, ASCII in JavaScript), and
+    #   under +/i+: any non-ASCII character, +\x+ / +\u+ escapes, +\W+ / +\D+
+    #   in a class, ranges whose ends aren't both letters but which cover
+    #   letters, and letters that could pair into one Ruby folds to one
+    #   character (+ss+ matches +ß+, +fi+ matches +ﬁ+, and so do +s{2}+ and
+    #   +[s]s+).
     # 
     # Without the +u+ flag an astral character (outside the BMP) counts as
     # two code units, so +.+ and negated classes differ there. The line
@@ -3206,6 +3209,12 @@ module FieldStruct
 
       # _@param_ `char` — a literal outside a class
       def literal: (String char) -> String
+
+      # _@param_ `start` — a position in the output
+      # 
+      # _@return_ — the lowercase letters spelled out as folds
+      # from +start+ on
+      def folded_since: (Integer? start) -> ::Array[String]
 
       # _@param_ `char` — an ASCII letter
       # 
