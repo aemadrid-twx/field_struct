@@ -902,8 +902,9 @@ schema['type']                    # => "object"
 schema['required']                # => ["firstName"]
 schema['properties']['firstName'] # => {"type" => "string"}
 schema['properties']['age']       # => {"type" => ["integer", "null"], "minimum" => 0, "maximum" => 150}
-schema['properties']['plan']      # => {"default" => "free", "type" => ["string", "null"], "enum" => ["free", "pro", nil]}
-schema['properties']['pets']['items'].keys          # => ["$ref"]
+schema['properties']['plan']['default']             # => "free"
+schema['properties']['plan']['anyOf'].first         # => {"type" => ["string", "null"], "enum" => ["free", "pro", nil]}
+schema['properties']['pets']['items']['anyOf'].first.keys  # => ["$ref"]
 schema['$defs'].values.first['properties']['born']  # => {"type" => ["string", "null"], "format" => "date"}
 ```
 
@@ -912,30 +913,45 @@ schema['$defs'].values.first['properties']['born']  # => {"type" => ["string", "
   BigDecimal is a decimal string (`"pattern": "^-?[0-9]+\\.[0-9]+$"`, as `to_json`
   writes it); dates are `"format": "date"`, times and datetimes `"date-time"`
   (only for the default or `:iso8601` format: a `:db`, `:rfc2822` or strftime
-  format is a plain string); `:uuid` / `:url` / `:email` carry `uuid` / `uri` /
-  `email`; `:value` is `{}` (anything).
+  format is a plain string); `:value` is `{}` (anything).
+- **`:uuid`, `:url`, `:email`** are described by the Regexp the struct checks:
+  the default UUID one is `"format": "uuid"`; the URL and Email defaults become
+  a `pattern`, because JSON Schema's `uri` and `email` are stricter than ours
+  (`josé@example.com` passes the struct, fails `email`). An `:array, of: :uuid`
+  checks nothing per element unless `element: { format: … }` says so, and its
+  schema says the same.
 - **Property names** are the `serialize :json` names; `generate(klass,
   serialization: :xml)` uses another format's.
 - **`required`** lists required fields without a `default:` (a default fills a
-  missing key). Optional fields also accept `null`, and so do an array's scalar
-  elements (`["x", null]` is valid); nested elements don't.
+  missing key). Optional fields also accept `null`, and so does every array
+  element, nested ones too (validation skips `nil` elements). An optional
+  string field with `enum:` or a `format:` also accepts a blank string: blank
+  counts as missing there, so the struct is valid and `to_json` writes `""`.
 - **Constraints:** `enum:` → `enum`; `in:` Range → `minimum` / `maximum` /
-  `exclusiveMaximum`, `in:` Array → `enum`; a Regexp `format:` → `pattern`,
-  translated to ECMA-262 (`\A` / `\z` → `^` / `$`). A Regexp JSON Schema can't
-  express (flags like `/i`, possessive quantifiers, atomic groups, `\h`, POSIX
-  brackets) becomes `x-ruby-pattern` with the Ruby source, so nothing is silently
-  dropped. `in:` on dates, times and decimals has no keyword and is left out.
+  `exclusiveMaximum` (an infinite end stays open), `in:` Array → `enum`; a
+  Regexp `format:` → `pattern`. `FieldStruct::JSONSchema.pattern_for(regexp)`
+  translates it to an ECMA-262 pattern that matches the same strings, with or
+  without the `u` flag: `\A` / `\z` → `^` / `$`, `.` and `\s` keep Ruby's
+  meaning, `/i` is spelled out (`ok` → `[oO][kK]`). A Regexp with no exact
+  translation (possessive quantifiers, atomic groups, `\p{…}`, POSIX brackets,
+  `/x`) becomes `x-ruby-pattern` with the Ruby source: an annotation, not
+  checked by validators, and more Regexps may translate in later versions.
+  `in:` on dates, times and decimals has no keyword and is left out.
 - **Nested structs** go in `$defs` under their class name and are referenced with
   `$ref`; the root itself is `#`, so recursive structs work. An anonymous nested
-  struct is inlined.
-- **Annotations:** `description:` → `description`; a literal JSON `default:` →
-  `default` (a callable default is left out); `sensitive: true` → `x-sensitive`
+  struct is inlined, and so is one named under an anonymous module.
+- **Annotations:** `description:` → `description`; a `default:` that is
+  already what `to_json` writes → `default` (a callable, or `default: 1` on a
+  string field, is left out); `sensitive: true` → `x-sensitive`
   (`to_json` still writes the value). `unknown_attributes :raise` →
   `"additionalProperties": false`.
 - **Overrides:** a field's `json_schema: {...}` option beats the type's
   `json_schema` method (define it on a custom type: `def json_schema = {'type' =>
   'string'}`), which beats the derived schema. A custom type with neither is
-  unconstrained and named: `{"x-ruby-type" => "Money"}`.
+  unconstrained and named: `{"x-ruby-type" => "Money"}`. An override describes
+  a present value: an optional field still adds `null`.
+- **The Hash is a fresh copy:** add enum values or descriptions for an LLM tool
+  without touching the class.
 
 ---
 
