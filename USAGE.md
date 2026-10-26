@@ -825,6 +825,42 @@ lines[1].start_with?('name (String, required) — "Full legal name"')  # => true
 lines[2]                                    # => "home (Address, optional)"
 ```
 
+### Exporting to another schema language
+
+`FieldStruct::Introspection` is the walk `FieldStruct::JSONSchema` is built
+on, for writing an exporter of your own (Avro, Protobuf, a form builder).
+`properties(klass, serialization: :json)` gives each field's serialize name
+(`key`), its `Field`, and a `node` saying what shape the value has. The node
+keeps the type instance and options it came from, so nothing is lost:
+
+- `ScalarNode`: one value; `type` and `options` hold the rest.
+- `ArrayNode`: `element` is the element's node, with its `element:` options,
+  or `nil` when no element type is recorded (an array of unions).
+- `UnionNode`: `members`, in declared order.
+- `StructNode`: `klass`, a reference that is never expanded, so recursion is
+  yours to handle. `Introspection.named?(klass)` says whether its name is
+  usable as a definition key.
+
+<!-- doctest -->
+```ruby
+class Address < FieldStruct::Base
+  optional :city, :string
+end
+
+class Person < FieldStruct::Base
+  required :name, :string
+  optional :addrs, :array, of: Address
+  serialize :json, addrs: 'addresses'
+end
+
+name, addrs = FieldStruct::Introspection.properties(Person)
+name.key                          # => "name"
+name.field.required?              # => true
+name.node.type.class              # => FieldStruct::Types::String
+addrs.key                         # => "addresses"
+addrs.node.element.klass == Address  # => true
+```
+
 ---
 
 ## RBS for your own classes
