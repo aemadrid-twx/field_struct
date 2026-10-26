@@ -173,13 +173,15 @@ module FieldStruct
     end
 
     # Human/agent-readable summary of the declared fields: one line each
-    # with the field's type, required-ness, and the native options its type
+    # with the field's type (a nested struct's class name), required-ness,
+    # its +desc:+, and the native options its type
     # accepts (with value shapes, required options starred, and any presets).
     # Answers "what can I put here?" without reading source. For the
     # structured form use {#to_h}; for a class-titled version use
     # {Base.describe}.
     #
-    #   name (String, required) — accepts format (Regexp | Symbol), enum (Array)
+    #   name (String, required) — "Full name" — accepts format (Regexp | Symbol), enum (Array)
+    #   address (Address, optional)
     #
     # @return [String]
     def describe
@@ -193,12 +195,26 @@ module FieldStruct
     # @param field [Field]
     # @return [String] one +describe+ line for a field
     def describe_field(field)
-      flags = [short_name(field.type), field.required? ? 'required' : 'optional']
+      flags = [type_label(field), field.required? ? 'required' : 'optional']
       flags << 'sensitive' if field.sensitive?
       label = "  #{field.name} (#{flags.join(", ")})"
-      parts = [label, declared_options_summary(field), accepts_summary(field.type), element_accepts_summary(field)].compact
+      parts = [label, field.description&.inspect, declared_options_summary(field), accepts_summary(field.type),
+               element_accepts_summary(field)].compact
 
       parts.join(' — ')
+    end
+
+    # A nested struct field names its class (+Address+), not the generic
+    # +Nested+, so the reader knows which class to +describe+ next. An
+    # anonymous struct has no name to give, so it stays +Nested+.
+    #
+    # @param field [Field]
+    # @return [String] the type shown in a +describe+ line
+    def type_label(field)
+      instance = field.type_instance
+      return short_name(instance.struct_class) if instance.is_a?(FieldStruct::Types::Nested) && instance.struct_class.name
+
+      short_name(field.type)
     end
 
     # What this field actually declares, as written.
