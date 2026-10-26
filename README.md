@@ -87,3 +87,9 @@ and check but never deploy.
    (Settings → Environments → github-pages → Deployment branches and tags), add `site`.
 
 Until then the deploy job fails; the build and check job is unaffected.
+
+## Brand
+
+- Palette and type: `src/styles/theme.css` (Ultramarine & Marigold: Bricolage Grotesque headings, Instrument Sans body, JetBrains Mono code). Code-block themes and the `# =>` result highlighting: `ec.config.mjs`.
+- Logo 3 "Rows & Steps": `src/assets/brand/*.svg` (colour and single-colour marks for each gem, plus the `pair.svg` header lockup), copied to `public/brand/` for linking from READMEs. `public/favicon.svg` is the field_struct mark.
+- PNGs (`public/brand/*.png`: apple-touch icon, 512px avatars) are rendered from the SVGs with `bin/render-brand-pngs` (needs Pillow). Re-run it after changing a mark.
