@@ -6,6 +6,10 @@ adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- `describe` shows each field's `desc:` after its type (`name (String, required) — "Full legal name" — accepts …`), and a nested struct field names its class (`home (Address, optional)`, was `home (Nested, optional)`), so a reader knows which class to `describe` next. An anonymous nested struct still shows `Nested`. <!-- upgrading: none -->
+
 ### Documentation
 
 - USAGE spells out the `:boolean` strings: by default only `"true"`, `"1"`,
