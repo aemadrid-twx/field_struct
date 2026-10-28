@@ -1,0 +1,23 @@
+# frozen_string_literal: true
+
+# The gems the Adapters pages (src/content/docs/adapters/) are checked against:
+# the adapters aren't released yet, and they need FieldStruct::Introspection,
+# which is on field_struct develop but not in a release. When they ship, move
+# these pages onto the released pins in Gemfile and delete this file.
+#
+# No lockfile is committed for it (see .gitignore), so every build resolves the
+# newest code on these branches: the pages can't drift from it unnoticed.
+source 'https://rubygems.org'
+
+gem 'actionable-rb', git: 'https://github.com/aemadrid-twx/actionable', branch: 'main'
+gem 'field_struct', git: 'https://github.com/aemadrid-twx/field_struct', branch: 'develop'
+
+ADAPTERS = 'https://github.com/aemadrid-twx/field_struct-adapters'
+gem 'actionable-otel', git: ADAPTERS, branch: 'main', glob: 'actionable-otel/*.gemspec'
+gem 'field_struct-avro', git: ADAPTERS, branch: 'main', glob: 'field_struct-avro/*.gemspec'
+gem 'field_struct-json_schema', git: ADAPTERS, branch: 'main', glob: 'field_struct-json_schema/*.gemspec'
+
+# The OpenTelemetry page records spans in memory to show what you'd see.
+gem 'opentelemetry-sdk', '~> 1.13'
+# The JSON Schema page validates real to_json output against a schema.
+gem 'json_schemer', '~> 2.5'

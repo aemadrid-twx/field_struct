@@ -8,6 +8,13 @@ sidebar:
 Every FieldStruct class carries its declarations as data, so code (and you, in
 a console) can ask what a class looks like without reading its source.
 
+:::tip[Exporting to another format?]
+For writing an exporter (JSON Schema, Avro, TypeScript types), the next
+field_struct release adds `FieldStruct::Introspection`, a format-neutral walk
+over a class's fields. See the [Introspection reference](/field_struct/adapters/introspection/)
+and [Build your own adapter](/field_struct/adapters/build-your-own/).
+:::
+
 ```ruby run
 class LineItem < FieldStruct::Base
   required :sku, :string

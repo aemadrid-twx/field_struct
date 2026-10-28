@@ -18,6 +18,9 @@
 #   with `==`. If `expected` isn't valid Ruby (e.g. `#<Book ...>` inspect output)
 #   the line still runs, it just isn't asserted.
 # - Any exception fails the check.
+# - Pages under src/content/docs/adapters/ document gems that aren't released
+#   yet, so they run against Gemfile.edge (field_struct develop, actionable
+#   main, the adapters from git) instead of the released pins.
 #
 # Usage: bundle exec ruby bin/check-code-blocks [FILE...]
 #   (default: every .md/.mdx file under src/content/docs)
@@ -31,7 +34,18 @@ module CodeBlocks
   FENCE_OPEN = /\A\s*```ruby(?<meta>[ \t].*)?\s*\z/
   RUN_WORD = /(?:\A|\s)run(?:\s|\z)/
 
+  # Pages that run against Gemfile.edge rather than the released gems.
+  EDGE_DIR = 'src/content/docs/adapters/'
+
   module_function
+
+  # The Gemfile a page's blocks run against. EDGE_GEMFILE swaps in another
+  # edge bundle, to check the Adapters pages against unmerged branches.
+  def gemfile_for(path)
+    # realpath, so a path through a symlink (macOS's /tmp) still matches.
+    edge = File.realpath(path).start_with?(File.realpath(EDGE_DIR) + File::SEPARATOR)
+    File.expand_path(edge ? ENV.fetch('EDGE_GEMFILE', 'Gemfile.edge') : 'Gemfile')
+  end
 
   # Runnable blocks of one page, in document order.
   def blocks(path)
@@ -117,7 +131,11 @@ files.each do |file|
   next if count.zero?
 
   total += count
-  _out, err, status = Open3.capture3(RbConfig.ruby, __FILE__, '--page', file)
+  # `bundle exec` exports BUNDLE_LOCKFILE too, so name the lock that goes
+  # with the page's Gemfile, or the child resolves against the wrong one.
+  gemfile = CodeBlocks.gemfile_for(file)
+  env = {'BUNDLE_GEMFILE' => gemfile, 'BUNDLE_LOCKFILE' => "#{gemfile}.lock"}
+  _out, err, status = Open3.capture3(env, RbConfig.ruby, '-rbundler/setup', __FILE__, '--page', file)
   if status.success?
     puts "ok   #{file} (#{count} block#{"s" unless count == 1})"
   else

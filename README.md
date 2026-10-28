@@ -59,6 +59,14 @@ How the checker (`bin/check-code-blocks`) runs them:
   inspect output, the line still runs but isn't asserted.
 - Any exception, or a failed assertion, fails the check with the file and line.
   The checker also fails if it finds no runnable blocks at all.
+- **Pages under `src/content/docs/adapters/` run against `Gemfile.edge`**, not the
+  released pins: the adapter gems and `FieldStruct::Introspection` aren't released
+  yet, so that bundle takes field_struct `develop`, actionable `main` and the
+  adapters from git. It has no committed lockfile, so every build checks the pages
+  against the newest code. Install it once with
+  `BUNDLE_GEMFILE=Gemfile.edge bundle install`. To check the pages against
+  unmerged branches, point `EDGE_GEMFILE` at another Gemfile. When the adapters
+  ship, move these pages onto `Gemfile` and delete `Gemfile.edge`.
 
 This borrows the approach of field_struct's own `spec/docs_examples_spec.rb`
 (`<!-- doctest -->` blocks in README/USAGE), changed to per-page shared state.

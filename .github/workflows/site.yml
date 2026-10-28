@@ -40,12 +40,18 @@ jobs:
       - name: Install gems
         run: bundle install --jobs 4
 
+      # The Adapters pages run against unreleased code (see Gemfile.edge).
+      - name: Install gems for the Adapters pages
+        run: bundle install --jobs 4
+        env:
+          BUNDLE_GEMFILE: Gemfile.edge
+
       - run: npm ci
 
       - name: Build site
         run: npm run build
 
-      - name: Run runnable code blocks against the released gems
+      - name: Run runnable code blocks (released gems; Adapters pages against Gemfile.edge)
         run: bundle exec ruby bin/check-code-blocks
 
       - uses: actions/upload-pages-artifact@v5
