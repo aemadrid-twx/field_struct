@@ -65,12 +65,15 @@ RSpec.describe FieldStruct::Introspection do
     end
 
     it 'builds an element only when it is read' do
-      klass = struct('Shielded') { optional :xs, :array, of: FieldStruct::Types::Nested, json_schema: {'type' => 'array'} }
+      # Types::Nested can't be built without a struct class, so reading the
+      # element raises; an exporter that never reads it (one honouring an
+      # override option, say) must still get the property.
+      klass = struct('Shielded') { optional :xs, :array, of: FieldStruct::Types::Nested }
 
       node = node_for(klass, :xs)
 
+      expect { described_class.properties(klass) }.not_to raise_error
       expect { node.element }.to raise_error(ArgumentError)
-      expect(klass.to_json_schema['properties']['xs']).to eq('type' => %w[array null])
     end
 
     it "lists a union's members in declared order" do

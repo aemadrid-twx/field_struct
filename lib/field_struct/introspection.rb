@@ -2,8 +2,9 @@
 
 module FieldStruct
   # A format-neutral view of a struct's fields, for code that exports structs
-  # to another schema language. {FieldStruct::JSONSchema} is built on it, and
-  # so can an Avro or Protobuf exporter in its own gem:
+  # to another schema language. The adapters in
+  # https://github.com/aemadrid-twx/field_struct-adapters (JSON Schema, Avro)
+  # are built on it, and so can an exporter of your own:
   #
   #   FieldStruct::Introspection.properties(Invoice).each do |property|
   #     property.key            # => "total" (the serialize name, as a String)
@@ -160,8 +161,7 @@ module FieldStruct
     # @return [ScalarNode, ArrayNode, UnionNode, StructNode, nil]
     def self.element_node(options)
       of_type = options[:of_type]
-      # An array of unions records only the Union class, not its members
-      # (so even a Union subclass's #json_schema isn't reachable here).
+      # An array of unions records only the Union class, not its members.
       return nil if of_type.nil? || (of_type.is_a?(::Class) && of_type <= FieldStruct::Types::Union)
 
       node(of_type.is_a?(::Class) ? of_type.new : of_type, options[:element] || {})

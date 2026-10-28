@@ -36,8 +36,6 @@ require_relative 'field_struct/errors'
 require_relative 'field_struct/base'
 require_relative 'field_struct/rbs'
 require_relative 'field_struct/introspection'
-require_relative 'field_struct/json_schema'
-require_relative 'field_struct/json_schema/pattern'
 require_relative 'field_struct/scaffold'
 
 # Typed PORO foundation: declare fields with enforced types, presence checks,

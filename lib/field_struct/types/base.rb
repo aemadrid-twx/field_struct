@@ -140,19 +140,6 @@ module FieldStruct
         nil
       end
 
-      # The JSON Schema {FieldStruct::JSONSchema} emits for fields of this
-      # type, or +nil+ (the default) to derive one. Override in a custom type
-      # so its JSON is described instead of left unconstrained:
-      #
-      #   def json_schema = {'type' => 'string', 'pattern' => '^[0-9]+\.[0-9]{2}$'}
-      #
-      # A field's own +json_schema:+ option wins over this. Use String keys.
-      #
-      # @return [Hash{::String=>Object}, nil]
-      def json_schema
-        nil
-      end
-
       # Concise type-instance representation. The default shows just the
       # type-class name (e.g. +#<FieldStruct::Types::String>+). Subclasses
       # that carry parameter state (Nested, Union, …) override to surface

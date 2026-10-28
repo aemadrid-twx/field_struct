@@ -8,21 +8,10 @@ adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
-- `FieldStruct::JSONSchema.generate(klass)` and `Klass.to_json_schema`: a JSON
-  Schema (draft 2020-12) of the JSON a class writes with `to_json`. Covers every
-  built-in type, `serialize :json` names, `enum:` / `in:` / Regexp `format:`
-  (translated to ECMA-262, else kept as `x-ruby-pattern`), nested structs in
-  `$defs` (recursion via `$ref: "#"`), arrays, unions, `description:`, literal
-  defaults, `sensitive:` and `unknown_attributes :raise`. Overrides: a field's
-  `json_schema:` option and a custom type's new `Types::Base#json_schema`. No
-  runtime dependency; the spec checks generated schemas against `to_json`
-  output with `json_schemer` (dev only).
-- `FieldStruct::JSONSchema.pattern_for(regexp)`: a Ruby Regexp as an ECMA-262
-  pattern that matches the same strings under the `u` flag (`.`, `\s`, `^` /
-  `$` and `/i` keep Ruby's meaning), or `nil` when there's no exact
-  translation. Every built-in UUID, URL and Email format translates.
-- `FieldStruct::Introspection`: the field walk `JSONSchema` is built on, for
-  writing exporters of your own (Avro, Protobuf). `properties(klass,
+- `FieldStruct::Introspection`: the field walk exporters are built on, for
+  writing your own (Avro, Protobuf, TypeScript types). JSON Schema and Avro
+  export ship as separate gems built on it, in
+  [field_struct-adapters](https://github.com/aemadrid-twx/field_struct-adapters). `properties(klass,
   serialization:)` gives each field's serialize name, its `Field`, and a node
   (`ScalarNode`, `ArrayNode` with its element, `UnionNode` with its members,
   `StructNode` by reference) that keeps the type and options it came from.

@@ -568,25 +568,9 @@ namespace :field_struct do
 end
 ```
 
-## JSON Schema
+## JSON Schema, Avro and other formats
 
-`FieldStruct::JSONSchema.generate(User)`, or `User.to_json_schema`, returns a JSON Schema (draft 2020-12) of the JSON the class writes with `to_json` and reads with `from_json`. Use it for API docs, validators in other languages, LLM tool parameters (RubyLLM accepts any object that responds to `to_json_schema`) or TypeScript types. It has no dependency.
-
-```ruby
-class User < FieldStruct::Base
-  required :first_name, :string
-  optional :age,        :integer, in: 0..150
-  serialize :json, first_name: 'firstName'
-end
-
-User.to_json_schema
-# => {"$schema"=>"https://json-schema.org/draft/2020-12/schema", "title"=>"User", "type"=>"object",
-#     "properties"=>{"firstName"=>{"type"=>"string"},
-#                    "age"=>{"type"=>["integer", "null"], "minimum"=>0, "maximum"=>150}},
-#     "required"=>["firstName"]}
-```
-
-Property names follow `serialize :json`. Nested structs go in `$defs`. `enum:`, `in:` and Regexp `format:` become `enum`, `minimum`/`maximum` and an ECMA-262 `pattern`. Override a field with `json_schema: {...}`, or a custom type with `def json_schema`. Details are in [USAGE.md](USAGE.md#json-schema-for-your-own-classes).
+Exporters live in separate gems, so you load only the ones you use. They're in [field_struct-adapters](https://github.com/aemadrid-twx/field_struct-adapters): `field_struct-json_schema` (JSON Schema draft 2020-12, for API docs, LLM tool parameters and validators in other languages) and `field_struct-avro` (Avro schemas and binary, for Kafka and data lakes). They're built on `FieldStruct::Introspection`, which you can use to write your own: see [USAGE.md](USAGE.md#exporting-to-another-schema-language).
 
 ## Scaffolding a class from JSON
 
