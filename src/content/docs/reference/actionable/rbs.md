@@ -6,7 +6,7 @@ sidebar:
 ---
 
 The gem ships Sord-generated signatures for its own classes (`sig/`).
-`Actionable::RBS.generate(klass)` writes RBS for **your** action from its
+`Actionable::RBS.generate(klass)` writes RBS for _your_ action from its
 declared schemas, so Steep or Solargraph can check `.run` calls and result
 readers. It returns a String.
 
@@ -73,19 +73,19 @@ What each part is:
 | `type skip_code` | declared skip codes only; only when the action declares skips |
 | `def self.run` | the input schema's fields as keywords (optional fields prefixed `?`), or an `InputSchema` instance. A free-form or `input_for` action gets `(*untyped)` |
 | `def input` | only with a fixed `input` schema |
-| `@field: T?` | one per output field, so steps that assign it type-check; nullable because it's unset until assigned. Don't declare these again in your own sig files: RBS rejects an instance variable declared twice |
+| `@field: T?` | one per output field, so steps that assign it type-check; nullable because it is unset until assigned. Don't declare these again in your own sig files: RBS rejects an instance variable declared twice |
 | `InputSchema`, `Output`, `Result` | exist only in RBS. At runtime the schemas are anonymous classes |
 | `Result` | `output` typed as `Output`, plus one reader per output field. Without an output schema, `.run` returns `::Actionable::Result` |
 
 Field types come from `FieldStruct::RBS.type_for`, so they match what
-`FieldStruct::RBS.generate` emits: writers take and return `T?`, scalar array
+`FieldStruct::RBS.generate` emits. Writers take and return `T?`, scalar array
 elements are nullable, a field's `rbs_type:` wins, and a `:value` field is
 `untyped`. Types describe a valid instance.
 
 Generation raises `ArgumentError` when the action has a fixed `input` schema and
 Ruby already resolves `YourAction::InputSchema` (a constant on the action, an
-ancestor or an included module), since the RBS name would describe something
-else.
+ancestor or an included module). That is an error because the RBS name would
+describe something else.
 
 ## Typed outcomes
 
@@ -122,14 +122,14 @@ rbs.include?('def id: () -> ::Integer?')                                        
   `SkipOutput` or `FailureOutput`. A trailing `?` becomes `Predicate` and `!`
   becomes `Bang` (`fails(:expired?) { … }` → `ExpiredPredicateFailureOutput`).
   `generate` raises `ArgumentError` when two codes of one kind land on one name
-  (`:ready` and `:ready_`), or when a code's name isn't plain ASCII starting with a
+  (`:ready` and `:ready_`), or when a code's name is not plain ASCII starting with a
   capital once camelized.
 - A host's own result subclass returned by `.run` is not described (a known gap
   upstream).
 
 ## Base actions
 
-The action is declared with its real superclass, and every named ancestor up to
+The action is declared with its real superclass. Every named ancestor up to
 `Actionable::Action` is declared before it, empty, so the file validates even if
 nobody generates your abstract bases:
 

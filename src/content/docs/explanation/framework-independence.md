@@ -5,9 +5,9 @@ sidebar:
   order: 4
 ---
 
-If you've used Rails, a FieldStruct feels familiar: `valid?`, `errors`,
+If you have used Rails, a FieldStruct feels familiar: `valid?`, `errors`,
 `attributes`, `as_json`, `model_name`. None of that comes from Rails. Neither
-gem depends on ActiveModel or ActiveSupport, and field_struct goes one step
+gem depends on ActiveModel or ActiveSupport. And field_struct goes one step
 further: it promises to behave the same whether or not your app has loaded
 them.
 
@@ -16,7 +16,7 @@ them.
 Decision D8 in the field_struct
 [design record](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/docs/origin/plan.md):
 "We mirror the shape so Rails-adjacent developers feel at home, but we do not
-reuse `ActiveModel::*` code." It's also a design invariant: "Mirroring the
+reuse `ActiveModel::*` code." It is also a design invariant: "Mirroring the
 interface shape is fine; including modules or copying internals is not."
 
 ```ruby run
@@ -39,36 +39,36 @@ for the gem.
 Some ActiveModel methods are left out on purpose. D8 skips `to_key`,
 `to_param`, `to_partial_path`, `persisted?` and `new_record?` because "they
 encode a persistence/identity model FieldStruct does not have." That matches
-what the project says it isn't: "Not a database layer. Not a form object. Not
+what the project says it is not: "Not a database layer. Not a form object. Not
 an ActiveModel replacement"
 ([project intent](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/.claude/project_intent.md)).
 
-The records state the no-reuse rule but don't spell out a further reason for
-it. What they do record is the outcome: field_struct's only runtime
-dependencies are `bigdecimal`, `oj` and `tzinfo` (`field_struct.gemspec`).
+The records state the no-reuse rule but don't give a further reason for it.
+What they do record is the outcome: field_struct's only runtime dependencies
+are `bigdecimal`, `oj` and `tzinfo` (`field_struct.gemspec`).
 
 ## Same behaviour, with or without ActiveSupport
 
-Not depending on ActiveSupport isn't enough, because a host app usually loads
-it anyway, and ActiveSupport changes core Ruby classes. field_struct's
-invariant 7 puts it this way: framework independence "is not 'does not depend
+Not depending on ActiveSupport is not enough. A host app usually loads it
+anyway, and ActiveSupport changes core Ruby classes. field_struct's invariant 7
+puts it this way: framework independence "is not 'does not depend
 on ActiveSupport', it is 'behaves the same whether or not a host has loaded
 it'."
 
-The invariant lists what ActiveSupport changes: it adds `String#to_date`,
-`#to_time` and `#to_datetime`, and redefines `Time.===`, `Date#to_time` and
+The invariant lists what ActiveSupport changes. It adds `String#to_date`,
+`#to_time` and `#to_datetime`, and it redefines `Time.===`, `Date#to_time` and
 `Date.parse`'s two-digit-year handling. So the rule is "**never dispatch on a
 predicate a framework can redefine**":
 
-- branch on explicit stdlib classes, not on `respond_to?(:to_date)`;
+- branch on explicit stdlib classes, not on `respond_to?(:to_date)`
 - parse through the stdlib class methods (`Date.parse`, `Time.parse`,
-  `strptime`), which ActiveSupport doesn't redefine;
+  `strptime`), which ActiveSupport doesn't redefine
 - build cross-class conversions from components rather than through
-  `to_time` / `to_datetime`, which it does.
+  `to_time` / `to_datetime`, which it does
 
-It's enforced two ways: a CI lane runs the suite with ActiveSupport 7.2 and 8.1
-loaded, under `TZ=America/Denver` with deprecations raising, and a static guard
-in `spec/guardrails_spec.rb`. The invariant itself warns the guard "is
+We enforce it two ways. A CI lane runs the suite with ActiveSupport 7.2 and 8.1
+loaded, under `TZ=America/Denver` with deprecations raising. And a static guard
+lives in `spec/guardrails_spec.rb`. The invariant itself warns the guard "is
 necessary but not sufficient": ActiveSupport changes semantics, not only which
 predicates answer true.
 
@@ -84,7 +84,7 @@ actionable makes the same split at the gem level. Its core "depends only on
 `field_struct`" (plus `oj`, which field_struct already pulls in), and nothing under the core load path requires ActiveModel,
 ActiveSupport or ActiveRecord (decision D8 and invariant 4 in the actionable
 [design record](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/docs/origin/plan.md)).
-Rails pieces live behind explicit requires:
+The Rails pieces live behind explicit requires:
 
 | Require | Adds |
 |---|---|
@@ -94,7 +94,7 @@ Rails pieces live behind explicit requires:
 | `actionable/rspec` | matchers and stubs |
 
 This one has a reason on record. The original actionable "always loaded
-ActiveModel/ActiveSupport and hard-wired ActiveRecord transactions"; the
+ActiveModel/ActiveSupport and hard-wired ActiveRecord transactions". The
 rebuild moved them to an opt-in adapter as one of four fixes for code that was
 "hard to type and hard for both humans and coding agents to reason about"
 ([first discussion](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/docs/origin/first_discussion.md)).

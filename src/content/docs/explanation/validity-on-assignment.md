@@ -5,9 +5,9 @@ sidebar:
   order: 2
 ---
 
-A FieldStruct doesn't wait for you to ask whether it's valid. Every time a
-field is assigned, that field is checked, and the result is kept in `errors`.
-`valid?` just reads what's already there.
+A FieldStruct doesn't wait for you to ask whether it is valid. Every time a
+field is assigned, that field is checked and the result is kept in `errors`.
+`valid?` only reads what is already there.
 
 ## What a setter does
 
@@ -15,7 +15,7 @@ Each setter runs the same pipeline: coerce the value, store it, check presence,
 check `format:` / `enum:` / `in:`, and rewrite that field's entry in `errors`
 (decision D5 in the
 [design record](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/docs/origin/plan.md)).
-The setter *owns* its field's errors: it clears them and writes them again on
+The setter *owns* its field's errors. It clears them and writes them again on
 every assignment, whatever was there before.
 
 ```ruby run
@@ -36,7 +36,7 @@ user.errors[:name]   # => []
 user.valid?          # => true
 ```
 
-`new` and `assign_attributes` aren't a separate path. They call the same
+`new` and `assign_attributes` are not a separate path. They call the same
 setters, one field at a time. So an object built from a Hash and an object
 built up field by field end in exactly the same state.
 
@@ -47,30 +47,30 @@ The design records give two reasons.
 - **Coercion must hold after construction, not only during it.** The very
   first design notes say so: "Setters must coerce after initialization, not
   only at construction time" ([first discussion](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/docs/origin/first_discussion.md)).
-- **There's nothing left to compute later.** D5: "`valid?` is a cheap read of
+- **There is nothing left to compute later.** D5: "`valid?` is a cheap read of
   `errors.empty?`, no recomputation. Lazy/eager distinction doesn't apply
   because validation is already a side effect of mutation."
 
 The one exception is cross-field validation. A `validate` block looks at
 several fields at once, so no single setter can own it. Those blocks run at the
-end of `new` and again on every `valid?` call, and they write to
-`errors[:base]`, which is cleared before each run (decision V2/V3).
+end of `new` and again on every `valid?` call. They write to `errors[:base]`,
+which is cleared before each run (decision V2/V3).
 
-The cost is paid per assignment: the README's benchmark notes that "the cost
+The cost is paid per assignment. The README's benchmark notes that "the cost
 scales with the number of fields assigned rather than with the size of the
 class."
 
 ## Building is not validating
 
-Because validation happens as data arrives, bad data doesn't stop `new`. You
-get an object back, and it tells you what's wrong. The design record keeps the
-two apart on purpose: the
+Validation happens as data arrives, so bad data doesn't stop `new`. You get an
+object back, and it tells you what is wrong. The design record keeps the two
+apart on purpose. The
 [USAGE mental model](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md)
 says "Construction and validity are *separate*: you can build an invalid
 instance; ask `valid?`."
 
-That has one consequence you must remember: a required field can still hold
-`nil`, or the raw input when coercion failed. Gate on `valid?`, never on
+That has one consequence to remember: a required field can still hold `nil`,
+or the raw input when coercion failed. Gate on `valid?`, never on
 "it was declared required".
 
 ```ruby run
@@ -82,8 +82,8 @@ broken.valid?    # => false
 
 ## An invalid object never looks fine
 
-`inspect` shows the errors too. A valid object reads cleanly; an
-invalid one appends what's wrong:
+`inspect` shows the errors too. A valid object reads cleanly, and an invalid
+one appends what is wrong:
 
 ```ruby run
 User.new(name: 'Alice', age: 30).inspect  # => '#<User name: "Alice", age: 30>'
@@ -94,8 +94,8 @@ This is one of field_struct's design invariants: "The public surface explains
 itself without source. Errors render as full sentences; `inspect` shows state
 *and* validity"
 ([project intent](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/.claude/project_intent.md)).
-It serves the gem's stated primary goal, legibility for both human and AI
-readers. `inspect` only reads `errors`; printing an object never re-runs
+It serves the gem's stated primary goal: legibility for both human and AI
+readers. `inspect` only reads `errors`. Printing an object never re-runs
 validation or changes it.
 
 ## The trade-off: nested values go stale
@@ -123,11 +123,11 @@ person.address = person.address
 person.valid?           # => false
 ```
 
-That's the price of "the setter owns its field's errors": only a setter
-changes them. The fix is to go through a setter again, either by re-assigning
-the field or with `with` / `assign_attributes`. For a nested struct you change
-often, USAGE suggests making it `immutable!` and changing it with `with`, so
-the only way to change it is through a setter.
+That is the price of "the setter owns its field's errors": only a setter
+changes them, and we can live with that. The fix is to go through a setter
+again, either by re-assigning the field or with `with` / `assign_attributes`.
+For a nested struct you change often, USAGE suggests making it `immutable!` and
+changing it with `with`. Then a setter is the only way in.
 
 ## Related
 

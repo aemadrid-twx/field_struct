@@ -6,7 +6,7 @@ sidebar:
 ---
 
 A result's `code` says how a run ended: `:success`, or a failure or skip code
-the action chose. By default those codes are open-ended: any step can
+the action chose. By default those codes are open-ended, and any step can
 `fail!(:anything)`. `fails` and `skips` let an action list them on the class
 instead.
 
@@ -16,10 +16,10 @@ Decision D20 in the
 [design record](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/docs/origin/plan.md)
 starts from a real case: "A failure's code was open-ended, so an adapter
 couldn't know an action's failure contract." A host app wanted to attach its
-own information to each code (whether it's a rejection, a not-found, and so
-on) and had nowhere to put it except `fail`'s keywords, which already belong to
-`errors`. An error on an attribute that happened to be called `kind` collided
-with it.
+own information to each code (is it a rejection, a not-found, and so on). It
+had nowhere to put it except `fail`'s keywords, and those already belong to
+`errors`. So an error on an attribute that happened to be called `kind`
+collided with it.
 
 The answer is to declare each code, with its default message and any metadata,
 next to the steps:
@@ -41,7 +41,7 @@ result.metadata       # => { kind: :rejected }
 result.errors[:kind]  # => ["is not a known kind"]
 ```
 
-`kind:` on the `fails` line is metadata; `kind:` on the `fail!` call is still
+`kind:` on the `fails` line is metadata. `kind:` on the `fail!` call is still
 an error. The two no longer share a keyword space.
 
 ## Metadata is neutral
@@ -51,10 +51,10 @@ and shows it, but never interprets it, so the gem stays unopinionated about
 what a host means by a key such as `kind`." Your app decides what the keys
 mean.
 
-There's exactly one opt-in exception, and it's named: an action that calls
-`honor_retry_metadata` (from `actionable/job`) lets the job adapter read a
-`retry:` key. Without that call, `retry: true` is just data (D21, owner ruling
-P10).
+There is exactly one exception, it is opt-in, and it has a name: an action
+that calls `honor_retry_metadata` (from `actionable/job`) lets the job adapter
+read a `retry:` key. Without that call, `retry: true` is only data (D21, owner
+ruling P10).
 
 ## Strict once declared
 
@@ -77,8 +77,8 @@ end
 message.include?('fails with :timeout, which it does not declare')  # => true
 ```
 
-Two things stay unchecked so existing code keeps working: an action that
-declares nothing fails with any code, as before, and the codes the gem itself
+Two things stay unchecked, so existing code keeps working. An action that
+declares nothing fails with any code, as before. And the codes the gem itself
 emits are always allowed:
 
 ```ruby run
@@ -107,14 +107,14 @@ action returns."
 Once every way an action can end is written on the class, tools can read it at
 run time, with no source parsing:
 
-- `describe` and `describe_text` show the declarations.
-- `Actionable::RBS` emits `failure_code` and `skip_code` type aliases.
-- The RSpec stubs refuse a code the action doesn't declare, since that would
-  "test a failure the action can never return" (USAGE).
-- Outcome coverage (D22, `actionable/rspec/coverage`) reports, at the end of a
-  suite, each declared outcome no spec reached.
-- Typed outcomes (D23, `typed_outcomes`) go one step further and give each
-  code its own output schema.
+- `describe` and `describe_text` show the declarations
+- `Actionable::RBS` emits `failure_code` and `skip_code` type aliases
+- the RSpec stubs refuse a code the action doesn't declare, since that would
+  "test a failure the action can never return" (USAGE)
+- outcome coverage (D22, `actionable/rspec/coverage`) reports, at the end of a
+  suite, each declared outcome no spec reached
+- typed outcomes (D23, `typed_outcomes`) go one step further and give each
+  code its own output schema
 
 ## Related
 

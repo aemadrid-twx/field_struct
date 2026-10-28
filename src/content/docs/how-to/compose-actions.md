@@ -68,11 +68,11 @@ declined.message   # => "the card was declined"
 declined.metadata  # => { http: 402 }
 ```
 
-The parent re-declared `:card_declined` without metadata; the child's
+The parent re-declared `:card_declined` without metadata, and the child's
 declaration filled it in. If a parent that declares failures leaves out a code
 its child can fail with, that failure raises `Actionable::DefinitionError`.
 
-A child that **skips** doesn't stop the parent: the parent carries on as if the
+A child that _skips_ doesn't stop the parent. The parent carries on as if the
 child had succeeded.
 
 ## See also

@@ -30,7 +30,7 @@ Every assignment, whether through `new`, `assign_attributes`, `with` or
 
 The setter owns its field's errors: each assignment rewrites them, so fixing a
 field clears its error. `valid?` reads `errors.empty?` after rerunning the
-cross-field validators; it never recoerces fields.
+cross-field validators. It never recoerces fields.
 
 ```ruby run
 class Book < FieldStruct::Base
@@ -64,7 +64,7 @@ What "missing" means is up to the type: nil, empty or whitespace-only for
 everything else. `0` and `false` are present.
 
 Coercion reasons name the type and the input's **class**, never the value, so
-they're safe to log:
+they are safe to log:
 
 ```ruby run
 class Order < FieldStruct::Base
@@ -122,7 +122,7 @@ err.original.class # => ArgumentError
 ## Cross-field validation
 
 `validate` registers checks that look at more than one field. Pass method names,
-a block (which receives the record), or both; each call appends, and they run in
+a block (which receives the record), or both. Each call appends, and they run in
 declaration order.
 
 ```ruby run
@@ -159,7 +159,7 @@ bad.errors[:base] # => ["must span at least one day"]
 - A class with no validators skips this step, and `valid?` is just
   `errors.empty?`.
 - Validators are inherited: a subclass starts with a copy of its parent's list
-  and can add more. There's no way to remove an inherited one.
+  and can add more. There is no way to remove an inherited one.
 
 ```ruby run
 class Tagged < FieldStruct::Base

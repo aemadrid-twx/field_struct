@@ -99,7 +99,7 @@ Actionable::Success.new.inspect   # => "#<Actionable::Success code=:success erro
 When the action declares an output schema, each declared field can be read off
 the result directly: `result.total` is `result.output.total`. This goes through
 `method_missing`, so a field whose name is already a method on the result
-(`status`, `ok?`, `to_h`, …) is not delegated; read it from `result.output`.
+(`status`, `ok?`, `to_h`, …) is not delegated. Read it from `result.output`.
 Names that collide with the result's attributes can't be declared at all
 ([reserved names](../input-and-output/#reserved-output-names)).
 

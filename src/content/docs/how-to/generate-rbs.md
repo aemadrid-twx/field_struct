@@ -59,7 +59,7 @@ rbs.include?('def total_cents: () -> ::Integer')                                
 rbs.include?('type failure_code = :out_of_stock | :invalid_input | :invalid_output') # => true
 ```
 
-`InputSchema`, `Output` and `Result` in that output exist only in RBS; at
+`InputSchema`, `Output` and `Result` in that output exist only in RBS. At
 runtime the input and output schemas are anonymous classes.
 
 ## Write the files
@@ -85,11 +85,13 @@ namespace :rbs do
 end
 ```
 
-The task isn't run on this page; in a Rails app, make it depend on
-`:environment` so the classes load. If your actions share a base class (an
-`ApplicationAction`), each action's file declares that base too, empty, so the
-files repeat those lines; RBS merges them. Don't declare an action's output instance variables (`@total_cents`) in
-your own sig files too: the generated file already does, and RBS rejects a
+The task is not run on this page. In a Rails app, make it depend on
+`:environment` so the classes load.
+
+If your actions share a base class (an `ApplicationAction`), each action's file
+declares that base too, empty. So the files repeat those lines, and RBS merges
+them. Don't declare an action's output instance variables (`@total_cents`) in
+your own sig files too. The generated file already does, and RBS rejects a
 second declaration.
 
 ## See also

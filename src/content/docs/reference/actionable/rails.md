@@ -7,7 +7,7 @@ sidebar:
 
 `require 'actionable/rails'` loads the optional adapter. It requires
 `active_model` and ActiveSupport's string inflections, and defines a Railtie
-when Rails is loaded. The core never loads it, so without it there's no
+when Rails is loaded. The core never loads it, so without it there is no
 `transactional`:
 
 ```ruby run
@@ -15,8 +15,8 @@ Actionable::Action.respond_to?(:transactional)   # => false
 Actionable::Action.respond_to?(:after_commit)    # => false
 ```
 
-The examples below aren't run on this site (it doesn't install ActiveRecord).
-CI for the gem runs the adapter on ActiveRecord 7.1 and 8.x; only
+The examples below are not run on this site (it doesn't install ActiveRecord).
+CI for the gem runs the adapter on ActiveRecord 7.1 and 8.x. Only
 `after_commit` needs 7.2.
 
 ## `transactional`
@@ -40,13 +40,13 @@ into one with `camelize.constantize` (`:invoice` → `Invoice`).
 | an exception raised | rolls back and the exception propagates |
 
 - **Nesting.** When a transaction is already open on the model's connection
-  and you didn't pass `requires_new:`, the action adds `requires_new: true`, so
-  it takes its own savepoint and its failed writes roll back without the outer
+  and you didn't pass `requires_new:`, the action adds `requires_new: true`. So
+  it takes its own savepoint, and its failed writes roll back without the outer
   transaction committing them. Pass `requires_new: false` to join the outer
   transaction instead.
 - Lifecycle hooks run inside the transaction, so a hook's writes share its
   fate and its external side effects fire before the commit.
-- The setting is inherited; `transaction_config` reads it as
+- The setting is inherited. `transaction_config` reads it as
   `{model:, options:}`, and `describe[:transactional]` shows it.
 
 ## `after_commit`
@@ -63,7 +63,7 @@ end
 `after_commit target, **options` runs a side effect only after the database work
 really committed. A target is a method or an action class, with `if:` /
 `unless:` like any hook. It needs ActiveRecord ≥ 7.2
-(`ActiveRecord.after_all_transactions_commit`); declaring it on an older
+(`ActiveRecord.after_all_transactions_commit`). Declaring it on an older
 ActiveRecord, or without ActiveRecord loaded, raises `DefinitionError`.
 
 | Scenario | Runs? | When |
@@ -72,12 +72,12 @@ ActiveRecord, or without ActiveRecord loaded, raises `DefinitionError`.
 | succeeds inside an outer `Model.transaction` | yes | after the **outermost** transaction commits |
 | succeeds, then an enclosing transaction rolls back | no | — |
 | the run ends in a `Failure` | no | — |
-| the run ends in a `Skipped` | no | the skip's writes commit, but there's nothing to do |
+| the run ends in a `Skipped` | no | the skip's writes commit, but there is nothing to do |
 | non-transactional action, no transaction open | yes | immediately after the run, before `.run` returns |
 | nested actions, each with `after_commit` | each once, child first | after the outermost commit |
 
 The run is over when the hook fires: it can't change the result (a halting verb
-only stops the remaining `after_commit` hooks) and it isn't recorded in the
+only stops the remaining `after_commit` hooks) and it is not recorded in the
 history. An exception it raises propagates from wherever the commit happened.
 `after_commit` hooks are inherited, checked by the missing-method and
 verb-position checks, listed under `describe[:hooks][:after_commit]`, and read

@@ -28,7 +28,7 @@ FieldStruct::UnknownAttributeError.superclass # => FieldStruct::Error
 | `FieldStruct::ImmutableError` | a setter called after `new` on an `immutable!` class | — |
 | `FieldStruct::UnknownAttributeError` | `new`, `assign_attributes`, `with`, `from_json`, under `unknown_attributes :raise` | `keys` (Array of Symbols) |
 | `FrozenError` (Ruby's) | a setter on a `frozen!` instance | — |
-| `ArgumentError` | a bad declaration (see [Fields and options](../fields-and-options/#declaration-errors)); non-Hash input to `new` / `assign_attributes`; positional arguments to `with`; a non-object JSON root; `FieldStruct::RBS.generate` on an anonymous class; `FieldStruct::Scaffold.from_json` with no samples (`[]`) or a root that isn't an object or array of objects | — |
+| `ArgumentError` | a bad declaration (see [Fields and options](../fields-and-options/#declaration-errors)); non-Hash input to `new` / `assign_attributes`; positional arguments to `with`; a non-object JSON root; `FieldStruct::RBS.generate` on an anonymous class; `FieldStruct::Scaffold.from_json` with no samples (`[]`) or a root that is not an object or array of objects | — |
 | `KeyError` | an unregistered type name | — |
 | `EncodingError` (Oj's class) | malformed JSON in `from_json` | message without the input, no `cause` |
 | `NameError` | `use_alias!` with a name already taken | — |

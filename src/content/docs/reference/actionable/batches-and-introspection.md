@@ -9,7 +9,7 @@ sidebar:
 
 `Action.run_each(enumerable) { |item| run_args }` runs the action once per item
 and returns an `Actionable::BatchResult`. Each item is its own `.run`, so one
-failure never affects another, and there's no batch-wide transaction.
+failure never affects another. There is no batch-wide transaction.
 
 The block maps an item to `.run` arguments:
 
@@ -112,8 +112,8 @@ A transactional action's first line reads `(measure: none, transactional)`.
 ## Registry
 
 Every named subclass of `Actionable::Action` registers itself, keyed by its
-class name, when it's defined. A class without a name at that moment
-(`Foo = Class.new(Actionable::Action)`) isn't registered.
+class name, when it is defined. A class without a name at that moment
+(`Foo = Class.new(Actionable::Action)`) is not registered.
 
 ```ruby run
 class Registered < Actionable::Action

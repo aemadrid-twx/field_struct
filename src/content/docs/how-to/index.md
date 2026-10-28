@@ -6,7 +6,7 @@ sidebar:
   order: 1
 ---
 
-Each guide solves one task in a few steps. They assume you know the basics; if
+Each guide solves one task in a few steps. They assume you know the basics. If
 you don't yet, start with the [tutorial](../tutorial/bookstore-checkout/).
 Every runnable example is checked in CI against field_struct v0.16.0 and
 actionable v1.10.0.

@@ -6,8 +6,8 @@ sidebar:
   order: 1
 ---
 
-In this tutorial you'll build the checkout for a small online bookstore, one
-piece at a time. Each chapter builds on the one before it:
+Let's build the checkout for a small online bookstore, one piece at a time.
+Each chapter builds on the one before it:
 
 1. [A typed Book](../a-typed-book/): define a struct with typed fields,
    required and optional fields, defaults, validation and coercion.
@@ -36,9 +36,10 @@ gem 'field_struct', git: 'https://github.com/aemadrid-twx/field_struct', tag: 'v
 gem 'actionable-rb', git: 'https://github.com/aemadrid-twx/actionable', tag: 'v1.10.0'
 ```
 
-[Chapter 6](../into-an-app/) also uses `activejob` and `rspec`; it says when to
-add them. Run `bundle install`, then follow along in `bundle exec irb` with
-`require 'field_struct'` and `require 'actionable'`, or in a script.
+[Chapter 6](../into-an-app/) also uses `activejob` and `rspec`, and it says
+when to add them. Run `bundle install`, then follow along in `bundle exec irb`
+with `require 'field_struct'` and `require 'actionable'`, or in a script.
 
-Every example in this tutorial is run in CI against exactly these releases, and
-each `# => value` comment is checked. If you see `# =>`, that's what Ruby returns.
+Every example in this tutorial runs in CI against exactly these releases, and
+each `# => value` comment is checked. So when you see `# =>`, that is what Ruby
+returns.
