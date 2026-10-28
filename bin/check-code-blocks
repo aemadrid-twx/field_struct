@@ -42,7 +42,8 @@ module CodeBlocks
   # The Gemfile a page's blocks run against. EDGE_GEMFILE swaps in another
   # edge bundle, to check the Adapters pages against unmerged branches.
   def gemfile_for(path)
-    edge = File.expand_path(path).start_with?(File.expand_path(EDGE_DIR) + File::SEPARATOR)
+    # realpath, so a path through a symlink (macOS's /tmp) still matches.
+    edge = File.realpath(path).start_with?(File.realpath(EDGE_DIR) + File::SEPARATOR)
     File.expand_path(edge ? ENV.fetch('EDGE_GEMFILE', 'Gemfile.edge') : 'Gemfile')
   end
 
