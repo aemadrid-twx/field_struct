@@ -6,8 +6,8 @@ sidebar:
   order: 2
 ---
 
-Every bookstore needs books. In this chapter you'll model one as a
-`FieldStruct::Base` subclass and see what it does with the data you give it.
+Every bookstore needs books. Let's model one as a `FieldStruct::Base`
+subclass and see what it does with the data we give it.
 
 ## Define the Book
 
@@ -30,13 +30,14 @@ end
 - The rest are options: `format:` (a regex the string must match), `round:`
   (decimal places), `in:` (allowed range), `enum:` (allowed values) and `default:`.
 
-`in: (0..)` means "zero or more". The parentheses matter: a bare `0..` at the end
-of a line makes Ruby read the next line as the end of the range. Here that's a
-syntax error, reported on the *following* line, which is confusing to debug.
+`in: (0..)` means "zero or more", and the parentheses matter. A bare `0..` at
+the end of a line makes Ruby read the next line as the end of the range. Here
+that is a syntax error, reported on the _following_ line, and it is confusing
+to debug.
 
 ## Values are coerced on the way in
 
-Data from a form, a CSV or a query string arrives as strings. FieldStruct
+Data from a form, a CSV or a query string arrives as strings. So FieldStruct
 converts each value to the field's type when you assign it:
 
 ```ruby run
@@ -48,12 +49,12 @@ book.format  # => :hardcover
 book.valid?  # => true
 ```
 
-`'24.985'` became `24.99`: `round: 2` rounds half up. String and symbol keys both
-work in `new`.
+`'24.985'` became `24.99`, because `round: 2` rounds half up. String and symbol
+keys both work in `new`.
 
 ## Optional fields and defaults
 
-Leave out an optional field and it's `nil`. A field with a `default:` gets that
+Leave out an optional field and it is `nil`. A field with a `default:` gets that
 value instead:
 
 ```ruby run
@@ -70,7 +71,7 @@ object.
 ## Validation and errors
 
 With the default settings, bad data doesn't make `new` raise. The object is
-created, it just isn't valid, and it tells you why:
+created, it is not valid, and it tells you why:
 
 ```ruby run
 bad = Book.new(isbn: 'abc', title: ' ', price: '-5', format: 'audiobook')
@@ -81,11 +82,12 @@ bad.errors.to_h      # => { isbn: ["is invalid"], title: ["is required"], price:
 bad.errors.full_messages # => ["Isbn is invalid", "Title is required", "Price is invalid", "Format is invalid"]
 ```
 
-- A required field that's missing reads `"is required"`. For strings, blank or
+- A required field that is missing reads `"is required"`. For strings, blank or
   whitespace-only counts as missing, so `' '` fails.
 - A value that breaks `format:`, `enum:` or `in:` reads `"is invalid"`.
 
-Fields are checked every time you assign them, so fixing a field clears its error:
+Fields are checked every time you assign them, so fixing a field clears its
+error:
 
 ```ruby run
 bad.isbn   = '978-1-68050-981-8'
@@ -96,12 +98,12 @@ bad.valid? # => true
 ```
 
 Always check `valid?` before you trust a struct. A required field can still be
-`nil` on an invalid object.
+`nil` on an invalid object, and that is easy to forget.
 
 ## When a value can't be coerced
 
-Some strings just aren't numbers. By default FieldStruct keeps the raw value and
-records an error, so nothing is lost:
+Some strings are not numbers, no matter how we coerce them. By default
+FieldStruct keeps the raw value and records an error, so nothing is lost:
 
 ```ruby run
 odd = Book.new(isbn: '978-1-68050-981-8', title: 'Eloquent Ruby', price: '24.99', pages: 'lots')
@@ -110,19 +112,20 @@ odd.valid?         # => false
 odd.errors[:pages] # => ["could not be coerced: Integer fields expect a base-10 integer, got a String that is not one"]
 ```
 
-The message names the type and the input's class, never the value itself, so it's
-safe to log. You can change this per class or per field with `coercion_policy`
-(`:replace` stores `nil`, `:raise` raises `FieldStruct::CoercionError`); see
+The message names the type and the input's class, never the value itself, so it
+is safe to log. You can change this per class or per field with
+`coercion_policy` (`:replace` stores `nil`, `:raise` raises
+`FieldStruct::CoercionError`). See
 [Coercion failure policy](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#coercion-failure-policy).
 
 ## What you built
 
 A `Book` that:
 
-- declares typed fields, some required and one with a default,
-- turns form-style strings into `BigDecimal`, `Integer` and `Symbol` values,
-- checks a format, an allowed range and a list of allowed values,
-- reports what's wrong in `errors` instead of raising.
+- declares typed fields, some required and one with a default
+- turns form-style strings into `BigDecimal`, `Integer` and `Symbol` values
+- checks a format, an allowed range and a list of allowed values
+- reports what is wrong in `errors` instead of raising
 
 The full list of types and options is in the field_struct
 [USAGE reference](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#types).

@@ -6,9 +6,8 @@ sidebar:
   order: 3
 ---
 
-A customer buys more than one book at a time. In this chapter you'll put books
-into line items, line items into an `Order`, and send the order over the wire as
-JSON.
+A customer buys more than one book at a time. So let's put books into line
+items, line items into an `Order`, and send the order over the wire as JSON.
 
 ## Where we left off
 
@@ -57,7 +56,7 @@ end
 
 A struct is still a plain Ruby class, so you can add your own methods, like
 `subtotal` and `total`. The `:email` type is a string with a built-in email
-format check. You'll meet `sensitive: true` [below](#keep-secrets-out-of-your-logs).
+format check. We will get to `sensitive: true` [below](#keep-secrets-out-of-your-logs).
 
 You can build the whole tree from plain hashes, the way it arrives from a form
 or an API. Each level is coerced into its own class:
@@ -87,7 +86,7 @@ You can also pass an existing `Book` or `LineItem` instead of a hash.
 ## Invalid children make the parent invalid
 
 If a nested struct is invalid, the parent is too. The parent reports
-`"is invalid"` on that field; ask the child for the details:
+`"is invalid"` on that field, and the child has the details:
 
 ```ruby run
 empty_line = Order.new(
@@ -101,11 +100,11 @@ empty_line.errors[:lines]                  # => ["is invalid"]
 empty_line.lines.first.errors[:quantity]   # => ["is invalid"]
 ```
 
-A required `:array` also counts as missing when it's empty, so an order with
+A required `:array` also counts as missing when it is empty, so an order with
 `lines: []` reports `lines` as `"is required"`.
 
 :::caution
-Validity is worked out when a field is **assigned**. If you change a nested
+Validity is worked out when a field is _assigned_. If you change a nested
 struct in place (`order.lines.first.quantity = 0`), the order doesn't notice.
 Assign the field again (`order.lines = order.lines`) to re-check it. See
 [shallow `valid?` staleness](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#validity-is-computed-on-assignment-shallow-valid-staleness).
@@ -125,7 +124,7 @@ copy == order                # => true
 copy.lines.first.book.price  # => BigDecimal('24.99')
 ```
 
-Two structs are `==` when they're the same class with the same attributes. Here
+Two structs are `==` when they are the same class with the same attributes. Here
 is that JSON, pretty-printed:
 
 ```json
@@ -184,7 +183,7 @@ Order.from_json(order.to_json) == order  # => true
 
 ## Keep secrets out of your logs
 
-`payment_token` was declared with `sensitive: true`. It's hidden wherever the
+`payment_token` was declared with `sensitive: true`. It is hidden wherever the
 object gets printed or logged, but your code can still read it:
 
 ```ruby run
@@ -209,10 +208,10 @@ Filter it yourself before you log JSON or send it to a browser, for example
 
 ## What you built
 
-- A `LineItem` that nests a `Book`, and an `Order` that holds an array of line items.
-- An order you can build from plain hashes, with validation that reaches every level.
-- A JSON round trip with your own key names.
-- A payment token that stays out of `inspect` output.
+- a `LineItem` that nests a `Book`, and an `Order` that holds an array of line items
+- an order you can build from plain hashes, with validation that reaches every level
+- a JSON round trip with your own key names
+- a payment token that stays out of `inspect` output
 
 More on nested structs, arrays and JSON in the field_struct
 [README](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/README.md#nested-fieldstructs).

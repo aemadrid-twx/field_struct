@@ -1,6 +1,6 @@
 ---
 title: FieldStruct & Actionable
-description: Two small Ruby gems — typed POROs and typed service objects.
+description: Two small Ruby gems - typed POROs and typed service objects.
 template: splash
 hero:
   tagline: Two small Ruby gems. FieldStruct gives you typed plain-Ruby objects; Actionable builds typed service objects on top of it.
@@ -20,8 +20,8 @@ hero:
 
 ## FieldStruct: typed POROs
 
-Declare fields with types; values are coerced on assignment and the object
-knows whether it's valid. No database, no Rails required.
+Declare fields with types. Values are coerced on assignment, and the object
+knows whether it is valid. No database, and no Rails required.
 
 ```ruby title="FieldStruct" run
 class User < FieldStruct::Base
@@ -40,8 +40,8 @@ u.errors.full_messages # => ["Name is required"]
 
 ## Actionable: service objects
 
-Subclass `Actionable::Action`, list the steps, implement each as a method.
-A run returns one result: a success, a failure, or a skip.
+Subclass `Actionable::Action`, list the steps and write each one as a method.
+A run returns one result: a success, a failure or a skip.
 
 ```ruby title="Actionable" run
 class Charge < Actionable::Action
@@ -63,11 +63,12 @@ Charge.run(amount: -5).code     # => :invalid_amount
 
 ## Install
 
-Neither gem is on RubyGems yet. Install both from GitHub, pinned to a release tag:
+Neither gem is on RubyGems yet, so for now install both from GitHub, pinned to a
+release tag:
 
 ```ruby title="Gemfile"
 gem 'field_struct', git: 'https://github.com/aemadrid-twx/field_struct', tag: 'v0.16.0'
 gem 'actionable-rb', git: 'https://github.com/aemadrid-twx/actionable', tag: 'v1.10.0'
 ```
 
-Every runnable example on this site is executed in CI against exactly these releases.
+Every runnable example on this site runs in CI against exactly these releases.

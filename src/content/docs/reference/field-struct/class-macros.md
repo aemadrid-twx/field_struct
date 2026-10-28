@@ -1,6 +1,6 @@
 ---
 title: Class macros
-description: coercion_policy, unknown_attributes, immutable!, frozen!, validate and serialize: what each does and how it inherits.
+description: coercion_policy, unknown_attributes, immutable!, frozen!, validate and serialize - what each does and how it inherits.
 sidebar:
   order: 5
 ---

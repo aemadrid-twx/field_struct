@@ -9,8 +9,8 @@ sidebar:
 A real checkout does more than count stock. It charges a card and emails a
 receipt too. You could keep adding steps to `PlaceOrder`, but each of those jobs
 is useful on its own: a refund also touches stock, and an admin may resend a
-receipt. In this chapter you'll write each job as its own small action, then
-compose them into one `Checkout`.
+receipt. So let's write each job as its own small action, then compose them
+into one `Checkout`.
 
 ## Where we left off
 
@@ -84,9 +84,9 @@ class ReserveStock < Actionable::Action
 end
 ```
 
-Next, the payment. There's no real payment gateway here: `CHARGES` records each
-charge, and the test token `tok_declined` is always declined. An order that
-costs nothing has nothing to charge, so that's a skip:
+Next, the payment. There is no real payment gateway here: `CHARGES` records
+each charge, and the test token `tok_declined` is always declined. An order
+that costs nothing has nothing to charge, so that is a skip:
 
 ```ruby title="charge_payment.rb" run
 CHARGES = []
@@ -144,7 +144,7 @@ ChargePayment.run(order: order).charge_id   # => "ch_1"
 CHARGES                                     # => [{ id: "ch_1", amount: BigDecimal('24.99') }]
 ```
 
-That was just a demo, so clear the charge before you go on:
+That was only a demo, so clear the charge before we go on:
 
 ```ruby run
 CHARGES.clear
@@ -188,7 +188,7 @@ Data moves between parent and children through instance variables:
 
 - **`input: %i[order]`** names the parent's instance variables to pass to the
   child's `.run`. `step ReserveStock, input: %i[order]` calls
-  `ReserveStock.run(order: @order)`. That's why `prepare` copies `input.order`
+  `ReserveStock.run(order: @order)`. That is why `prepare` copies `input.order`
   into `@order` first.
 - **The child's output comes back** as instance variables on the parent. After
   `ChargePayment` succeeds, the parent has `@charge_id`, which it passes on to
@@ -247,7 +247,7 @@ OUTBOX.size      # => 1
 receipt. Because the failure became `Checkout`'s own, the `case`/`in` handler
 from [chapter 4](../when-things-go-wrong/) works on it unchanged.
 
-That's also why `Checkout` declares `:out_of_stock` and `:card_declined`. An
+That is also why `Checkout` declares `:out_of_stock` and `:card_declined`. An
 action that declares failures may only fail with codes it declares, and a
 child's codes become its own. Leave one out and the run raises
 `Actionable::DefinitionError` the first time that child fails:
@@ -283,7 +283,7 @@ STOCK   # => { '978-1-68050-981-8' => 3, '978-1-93778-549-9' => 5 }
 ```
 
 `ReserveStock` set aside two copies, then `ChargePayment` failed, and nobody
-put them back. A **lifecycle hook** fixes that. `on_failure` names a method
+put them back. A _lifecycle hook_ fixes that. `on_failure` names a method
 that runs after the steps, only when the run ends in a failure. Add it to
 `Checkout`:
 
@@ -297,10 +297,10 @@ class Checkout
 end
 ```
 
-Here the class is reopened to add the hook; in `checkout.rb` you'd write
-these lines inside the class. `@reserved` is `ReserveStock`'s output, so it's
-only set if the reservation happened. When `ReserveStock` itself fails, there's
-nothing to release and `&.` skips the loop.
+Here the class is reopened to add the hook. In `checkout.rb` you would write
+these lines inside the class. `@reserved` is `ReserveStock`'s output, so it is
+only set if the reservation happened. When `ReserveStock` itself fails, there
+is nothing to release and `&.` skips the loop.
 
 Try the declined card again:
 
@@ -314,8 +314,8 @@ STOCK        # => { '978-1-68050-981-8' => 5, '978-1-93778-549-9' => 5 }
 
 The copies were reserved and released in the same run. There are also
 `on_success`, `on_skip` and `always` (runs after the outcome hook, whatever the
-outcome). A hook only runs when the run gets to the end. An exception skips it,
-like any other code after a `raise`.
+outcome). A hook only runs when the run gets to the end. An exception skips
+it, like any other code after a `raise`.
 
 ## A child's skip doesn't stop the parent
 
@@ -371,14 +371,14 @@ measures about one run in ten, which keeps the cost low in production.
 
 ## What you built
 
-- Three small actions, `ReserveStock`, `ChargePayment` and `SendReceipt`, each
-  runnable and testable alone.
-- A `Checkout` that runs them as steps, passing data in with `input:` and
-  getting output back as instance variables.
-- A failure in any child that ends the whole checkout with the child's code,
-  plus an `on_failure` hook that puts reserved stock back.
-- A child skip that lets the checkout carry on.
-- A step-by-step history of each run.
+- three small actions, `ReserveStock`, `ChargePayment` and `SendReceipt`, each
+  runnable and testable alone
+- a `Checkout` that runs them as steps, passing data in with `input:` and
+  getting output back as instance variables
+- a failure in any child that ends the whole checkout with the child's code,
+  plus an `on_failure` hook that puts reserved stock back
+- a child skip that lets the checkout carry on
+- a step-by-step history of each run
 
 More in the actionable USAGE reference:
 [Nested actions](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#nested-actions),

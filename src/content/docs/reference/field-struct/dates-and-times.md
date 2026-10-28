@@ -1,6 +1,6 @@
 ---
 title: Dates, times and zones
-description: The :date, :time and :datetime types: parsing rules, format presets, RFC 3339, and the zone option.
+description: The :date, :time and :datetime types - parsing rules, format presets, RFC 3339, and the zone option.
 sidebar:
   order: 3
 ---
