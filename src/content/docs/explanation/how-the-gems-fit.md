@@ -111,6 +111,13 @@ output readers with `FieldStruct::RBS.type_for`, "so they match what
 `FieldStruct::RBS.generate` emits for a named struct" (USAGE, "RBS for your
 actions").
 
+## Beyond the two gems
+
+Formats and tools outside Ruby, like JSON Schema, Avro and OpenTelemetry,
+connect through separate [adapter gems](/field_struct/adapters/), so an app loads
+only the ones it uses. [How adapters work](/field_struct/adapters/how-adapters-work/)
+explains the split.
+
 ## Related
 
 - [Validity is computed on assignment](../validity-on-assignment/)

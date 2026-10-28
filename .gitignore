@@ -4,3 +4,4 @@ dist/
 .bundle/
 vendor/
 .DS_Store
+Gemfile.edge.lock

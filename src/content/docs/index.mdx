@@ -70,4 +70,12 @@ gem 'field_struct', git: 'https://github.com/aemadrid-twx/field_struct', tag: 'v
 gem 'actionable-rb', git: 'https://github.com/aemadrid-twx/actionable', tag: 'v1.10.0'
 ```
 
-Every runnable example on this site is executed in CI against exactly these releases.
+Every runnable example on this site is executed in CI against exactly these
+releases. The one exception is the Adapters pages, which run against the
+unreleased code they document.
+
+## Adapters
+
+JSON Schema, Avro and OpenTelemetry support live in separate, optional gems, so an
+app loads only the ones it uses: see [Adapters](adapters/). You can write your own
+on the same walk they use: [Build your own adapter](adapters/build-your-own/).

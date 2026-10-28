@@ -37,6 +37,7 @@ export default defineConfig({
           customSets: [
             { label: 'field_struct reference', paths: ['reference/field-struct/**'], description: 'every field_struct type, option and API' },
             { label: 'actionable reference', paths: ['reference/actionable/**'], description: 'every actionable macro, outcome and API' },
+            { label: 'Adapters', paths: ['adapters/**'], description: 'the JSON Schema, Avro and OpenTelemetry adapter gems, FieldStruct::Introspection, and building your own adapter' },
           ],
         }),
       ],
@@ -52,6 +53,11 @@ export default defineConfig({
           ],
         },
         { label: 'Explanation', items: [{ autogenerate: { directory: 'explanation' } }] },
+        {
+          label: 'Adapters',
+          badge: { text: 'Unreleased', variant: 'caution' },
+          items: [{ autogenerate: { directory: 'adapters' } }],
+        },
       ],
     }),
   ],
