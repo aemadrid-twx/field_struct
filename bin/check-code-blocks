@@ -35,14 +35,15 @@ module CodeBlocks
   RUN_WORD = /(?:\A|\s)run(?:\s|\z)/
 
   # Pages that run against Gemfile.edge rather than the released gems.
-  EDGE_PAGES = %r{\Asrc/content/docs/adapters/}
+  EDGE_DIR = 'src/content/docs/adapters/'
 
   module_function
 
   # The Gemfile a page's blocks run against. EDGE_GEMFILE swaps in another
   # edge bundle, to check the Adapters pages against unmerged branches.
   def gemfile_for(path)
-    File.expand_path(path.match?(EDGE_PAGES) ? ENV.fetch('EDGE_GEMFILE', 'Gemfile.edge') : 'Gemfile')
+    edge = File.expand_path(path).start_with?(File.expand_path(EDGE_DIR) + File::SEPARATOR)
+    File.expand_path(edge ? ENV.fetch('EDGE_GEMFILE', 'Gemfile.edge') : 'Gemfile')
   end
 
   # Runnable blocks of one page, in document order.

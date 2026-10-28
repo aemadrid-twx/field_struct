@@ -82,8 +82,9 @@ tool[:input_schema]['properties']['reason']['enum']  # => ["damaged", "late", "d
 When the model calls the tool, its arguments go straight to `RefundOrder.run`,
 which coerces and validates them like any other input. The schema tells the model
 what to send; the action still checks it. [RubyLLM](https://rubyllm.com) accepts
-any object that responds to `to_json_schema`, so including
-`FieldStruct::JSONSchema::Methods` in a struct lets you pass the class itself.
+any object that responds to `to_json_schema` as tool parameters, so including
+`FieldStruct::JSONSchema::Methods` in a struct lets you pass the class itself
+there.
 
 ## Use case: validate a payload in another service
 

@@ -55,7 +55,7 @@ The `Field` methods adapters use:
 | `default` | the `default:` value or callable, or `nil` |
 | `description` | the `description:` / `desc:` text, or `nil` |
 | `sensitive?` | `true` for `sensitive: true` |
-| `options` | every option the field was declared with, including ones field_struct doesn't use itself (an adapter's own `avro:` or `ts:` option) |
+| `options` | the field's type and validation options (`enum:`, `format:`…), plus any option field_struct doesn't use itself (an adapter's own `avro:` or `ts:`). `required`, `default`, `description` and `sensitive` aren't in it: read them with the methods above |
 | `type_instance` | the field_struct type instance |
 
 ```ruby run

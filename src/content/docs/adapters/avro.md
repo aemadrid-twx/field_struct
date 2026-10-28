@@ -123,8 +123,10 @@ signup.email      # => "ana@example.com"
 signup.referrer   # => nil
 ```
 
-Adding an optional field, or a required one with a default, is a safe change;
-a schema registry set to backward compatibility checks that for you.
+Adding an optional field, or a required one with a literal default
+(`default: 'none'`), is a safe change; a default given as a lambda can't go in
+the schema, so old bytes then fail to decode. A schema registry set to
+backward compatibility checks that for you.
 Renaming a field isn't: Avro matches fields by name. (The namespace is set to
 `V2` here only because this example keeps both versions in one process; in a
 real app the class keeps its name.)

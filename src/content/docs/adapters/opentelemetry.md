@@ -124,8 +124,8 @@ as well.
 | `actionable.step.kind` | step spans | `method`, `action` or `case` |
 | `actionable.section` | step spans | `main`, `success`, `failure`, `skip` or `always` |
 
-A nested action's run span sits under its parent's step span, so a composed
-action is one trace.
+A nested action's run span sits under its parent's step span when it runs on
+the same thread and fiber, so a composed action is one trace.
 
 ## Cost and volume
 

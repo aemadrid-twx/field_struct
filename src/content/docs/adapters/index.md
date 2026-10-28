@@ -54,9 +54,11 @@ require 'field_struct/avro'
 require 'actionable/otel'
 ```
 
-Requiring an adapter never changes your classes. Each adapter is a set of
-module functions (`FieldStruct::JSONSchema.generate(User)`), plus an opt-in
+Requiring a field_struct adapter never changes your classes. Each one is a set
+of module functions (`FieldStruct::JSONSchema.generate(User)`), plus an opt-in
 `Methods` module for when you'd rather call `User.to_json_schema`.
+`actionable-otel` is different on purpose: requiring it is what turns tracing
+on for every action.
 
 ## One shape, many formats
 
