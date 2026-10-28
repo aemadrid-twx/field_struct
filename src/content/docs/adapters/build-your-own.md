@@ -6,16 +6,16 @@ sidebar:
   order: 5
 ---
 
-In this tutorial you'll write an adapter that turns field_struct classes into
+In this tutorial we will write an adapter that turns field_struct classes into
 TypeScript interfaces, so a frontend gets types that always match the JSON your
 Ruby API sends. It takes about 60 lines, because field_struct does the hard part:
 [`FieldStruct::Introspection`](/field_struct/adapters/introspection/) walks a class
-and tells you, for each field, its JSON name, whether it's required, and what
+and tells you, for each field, its JSON name, whether it is required, and what
 shape its value has. The JSON Schema and Avro adapters are built the same way.
 
-## 1. Look at what the walk gives you
+## 1. Look at what the walk gives us
 
-Start with the classes you want to describe:
+Let's start with the classes we want to describe:
 
 ```ruby title="models.rb" run
 class Author < FieldStruct::Base
@@ -58,7 +58,7 @@ There are only four kinds of node, so an adapter is a `case` over them:
 - **`ArrayNode`**: `element` is the node for each item, or `nil` when no element
   type is recorded.
 - **`UnionNode`**: `members`, one node per type the value may be, in declared order.
-- **`StructNode`**: `klass`, another struct class. It's only a reference, never
+- **`StructNode`**: `klass`, another struct class. It is only a reference, never
   expanded for you, which is what makes recursive structs (`sequel`) safe to walk.
 
 ## 2. Write the adapter
@@ -156,7 +156,7 @@ string literals, and `sequel` refers back to `Book` without looping forever.
 
 ## 4. Let fields override the mapping
 
-Sometimes the derived type isn't the one you want. The convention every adapter
+Sometimes the derived type is not the one you want. The convention every adapter
 follows is an option named after the adapter: `avro: {...}` for Avro,
 `json_schema: {...}` for JSON Schema, so here `ts: {...}`. field_struct keeps
 options it doesn't know and hands them to adapters, and adapters ignore each
@@ -211,7 +211,7 @@ official adapters share a layout you can copy:
 - **Use module functions** (`FieldStruct::TypeScript.generate(Book)`). Add an
   opt-in `Methods` module if you want `Book.to_typescript`, and never patch
   `FieldStruct::Base`.
-- **Depend on a field_struct that has Introspection.** Until that's released,
+- **Depend on a field_struct that has Introspection.** Until that is released,
   fail early with a clear message:
 
   ```ruby
@@ -221,7 +221,7 @@ official adapters share a layout you can copy:
 
 - **Read only the public surface:** `Introspection`, the node classes, `Field`
   (`required?`, `default`, `description`, `sensitive?`, `options`) and the type
-  classes. That's what field_struct keeps stable for adapters.
+  classes. That is what field_struct keeps stable for adapters.
 
 The [field_struct-adapters](https://github.com/aemadrid-twx/field_struct-adapters)
 repository is a good starting point to copy: each gem there is one directory,
