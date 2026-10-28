@@ -50,5 +50,3 @@ rather admit a gap than guess.
 
 - [How the two gems fit together](how-the-gems-fit/): actionable hands all
   typing and validation to field_struct.
-- [Why these gems](why-these-gems/): the experience behind both, in Adrian's
-  own words.
