@@ -84,9 +84,9 @@ Adapters read only field_struct's public surface: `Introspection` and its node
 classes, `Field`'s documented methods, and the type classes. Each adapter keeps
 its options under its own name (`avro:`, `json_schema:`), so adapters never
 collide, and field_struct passes options it doesn't use through to them. Each
-adapter declares the field_struct versions it supports in its gemspec. Until
-field_struct releases Introspection, that floor is `>= 0.16`, which the
-released 0.16.0 (without Introspection) satisfies, so each adapter also checks
+field_struct adapter declares the field_struct versions it supports in its
+gemspec. Until field_struct releases Introspection, that floor is `>= 0.16`,
+which the released 0.16.0 (without Introspection) satisfies, so each also checks
 at `require` time and raises a `LoadError` that says what's missing. Once the
 floor is raised to that release, an incompatible combination fails at
 `bundle install` instead.
