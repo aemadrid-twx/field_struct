@@ -5,12 +5,6 @@ sidebar:
   order: 8
 ---
 
-:::caution[Draft]
-Claude wrote this page from Adrian's notes and the gems' design records, in
-Adrian's voice, for Adrian to edit or throw away before it ships. Every other
-page on this site says "we". This one is meant to be Adrian's own.
-:::
-
 I wrote the first versions of both gems in 2016, by hand, for Rails apps that
 needed two things over and over: a typed bag of data, and a service object
 that could say plainly how it ended. They did the job for a long time. They
