@@ -124,11 +124,11 @@ signup.referrer   # => nil
 ```
 
 Adding an optional field, or a required one with a literal default
-(`default: 'none'`), is a safe change; a default given as a lambda can't go in
+(`default: 'none'`), is a safe change. A default given as a lambda can't go in
 the schema, so old bytes then fail to decode. A schema registry set to
 backward compatibility checks that for you.
-Renaming a field isn't: Avro matches fields by name. (The namespace is set to
-`V2` here only because this example keeps both versions in one process; in a
+Renaming a field is not: Avro matches fields by name. (The namespace is set to
+`V2` here only because this example keeps both versions in one process. In a
 real app the class keeps its name.)
 
 ## It raises rather than lose data
@@ -160,11 +160,11 @@ integer past 64 bits.
 - Per call: `serialization:` (which `serialize` names become Avro field names)
   and `timestamp:` (`:micros`, `:nanos` or `:millis`).
 - Per field, `avro: {...}`:
-  - `type:` replaces the field's mapping entirely;
-  - `timestamp:` sets the precision for that field;
-  - `precision:` and `scale:` set a decimal's;
-  - `enum: false` gives a plain string instead of an enum;
-  - `enum_default:` lets readers handle symbols you add later.
+  - `type:` replaces the field's mapping entirely
+  - `timestamp:` sets the precision for that field
+  - `precision:` and `scale:` set a decimal's
+  - `enum: false` gives a plain string instead of an enum
+  - `enum_default:` lets readers handle symbols you add later
 - `include FieldStruct::Avro::Methods` adds `Klass.to_avro_schema`, `#to_avro` and
   `Klass.from_avro`.
 

@@ -81,14 +81,14 @@ tool[:input_schema]['properties']['reason']['enum']  # => ["damaged", "late", "d
 
 When the model calls the tool, its arguments go straight to `RefundOrder.run`,
 which coerces and validates them like any other input. The schema tells the model
-what to send; the action still checks it. [RubyLLM](https://rubyllm.com) accepts
+what to send, and the action still checks it. [RubyLLM](https://rubyllm.com) accepts
 any object that responds to `to_json_schema` as tool parameters, so including
 `FieldStruct::JSONSchema::Methods` in a struct lets you pass the class itself
 there.
 
 ## Use case: validate a payload in another service
 
-The schema is a contract other languages can check. Here a validator that isn't
+The schema is a contract other languages can check. Here a validator that is not
 field_struct ([json_schemer](https://github.com/davishmcclurg/json_schemer), a
 standalone JSON Schema validator) accepts what Ruby writes and rejects a payload
 the struct would reject too:
@@ -121,7 +121,7 @@ along in `$defs`, under their class names.
 
 ## Overrides
 
-When the derived schema isn't what you want, give a field a `json_schema:`
+When the derived schema is not what you want, give a field a `json_schema:`
 option, or define `json_schema` on a custom type:
 
 ```ruby run
@@ -152,5 +152,5 @@ struct accepts:
 - `:array, of: :uuid` doesn't check each element's format unless you add
   `element: {format: …}`.
 - A Regexp that has no exact ECMA-262 translation (an atomic group, a backreference,
-  `\p{…}`) isn't approximated. It's kept as `x-ruby-pattern`, an annotation that
+  `\p{…}`) is not approximated. It is kept as `x-ruby-pattern`, an annotation that
   validators ignore.

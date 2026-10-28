@@ -13,7 +13,7 @@ gRPC. This page explains how the gems split that work, and why.
 ## Why separate gems
 
 Each format brings its own dependencies and its own pace of change. Avro needs the
-`avro` gem; OpenTelemetry needs `opentelemetry-api`. JSON Schema needs nothing,
+`avro` gem, and OpenTelemetry needs `opentelemetry-api`. JSON Schema needs nothing,
 but its regular-expression translation is a few hundred lines most apps would
 never run. If every format lived in field_struct, every app would install and
 load all of it.
@@ -41,11 +41,11 @@ newest code, so a break shows up the next morning, not when you upgrade.
 Every exporter needs the same answers about a struct:
 
 - What is each field called in the output?
-- Is it required, and what's its default?
+- Is it required, and what is its default?
 - Is the value a scalar, an array, a choice between types, or another struct?
 - How do I avoid looping forever on a struct that contains itself?
 
-field_struct already knows all of that, but it's spread across field options,
+field_struct already knows all of that, but it is spread across field options,
 type classes and the `serialize` mapping. If every exporter dug those answers out
 on its own, each would get the edge cases slightly differently: an array of
 unions, an anonymous nested struct.
@@ -62,7 +62,7 @@ new JSON Schema draft.
 ## Why adapters describe the JSON
 
 An adapter describes what `to_json` writes, not what the setters accept. A
-setter takes `age: "30"` and coerces it, but the JSON says `30`, and that's what
+setter takes `age: "30"` and coerces it, but the JSON says `30`, and that is what
 another system receives. So a BigDecimal is a string in JSON Schema and
 TypeScript (`to_json` writes `"24.99"`), but an exact decimal in Avro, which
 encodes the value itself rather than JSON.
@@ -71,10 +71,10 @@ encodes the value itself rather than JSON.
 
 When a feature has no exact equivalent in the target format, the adapters leave
 it out or raise rather than guess. A Ruby Regexp with no exact ECMA-262
-translation isn't approximated in JSON Schema. A time with more precision than
+translation is not approximated in JSON Schema. A time with more precision than
 an Avro timestamp holds raises an error rather than being truncated.
 
-A near miss is worse than nothing. A pattern that's slightly too strict makes
+A near miss is worse than nothing. A pattern that is slightly too strict makes
 another service reject payloads Ruby accepted. A silently truncated timestamp is
 a bug you find months later in a warehouse.
 
@@ -87,6 +87,6 @@ collide, and field_struct passes options it doesn't use through to them. Each
 adapter declares the field_struct versions it supports in its gemspec. Until
 field_struct releases Introspection, that floor is `>= 0.16`, which the
 released 0.16.0 (without Introspection) satisfies, so each adapter also checks
-at `require` time and raises a `LoadError` that says what's missing. Once the
+at `require` time and raises a `LoadError` that says what is missing. Once the
 floor is raised to that release, an incompatible combination fails at
 `bundle install` instead.

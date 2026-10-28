@@ -55,7 +55,7 @@ The `Field` methods adapters use:
 | `default` | the `default:` value or callable, or `nil` |
 | `description` | the `description:` / `desc:` text, or `nil` |
 | `sensitive?` | `true` for `sensitive: true` |
-| `options` | the field's type and validation options (`enum:`, `format:`…), plus any option field_struct doesn't use itself (an adapter's own `avro:` or `ts:`). `required`, `default`, `description` and `sensitive` aren't in it: read them with the methods above |
+| `options` | the field's type and validation options (`enum:`, `format:`…), plus any option field_struct doesn't use itself (an adapter's own `avro:` or `ts:`). `required`, `default`, `description` and `sensitive` are not in it: read them with the methods above |
 | `type_instance` | the field_struct type instance |
 
 ```ruby run
@@ -69,7 +69,7 @@ tier.field.default       # => :free
 
 ### `ScalarNode`
 
-One value. `type` is the type instance (a `FieldStruct::Types::Base` subclass);
+One value. `type` is the type instance (a `FieldStruct::Types::Base` subclass).
 `options` are the field's options (for an array element, its `element:` options).
 
 ```ruby run
@@ -81,7 +81,7 @@ tier.options[:enum]      # => [:free, :pro]
 ### `ArrayNode`
 
 `type` and `options` as above. `element` is the node for each item, built the first
-time you read it. It's `nil` when no element type is recorded: an array of unions
+time you read it. It is `nil` when no element type is recorded: an array of unions
 records only the union class, not its members.
 
 ```ruby run
@@ -92,7 +92,7 @@ homes.element.klass      # => Address
 
 ### `UnionNode`
 
-`type` is the union type; `members` is one node per member type, in declared order.
+`type` is the union type, and `members` is one node per member type, in declared order.
 
 ```ruby run
 properties[3].node.members.map { |member| member.type.class }  # => [FieldStruct::Types::Integer, FieldStruct::Types::String]
@@ -100,7 +100,7 @@ properties[3].node.members.map { |member| member.type.class }  # => [FieldStruct
 
 ### `StructNode`
 
-`type` is the nested type; `klass` is the struct class. It's a reference only:
+`type` is the nested type, and `klass` is the struct class. It is a reference only:
 the walk never expands it, so recursion is yours to handle. Track the classes
 you've described and stop at one you've seen.
 

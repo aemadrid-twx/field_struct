@@ -28,7 +28,7 @@ OpenTelemetry::SDK.configure { |c| c.service_name = 'shop' }
 ```
 
 Requiring `actionable/otel` is what turns tracing on. The gem depends only on
-`opentelemetry-api`; your app picks the SDK and the exporter.
+`opentelemetry-api`. Your app picks the SDK and the exporter.
 
 ## What a checkout looks like
 
@@ -95,7 +95,7 @@ run.status.description              # => "card_declined"
 ```
 
 In your backend, filter on `actionable.code` to tell declared failures
-(`card_declined`, `not_found`) apart from exceptions. A skip isn't an error; its
+(`card_declined`, `not_found`) apart from exceptions. A skip is not an error. Its
 status stays unset.
 
 ## What it never records
@@ -129,7 +129,7 @@ the same thread and fiber, so a composed action is one trace.
 
 ## Cost and volume
 
-- **Cost:** about 5 µs per span with the SDK. That's measured on a CPU-bound
+- **Cost:** about 5 µs per span with the SDK. That is measured on a CPU-bound
   action with 10 spans per run, and is negligible next to a database call.
 - **Fewer spans:** in a tight `run_each` over many thousands of items, set
   `Actionable::Otel.step_spans = false` to keep only the run spans.

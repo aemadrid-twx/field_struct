@@ -65,8 +65,8 @@ on for every action.
 The field_struct adapters don't read your fields themselves. They walk them through
 [`FieldStruct::Introspection`](/field_struct/adapters/introspection/), a
 format-neutral view of a struct that core field_struct provides: each field's
-external name, whether it's required, its default and description, and what
-shape its value has (a scalar, an array, a union, or another struct). That's why
+external name, whether it is required, its default and description, and what
+shape its value has (a scalar, an array, a union, or another struct). That is why
 a new format is a small gem rather than a change to field_struct, and why you can
 write one yourself: [Build your own adapter](/field_struct/adapters/build-your-own/)
 writes a TypeScript-types generator in about 60 lines.
