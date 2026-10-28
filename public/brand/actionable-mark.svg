@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="actionable">
-  <!-- Logo 3 "Rows & Steps": the same three bars, stepping forward as an action's steps. -->
-  <rect x="2" y="2" width="28" height="28" rx="7" fill="#FFB547"/>
-  <g fill="#0E1120">
-    <rect x="7" y="8.3" width="9.6" height="3.4" rx="1.7"/>
-    <rect x="11.2" y="14.3" width="9.6" height="3.4" rx="1.7"/>
-    <rect x="15.4" y="20.3" width="9.6" height="3.4" rx="1.7"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img"><title>actionable logo</title><circle cx="50" cy="50" r="48" fill="#141418"/><path d="M62.84 16.37A36 36 0 0 1 85.55 55.7" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linejoin="miter"/><path d="M72.71 77.94A36 36 0 0 1 27.29 77.94" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linejoin="miter"/><path d="M14.45 55.7A36 36 0 0 1 37.16 16.37" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linejoin="miter"/><path d="M50 28.5L68.62 39.25L68.62 60.75L50 71.5L31.38 60.75L31.38 39.25Z" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linejoin="miter"/><path d="M59.92 50L45.04 58.59L45.04 41.41Z" fill="#FFFFFF"/><path d="M50 7.5L55.63 10.75L55.63 17.25L50 20.5L44.37 17.25L44.37 10.75Z" fill="#FFFFFF"/><path d="M81.18 61.5L86.81 64.75L86.81 71.25L81.18 74.5L75.55 71.25L75.55 64.75Z" fill="#FFFFFF"/><path d="M18.82 61.5L24.45 64.75L24.45 71.25L18.82 74.5L13.19 71.25L13.19 64.75Z" fill="#FFFFFF"/></svg>

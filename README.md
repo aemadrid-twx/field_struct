@@ -99,5 +99,5 @@ Until then the deploy job fails; the build and check job is unaffected.
 ## Brand
 
 - Palette and type: `src/styles/theme.css` (Ultramarine & Marigold: Bricolage Grotesque headings, Instrument Sans body, JetBrains Mono code). Code-block themes and the `# =>` result highlighting: `ec.config.mjs`.
-- Logo 3 "Rows & Steps": `src/assets/brand/*.svg` (colour and single-colour marks for each gem, plus the `pair.svg` header lockup), copied to `public/brand/` for linking from READMEs. `public/favicon.svg` is the field_struct mark.
-- PNGs (`public/brand/*.png`: apple-touch icon, 512px avatars) are rendered from the SVGs with `bin/render-brand-pngs` (needs Pillow). Re-run it after changing a mark.
+- Logo kit v3: `src/assets/brand/*.svg` (the colour mark and a one-colour knockout for each gem, plus the `pair.svg` header lockup), copied to `public/brand/` for linking from READMEs. `public/favicon.svg` is field_struct's small cut. Both gems share one drawing, an orbit with three hexagon nodes around an outline hexagon, and only the core differs: a play triangle for actionable, three fields for field_struct.
+- `bin/brand-marks` draws all of them. With `--png` it also renders `public/brand/*.png` (apple-touch icon, 512px avatars) through headless Chrome and Pillow. Re-run it after changing a mark.

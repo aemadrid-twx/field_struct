@@ -1,0 +1,109 @@
+#!/usr/bin/env python3
+# Draw the A/FS brand marks (logo kit v3) into src/assets/brand/ and public/.
+# Both gems share one base: solid hexagon nodes on an orbit, each arc landing on
+# the middle of a node's side, and an outline hexagon at the center. Only the
+# core differs: a play triangle for actionable, three fields (a dot and a line
+# each) for field_struct. The small cut (favicon) drops the orbit and nodes, and
+# field_struct's fields become plain lines.
+#
+# Run from the repo root after changing a mark: bin/brand-marks
+# With --png it also renders public/brand/*.png through headless Chrome and
+# Pillow (macOS Chrome path; set CHROME to override).
+import math,sys,json
+SW=3.4; ANG=[-90,30,150]; c30=math.cos(math.radians(30))
+ORB,NODE,CEN,GAP=36,6.5,21.5,7.5
+def pt(r,deg,cx=50,cy=50): a=math.radians(deg); return (cx+r*math.cos(a), cy+r*math.sin(a))
+def f(x): return f"{x:.2f}".rstrip('0').rstrip('.')
+def hexp(cx,cy,R): return 'M'+'L'.join(f"{f(x)} {f(y)}" for x,y in (pt(R,-90+60*k,cx,cy) for k in range(6)))+'Z'
+def rings(rs,cx=50,cy=50): return ''.join('M'+'L'.join(f"{f(cx+x)} {f(cy+y)}" for x,y in r)+'Z' for r in rs)
+NORM=[(math.cos(math.radians(60*k)),math.sin(math.radians(60*k))) for k in range(6)]
+def fit(rs,ap):   # scale so the shape's hexagonal extent has apothem ap
+    m=max(max(x*nx+y*ny for nx,ny in NORM) for r in rs for x,y in r); return [[(x*ap/m,y*ap/m) for x,y in r] for r in rs]
+def sq(cx,cy,h): return [(cx-h,cy-h),(cx+h,cy-h),(cx+h,cy+h),(cx-h,cy+h)]
+def bar(x0,x1,yc,t=.46): return [(x0,yc-t/2),(x1,yc-t/2),(x1,yc+t/2),(x0,yc+t/2)]
+P=.78
+def play(): return [[(math.cos(math.radians(a)),math.sin(math.radians(a))) for a in (0,120,240)]]   # centered on its centroid
+def fields(): return sum([[sq(-.78,y,.23),bar(-.4,.85,y)] for y in (-P,0,P)],[])
+def lines(): return [bar(-.85,.85,y,.5) for y in (-P,0,P)]
+CORE={'act':(play,play),'fs':(fields,lines)}       # (full mark, small cut)
+INNER={'act':7,'fs':5.5}                            # gap from the outline's inside to the core
+def geometry(gem,small):
+    """parts: (kind, d) with kind 'arc' (stroke), 'ring' (thick stroke), 'line' (fill) or 'core' (fill)."""
+    if small:
+        R,W=35,9; ap=(R-W/2)*c30-6.5
+        return [('ring',hexp(50,50,R)),('core',rings(fit(CORE[gem][1](),ap)))]
+    nodes=[pt(ORB,a) for a in ANG]; off=math.degrees((NODE*c30+GAP)/ORB)
+    parts=[]
+    for a in ANG:
+        (x0,y0),(x1,y1)=pt(ORB,a+off),pt(ORB,a+120-off)
+        parts.append(('arc',f'M{f(x0)} {f(y0)}A{ORB} {ORB} 0 0 1 {f(x1)} {f(y1)}'))
+    parts.append(('arc',hexp(50,50,CEN)))
+    parts.append(('core',rings(fit(CORE[gem][0](),(CEN-SW/2/c30)*c30-INNER[gem]))))
+    parts+=[('line',hexp(x,y,NODE)) for x,y in nodes]
+    return parts
+def draw(parts,line,core):
+    o=''
+    for k,d in parts:
+        if k in ('arc','ring'): o+=f'<path d="{d}" fill="none" stroke="{line}" stroke-width="{9 if k=="ring" else SW}" stroke-linejoin="miter"/>'
+        else: o+=f'<path d="{d}" fill="{core if k=="core" else line}"/>'
+    return o
+def svg(gem,small,disc,line,core=None,knock=None,title=''):
+    """disc=None: glyph only. core: the core's color (the highlight), else the line color.
+    knock=color: one-color disc with the drawing cut out (transparent)."""
+    uid=f'{gem}{"s" if small else "f"}'; parts=geometry(gem,small)
+    t=f'<title>{title}</title>' if title else ''
+    head=f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img">{t}'
+    if knock:
+        k=f'<mask id="{uid}k" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><circle cx="50" cy="50" r="48" fill="#fff"/>{draw(parts,"#000","#000")}</mask>'
+        return f'{head}<defs>{k}</defs><rect width="100" height="100" fill="{knock}" mask="url(#{uid}k)"/></svg>'
+    d=f'<circle cx="50" cy="50" r="48" fill="{disc}"/>' if disc else ''
+    return f'{head}{d}{draw(parts,line,core or line)}</svg>'
+INK,PAPER,GARNET,GARNET_D='#141418','#FFFFFF','#A8133A','#FF7D98'
+VARIANTS=[ # id, label, kwargs, preview background
+ ('primary','Primary: ink disc, white line',dict(disc=INK,line=PAPER),'#A8133A'),
+ ('garnet','Garnet disc, white line',dict(disc=GARNET,line=PAPER),'#FBFBFC'),
+ ('inverse','White disc, ink line',dict(disc=PAPER,line=INK),'#141418'),
+ ('ink-garnet','Ink disc, garnet line',dict(disc=INK,line=GARNET_D),'#FBFBFC'),
+ ('knock-black','One color: black, lines cut out',dict(disc=None,line=None,knock='#000000'),'#FBFBFC'),
+ ('knock-white','One color: white, lines cut out',dict(disc=None,line=None,knock='#FFFFFF'),'#141418'),
+ ('glyph-black','Glyph only: black',dict(disc=None,line='#000000'),'#FBFBFC'),
+ ('glyph-white','Glyph only: white',dict(disc=None,line='#FFFFFF'),'#141418'),
+ ('glyph-garnet','Glyph only: garnet',dict(disc=None,line=GARNET),'#FBFBFC'),
+]
+HIGHLIGHT=[ # the core in a highlight color (no ink core on garnet: 2.5:1)
+ ('primary-highlight','Ink disc, white line, garnet core',dict(disc=INK,line=PAPER,core=GARNET_D),'#FBFBFC'),
+ ('inverse-highlight','White disc, ink line, garnet core',dict(disc=PAPER,line=INK,core=GARNET),'#141418'),
+ ('glyph-black-highlight','Glyph: black, garnet core',dict(disc=None,line='#000000',core=GARNET),'#FBFBFC'),
+ ('glyph-white-highlight','Glyph: white, garnet core',dict(disc=None,line='#FFFFFF',core=GARNET_D),'#141418'),
+]
+
+def write(path, text):
+    with open(path, 'w') as f: f.write(text + '\n')
+NAMES = {'fs': ('field-struct', 'field_struct'), 'act': ('actionable', 'actionable')}
+for gem, (slug, name) in NAMES.items():
+    mark = svg(gem, False, title=f'{name} logo', disc=INK, line=PAPER)
+    mono = svg(gem, False, title=f'{name} logo', disc=None, line=None, knock='#000000')
+    for d in ('src/assets/brand', 'public/brand'):
+        write(f'{d}/{slug}-mark.svg', mark); write(f'{d}/{slug}-mark-mono.svg', mono)
+write('public/favicon.svg', svg('fs', True, title='field_struct', disc=INK, line=PAPER))
+def inner(gem, x):  # a mark as a nested <svg>, for the side-by-side lockup
+    return svg(gem, False, disc=INK, line=PAPER).replace('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img">', f'<svg x="{x}" width="100" height="100" viewBox="0 0 100 100">')
+pair = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 100" role="img" aria-label="field_struct and actionable">'
+        + inner('fs', 0) + inner('act', 112) + '</svg>')
+for d in ('src/assets/brand', 'public/brand'): write(f'{d}/pair.svg', pair)
+if '--png' in sys.argv:
+    import os, subprocess, tempfile
+    from PIL import Image
+    chrome = os.environ.get('CHROME', '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
+    def png(src, size, out):
+        with tempfile.TemporaryDirectory() as t:
+            page = f'{t}/p.html'
+            write(page, f'<html><body style="margin:0;background:transparent"><img src="file://{os.path.abspath(src)}" width="512" height="512" style="display:block"></body></html>')
+            subprocess.run([chrome, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files',
+                            '--default-background-color=00000000', '--window-size=512,512', f'--screenshot={t}/p.png', f'file://{page}'],
+                           check=True, capture_output=True)
+            im = Image.open(f'{t}/p.png').convert('RGBA')
+            (im if size == 512 else im.resize((size, size), Image.LANCZOS)).save(out)
+    png('public/brand/field-struct-mark.svg', 180, 'public/brand/apple-touch-icon.png')
+    png('public/brand/field-struct-mark.svg', 512, 'public/brand/field-struct-mark-512.png')
+    png('public/brand/actionable-mark.svg', 512, 'public/brand/actionable-mark-512.png')

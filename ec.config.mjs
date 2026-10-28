@@ -32,12 +32,12 @@ function theme(c) {
 }
 
 const dark = theme({
-  name: 'ultramarine-dark', type: 'dark', bg: '#151a2c', fg: '#d5daeb', keyword: '#9eb0ff', constant: '#ffc978',
-  symbol: '#6fd6c4', string: '#f4a3ba', number: '#ffb547', method: '#c4b4ff', comment: '#8c95b0',
+  name: 'garnet-dark', type: 'dark', bg: '#151a2c', fg: '#d5daeb', keyword: '#ff7d98', constant: '#ffc978',
+  symbol: '#6fd6c4', string: '#9cc3e6', number: '#ffb547', method: '#c4b4ff', comment: '#8c95b0',
 });
 const light = theme({
-  name: 'ultramarine-light', type: 'light', bg: '#f2f4fb', fg: '#1b2033', keyword: '#2337d4', constant: '#8a4a00',
-  symbol: '#0b6b61', string: '#a3234b', number: '#954b00', method: '#5a3db3', comment: '#5d6479',
+  name: 'garnet-light', type: 'light', bg: '#f2f4fb', fg: '#1b2033', keyword: '#a8133a', constant: '#8a4a00',
+  symbol: '#0b6b61', string: '#2b5f8a', number: '#954b00', method: '#5a3db3', comment: '#5d6479',
 });
 
 /**

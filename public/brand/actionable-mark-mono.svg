@@ -1,12 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="actionable">
-  <!-- Single colour: the steps are cut out of the tile, so it takes currentColor anywhere. -->
-  <mask id="act-steps" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
-    <rect width="32" height="32" fill="#fff"/>
-    <g fill="#000">
-      <rect x="7" y="8.3" width="9.6" height="3.4" rx="1.7"/>
-      <rect x="11.2" y="14.3" width="9.6" height="3.4" rx="1.7"/>
-      <rect x="15.4" y="20.3" width="9.6" height="3.4" rx="1.7"/>
-    </g>
-  </mask>
-  <rect x="2" y="2" width="28" height="28" rx="7" fill="currentColor" mask="url(#act-steps)"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img"><title>actionable logo</title><defs><mask id="actfk" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><circle cx="50" cy="50" r="48" fill="#fff"/><path d="M62.84 16.37A36 36 0 0 1 85.55 55.7" fill="none" stroke="#000" stroke-width="3.4" stroke-linejoin="miter"/><path d="M72.71 77.94A36 36 0 0 1 27.29 77.94" fill="none" stroke="#000" stroke-width="3.4" stroke-linejoin="miter"/><path d="M14.45 55.7A36 36 0 0 1 37.16 16.37" fill="none" stroke="#000" stroke-width="3.4" stroke-linejoin="miter"/><path d="M50 28.5L68.62 39.25L68.62 60.75L50 71.5L31.38 60.75L31.38 39.25Z" fill="none" stroke="#000" stroke-width="3.4" stroke-linejoin="miter"/><path d="M59.92 50L45.04 58.59L45.04 41.41Z" fill="#000"/><path d="M50 7.5L55.63 10.75L55.63 17.25L50 20.5L44.37 17.25L44.37 10.75Z" fill="#000"/><path d="M81.18 61.5L86.81 64.75L86.81 71.25L81.18 74.5L75.55 71.25L75.55 64.75Z" fill="#000"/><path d="M18.82 61.5L24.45 64.75L24.45 71.25L18.82 74.5L13.19 71.25L13.19 64.75Z" fill="#000"/></mask></defs><rect width="100" height="100" fill="#000000" mask="url(#actfk)"/></svg>
