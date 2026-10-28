@@ -7,9 +7,9 @@ sidebar:
 ---
 
 These pages explain *why* the two gems behave the way they do. They don't teach
-you the API (that's the [tutorial](../tutorial/bookstore-checkout/)) or list
-every option (that's the [reference](../reference/)). Read them when a
-behaviour surprises you, or before you argue with it.
+you the API (that is the [tutorial](../tutorial/bookstore-checkout/)) and they
+don't list every option (that is the [reference](../reference/)). Read them
+when a behaviour surprises you, or before you argue with it.
 
 Each page is grounded in the gems' own design records, which keep the reasoning
 behind every locked decision:
@@ -22,9 +22,9 @@ behind every locked decision:
   (decisions D1–D23) and the
   [project intent](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/.claude/project_intent.md).
 
-When a page cites "D17" or "invariant 3", that's where to look. Where the
-records describe a behaviour without saying why, these pages say so instead of
-guessing.
+When a page cites "D17" or "invariant 3", that is where to look. When the
+records describe a behaviour without saying why, these pages say so. We would
+rather admit a gap than guess.
 
 ## The pages
 
@@ -34,7 +34,7 @@ guessing.
   checks its own field, `valid?` is a read, and an invalid object never *looks*
   fine.
 - [Coercion vs. validation](coercion-and-validation/): turning input into a
-  type and judging the typed value are two steps with two kinds of error.
+  type and judging the typed value are two steps, with two kinds of error.
 - [ActiveModel-shaped, framework-free](framework-independence/): why the
   methods look like Rails, but the code doesn't depend on it and behaves the
   same with or without ActiveSupport.
@@ -50,3 +50,5 @@ guessing.
 
 - [How the two gems fit together](how-the-gems-fit/): actionable hands all
   typing and validation to field_struct.
+- [Why these gems](why-these-gems/): the experience behind both, in Adrian's
+  own words.
