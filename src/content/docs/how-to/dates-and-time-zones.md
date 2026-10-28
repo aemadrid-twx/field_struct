@@ -66,7 +66,7 @@ Shift.new(starts_at: '2026-01-15 09:00').starts_at.utc_offset  # => -7 * 3600
 Shift.new(starts_at: '2026-01-15T09:00:00Z').starts_at.utc_offset  # => 0
 ```
 
-`zone:` only fills in a missing offset; a string that carries one keeps it. A
+`zone:` only fills in a missing offset. A string that carries one keeps it. A
 local time that doesn't exist (inside the spring-forward hour) is refused:
 
 ```ruby run
@@ -74,8 +74,8 @@ Shift.new(starts_at: '2026-03-08 02:30').errors[:starts_at]  # => ["could not be
 ```
 
 `zone:` also takes `'UTC'` and fixed offsets like `'-06:00'`. Rails zone names
-like `'Mountain Time (US & Canada)'` are refused when the class loads; use the
-IANA name.
+like `'Mountain Time (US & Canada)'` are refused when the class loads, so use
+the IANA name.
 
 ## See also
 

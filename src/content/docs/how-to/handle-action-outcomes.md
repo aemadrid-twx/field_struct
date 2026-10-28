@@ -13,8 +13,8 @@ name.
 ## 1. Declare the codes
 
 `fails` and `skips` take a code, a default message, and any metadata you like.
-The gem stores the metadata and hands it back on the result; your app decides
-what it means. Here it's the HTTP status to answer with:
+The gem stores the metadata and hands it back on the result. Your app decides
+what it means. Here it is the HTTP status to answer with:
 
 ```ruby title="charge_customer.rb" run
 CUSTOMERS = { 1 => :ok, 2 => :declined, 3 => :paid }
@@ -66,10 +66,12 @@ ChargeCustomer.run(customer_id: 1).charge_id  # => "ch_1"
 
 Each outcome is its own class (`Actionable::Success`, `Actionable::Skipped`,
 `Actionable::Failure`), and results support pattern matching on `code`,
-`message`, `output` and (for a failure or skip) `metadata`. So one `case`/`in` covers every outcome,
-including the gem's own `:invalid_input`. Keep an `else`: a failure without
-`http:` metadata (`:invalid_output`, or a code from an action that declares
-none) would otherwise raise `NoMatchingPatternError`:
+`message`, `output` and (for a failure or skip) `metadata`. So one `case`/`in`
+covers every outcome, including the gem's own `:invalid_input`.
+
+Keep an `else`. A failure without `http:` metadata (`:invalid_output`, or a
+code from an action that declares none) would otherwise raise
+`NoMatchingPatternError`:
 
 ```ruby run
 def respond_to_charge(result)
@@ -88,7 +90,7 @@ respond_to_charge(ChargeCustomer.run(customer_id: 'x'))    # => [422, { errors: 
 respond_to_charge(ChargeCustomer.run(customer_id: 99))     # => [404, { error: "no such customer" }]
 ```
 
-A skip means "nothing to do": it's not a failure, so `result.ok?` is true for
+A skip means "nothing to do". It is not a failure, so `result.ok?` is true for
 both a success and a skip.
 
 ## See also

@@ -21,9 +21,9 @@ A target is a method name or an action class, like a step, and takes `if:` /
 ([redeclaration](../actions-and-steps/#redeclaring-a-step)). `success_hooks`,
 `failure_hooks`, `skip_hooks` and `always_hooks` return each list.
 
-The outcome is chosen once, after the main steps, and isn't re-dispatched. Hooks
+The outcome is chosen once, after the main steps, and is not re-dispatched. Hooks
 may use the [verbs](../control-flow/). A bang verb in a hook records its result
-and stops the remaining hooks of its phase; `halt!` stops them and keeps the
+and stops the remaining hooks of its phase. `halt!` stops them and keeps the
 current result. A nested action used as a hook that fails counts as a `fail!`.
 
 | A halt in… | Still runs | Final result |
@@ -51,7 +51,7 @@ $audited            # => :verification_failed
 
 Output is captured and validated again after each hook, and `succeed` / `skip`
 keywords keep winning over instance variables. With the Rails adapter, hooks run
-inside the `transactional` transaction, and there's an extra
+inside the `transactional` transaction, and there is an extra
 [`after_commit`](../rails/#after_commit) hook.
 
 ## Measurement
@@ -67,17 +67,17 @@ inside the `transactional` transaction, and there's an extra
 
 An unknown mode, or `:sampled` without a valid `rate:`, raises `ArgumentError`
 (`measure :sampled requires rate: between 0 and 1, got nil`). `measure_rate`,
-`measure_all?` and `measure_sampled?` read the setting; the mode is inherited.
+`measure_all?` and `measure_sampled?` read the setting. The mode is inherited.
 
 A measured run also measures every nested action it runs, whatever their own
 setting. Measurement state is fiber-local, so a nested action run inside
-another Fiber (including `Enumerator#next`) isn't recorded in the parent's
+another Fiber (including `Enumerator#next`) is not recorded in the parent's
 history.
 
 ## History
 
 `result.history` is an `Actionable::History` when the run was measured, and `[]`
-otherwise. It records each step and hook that ran (a guarded-off step isn't
+otherwise. It records each step and hook that ran (a guarded-off step is not
 recorded).
 
 | `History` | |

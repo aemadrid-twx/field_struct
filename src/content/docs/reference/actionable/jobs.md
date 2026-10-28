@@ -7,7 +7,7 @@ sidebar:
 
 `require 'actionable/job'` loads a framework-agnostic helper that runs an
 action inside a background job and maps its result to what the queue should do.
-The core never loads it. It runs the action synchronously inside `perform`; it
+The core never loads it. It runs the action synchronously inside `perform`. It
 doesn't enqueue anything.
 
 ## `Actionable::Job.disposition`
@@ -64,7 +64,7 @@ A genuine exception inside the action propagates unchanged, so the queue
 retries it as it would any error.
 
 `Actionable::Job::RetryableFailure < StandardError` carries the result as
-`#result`. Sidekiq retries any raised job by default; under ActiveJob declare
+`#result`. Sidekiq retries any raised job by default. Under ActiveJob, declare
 `retry_on Actionable::Job::RetryableFailure`.
 
 ```ruby run
@@ -130,7 +130,7 @@ end
 QuietReindex.honor_retry_metadata?   # => false
 ```
 
-`honor_retry_metadata?` is inherited and defaults to `false`; a subclass backs
+`honor_retry_metadata?` is inherited and defaults to `false`. A subclass backs
 out with `honor_retry_metadata(enabled: false)`.
 
 Upstream: [USAGE, Background jobs](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#background-jobs).

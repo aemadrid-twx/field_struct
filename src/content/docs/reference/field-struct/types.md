@@ -227,7 +227,7 @@ Counts.new(n: '3.14').errors[:n]   # => ["could not be coerced: Integer fields e
 affects strings.
 
 With `strict: true`, a numeric is accepted only when it is a whole number
-(`12.0`, `BigDecimal("12")`, `Rational(24, 2)`); `12.7` and a `Time` are
+(`12.0`, `BigDecimal("12")`, `Rational(24, 2)`). `12.7` and a `Time` are
 refused instead of truncated. Strings follow the same rules in both modes.
 
 ```ruby run
@@ -295,7 +295,7 @@ from the accepted lists, compared case-insensitively. The default lists are
 | `:english` | `true yes y on 1` | `false no n off 0` |
 | `:numeric` | `1` | `0` |
 
-A Hash `values: {truthy: [...], falsy: [...]}` **replaces** the lists; the
+A Hash `values: {truthy: [...], falsy: [...]}` **replaces** the lists. The
 defaults don't still apply.
 
 ```ruby run
@@ -315,8 +315,8 @@ Flags.new(switch: 'true').valid? # => false
 ## `:value`
 
 No coercion, no options. `missing?` is nil-only. Use it when you want a field in
-the metadata without committing to a shape. It's the one type that doesn't
-survive a JSON round trip with its Ruby type intact; see
+the metadata without committing to a shape. It is the one type that doesn't
+survive a JSON round trip with its Ruby type intact. See
 [JSON and serialization](../json-and-serialization/).
 
 ## `:array`
@@ -352,7 +352,7 @@ Basket.new(items: [], ids: %w[a b c d e f g]).errors[:ids] # => ["could not be c
 ```
 
 Pushing onto an array in place (`basket.ids << 'x'`) skips coercion. Assign the
-field again to coerce it; see [Validation and errors](../validation-and-errors/#validity-is-computed-on-assignment).
+field again to coerce it. See [Validation and errors](../validation-and-errors/#validity-is-computed-on-assignment).
 
 ### `element:`
 
@@ -390,7 +390,7 @@ Unlike a field, it passes nothing through:
 
 `of:` is an Array of at least two member types (Symbols or Classes). The value
 goes to each member in order and the first one that coerces it wins, so order
-matters when members overlap. If none accepts it, that's a coercion failure.
+matters when members overlap. If none accepts it, that is a coercion failure.
 A non-finite Float or BigDecimal is refused before any member is tried, so a
 `:string` member can't store `"NaN"`.
 

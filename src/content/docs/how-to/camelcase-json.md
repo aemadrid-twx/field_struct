@@ -6,8 +6,8 @@ sidebar:
   order: 3
 ---
 
-Your Ruby code wants `first_name`; the API sends and expects `firstName`. Map
-each field to its external name with `serialize :json`.
+Your Ruby code wants `first_name`, but the API sends and expects `firstName`.
+Map each field to its external name with `serialize :json`.
 
 ## 1. Map the fields
 
@@ -36,7 +36,7 @@ its own `serialize :json` line.
 
 ## 2. Read and write JSON
 
-`from_json` reads the external names; `to_json` and `as_json` write them:
+`from_json` reads the external names, and `to_json` and `as_json` write them:
 
 ```ruby run
 json = '{"firstName":"Ann","email":"ann@example.com","address":{"streetLine":"1 Main St","postalCode":"84601"}}'

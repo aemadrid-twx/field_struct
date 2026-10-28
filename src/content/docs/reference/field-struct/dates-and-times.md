@@ -1,11 +1,11 @@
 ---
 title: Dates, times and zones
-description: The :date, :time and :datetime types — parsing rules, format presets, RFC 3339, and the zone option.
+description: The :date, :time and :datetime types: parsing rules, format presets, RFC 3339, and the zone option.
 sidebar:
   order: 3
 ---
 
-Three temporal types. Each takes `format:` and `in:`; `:time` and `:datetime`
+Three temporal types. Each takes `format:` and `in:`. `:time` and `:datetime`
 also take `zone:`.
 
 | Type | Holds | Coerces from |
@@ -35,7 +35,7 @@ Stamp.new(at: 5).errors[:at] # => ["could not be coerced: expected a String, Dat
 Three rules hold for all three types:
 
 - **A declared `format:` anchors.** Trailing characters are refused rather than
-  dropped. That's all "anchors" means: a hand-written format stays
+  dropped. That is all "anchors" means: a hand-written format stays
   strptime-lenient about widths and signs.
 - **A day that never existed is refused.** `'2026-06-31'` is not 1 July.
 - **With no `format:`, the string must name a whole day** (year, month and
@@ -106,7 +106,7 @@ strftime string.
 - Refused: `2026-7-3`, `+2026-07-03`, `20260703`, week and ordinal dates, a
   missing offset, hour 24, second 60, an offset hour above 23.
 - Output: `Z` for UTC, `+HH:MM` otherwise, and the fraction's exact digits
-  (none when it's a whole second).
+  (none when it is a whole second).
 
 ```ruby run
 class Api < FieldStruct::Base
@@ -124,7 +124,7 @@ Api.new(at: '2026-07-03T24:00:00Z').errors[:at]           # => ["could not be co
 Api.new(at: '2026-02-30T10:00:00Z').errors[:at]           # => ["could not be coerced: invalid date"]
 ```
 
-`zone:` has no effect on string input with `format: :iso8601`, which always carries an offset; a `Date` still becomes midnight in that zone.
+`zone:` has no effect on string input with `format: :iso8601`, which always carries an offset. A `Date` still becomes midnight in that zone.
 
 ## `in:`
 

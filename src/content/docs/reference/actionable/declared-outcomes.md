@@ -17,12 +17,12 @@ give each code its own output schema.
 | `skips(code, message = nil, **metadata) { … }` | `declared_skips` | declare a skip code, same shape |
 | `declared_failures` / `declared_skips` | `{code => metadata}` | the declarations' metadata |
 | `failure_declarations` / `skip_declarations` | `{code => {message:, metadata:}}` | the full entries; an entry also has `output_schema:` when the code declares one |
-| `allows_failure_code?(code)` | Boolean | `true` when nothing is declared, the code is declared, or it's in `GEM_FAILURE_CODES` |
+| `allows_failure_code?(code)` | Boolean | `true` when nothing is declared, the code is declared, or it is in `GEM_FAILURE_CODES` |
 | `allows_skip_code?(code)` | Boolean | `true` when nothing is declared or the code is declared |
 | `failure_output_schema(code)` / `skip_output_schema(code)` | Class or `nil` | the code's output schema |
 | `typed_outcomes(enabled: true)` / `typed_outcomes?` | Boolean | turn typed outcomes on or off, read the setting |
 
-Declarations are inherited (copied when the subclass is defined), a subclass can
+Declarations are inherited (copied when the subclass is defined). A subclass can
 add codes, and redeclaring a code replaces its message, metadata and schema.
 
 ## Declared failures
@@ -49,7 +49,7 @@ Charge.declared_failures      # => { refused: { kind: :rejected }, not_found: { 
 Charge.failure_declarations   # => { refused: { message: "the card was refused", metadata: { kind: :rejected } }, not_found: { message: nil, metadata: { kind: :not_found } } }
 ```
 
-A failure whose code isn't declared has `metadata == {}`.
+A failure whose code is not declared has `metadata == {}`.
 
 ### Strict once declared
 
@@ -73,7 +73,7 @@ end
 
 Exempt:
 
-- actions that declare no failures;
+- actions that declare no failures
 - the codes the gem emits itself:
 
 ```ruby run
@@ -81,7 +81,7 @@ Actionable::Action::GEM_FAILURE_CODES   # => [:invalid_input, :invalid_output]
 ```
 
 Declaring a gem code only attaches metadata to the failures the gem builds.
-`fail_with`'s default `:invalid` is **not** exempt. A nested action's failure
+`fail_with`'s default `:invalid` is _not_ exempt. A nested action's failure
 becomes the parent's own, so a declaring parent must declare its children's
 failure codes.
 
@@ -174,11 +174,11 @@ The rules:
 | a code without a schema, typed outcomes off | best-effort capture into the success schema, as before |
 | `invalid_input` / `invalid_output` | keep the struct that explains them, either way |
 | output keywords for a code without a schema, typed outcomes on | `Actionable::DefinitionError` naming the code |
-| `output:` that isn't a Hash or a FieldStruct | `ArgumentError` |
+| `output:` that is not a Hash or a FieldStruct | `ArgumentError` |
 | `fail` / `fail!` | `output:` is reserved as the failure's output (typed outcomes only) |
 | `fail_with` / `fail_with!` | take `output:` as a keyword; `ArgumentError` without typed outcomes |
 
-Without typed outcomes only `skip` can supply output to a schema; a `fails`
+Without typed outcomes only `skip` can supply output to a schema. A `fails`
 schema with required fields needs `typed_outcomes`. There `output:` is just
 another error field, so the failure's output stays empty and breaks the schema:
 
@@ -206,7 +206,7 @@ ActivateKey::Failure.superclass                      # => Actionable::Failure
 ```
 
 A nested failure that crosses into a typed parent becomes the parent's own
-`Failure`; its output is judged by the schema the parent declares for the code.
+`Failure`. Its output is judged by the schema the parent declares for the code.
 A parent without typed outcomes gets a plain `Actionable::Failure` from a typed child.
 `typed_outcomes enabled: false` turns it off again for a subclass.
 

@@ -6,7 +6,7 @@ sidebar:
 ---
 
 A type name like `:string` is looked up in a `FieldStruct::Registry` when the
-field is declared. `FieldStruct.types` is the built-in one; a module can expose
+field is declared. `FieldStruct.types` is the built-in one. A module can expose
 its own for the classes inside it.
 
 ## How a name resolves
@@ -64,7 +64,7 @@ order.label   # => "5"
 Shop::Inner::Order.new(total: 'x').errors[:total] # => ["could not be coerced: Cents fields expect a number, got String"]
 ```
 
-Outside `Shop`, `:cents` isn't registered:
+Outside `Shop`, `:cents` is not registered:
 
 ```ruby run
 err = begin
@@ -164,7 +164,7 @@ Billing::Invoice.new(due: '07/03/2026').as_json[:due] # => "07/03/2026"
 `FieldStruct.use_alias!(name = :FS)` defines a top-level constant pointing at
 `FieldStruct` and switches the `inspect` prefix of FieldStruct's own objects
 (`Registry`, `Metadata`, `Field`, `Errors`, types) to it. Calling it again with
-the same name is fine; a name already taken by something else raises
+the same name is fine. A name already taken by something else raises
 `NameError`.
 
 ```ruby run

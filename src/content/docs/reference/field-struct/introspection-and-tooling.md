@@ -29,7 +29,7 @@ end
 ## `Metadata`
 
 `Klass.metadata` is the class's `FieldStruct::Metadata`. A subclass starts with
-a copy of its parent's fields and serializations; its own declarations win.
+a copy of its parent's fields and serializations. Its own declarations win.
 
 | Method | Returns |
 |---|---|
@@ -95,7 +95,7 @@ Shop::Order.metadata.to_h[:items][:options]    # => { of_type: "Nested" }
 ```
 
 An array of structs shows its element type as `"Nested"`, without the struct's
-name; `describe` names it.
+name. `describe` names it.
 
 ## `describe`
 
@@ -170,7 +170,7 @@ end
 The rules:
 
 - **Readers describe a valid instance.** A required field is `T`, an optional
-  one `T?`. An invalid instance can hold other values; check `valid?`.
+  one `T?`. An invalid instance can hold other values. Check `valid?`.
 - **Writers are `(T? value) -> T?`.** Loose input the setter would coerce
   (`order.total = '1.5'`) runs fine in Ruby but is a Steep error.
 - **Generics are filled in:** `::Array[::LineItem]`; a scalar element is
@@ -178,7 +178,7 @@ The rules:
   with `:boolean` as `bool`; nested structs use their qualified name.
 - **`:value`** (and a union with a `:value` member) is `untyped`, without `?`.
 - **Overrides:** a field's `rbs_type:` beats the type's `#rbs_type`, which
-  beats the derived type. It replaces `T` verbatim; `?` is still added where it
+  beats the derived type. It replaces `T` verbatim, and `?` is still added where it
   would be.
 - **Subclasses** emit only their own fields, as `class Sub < ::Parent`.
 - **Namespaces** become `module` nesting.
@@ -204,7 +204,7 @@ err.message # => "cannot generate RBS for an anonymous class"
 
 `FieldStruct::RBS.type_for(field, nullable: nil)` returns one field's type
 exactly as `generate` writes it, for other generators. `nullable: nil` follows
-`!field.required?`; `untyped` never gets `?`.
+`!field.required?`. `untyped` never gets `?`.
 
 ```ruby run
 items = Shop::Order.metadata[:items]
@@ -223,12 +223,12 @@ an array of objects), a Hash, or an Array of Hashes.
 - A JSON object becomes a nested class, emitted before its parent.
 - An array becomes `:array, of: …`.
 - `true` / `false` → `:boolean`, an integer → `:integer`, a real → `:float`.
-- **Strings stay `:string`**, including numeric-looking ones; the guess goes in a
+- **Strings stay `:string`**, including numeric-looking ones. The guess goes in a
   trailing comment.
-- With several samples, a field is `required` only when it's present and
+- With several samples, a field is `required` only when it is present and
   non-blank in every one, and small repeated vocabularies get a
   `# values: [...] — enum?` hint.
-- A key that's a Ruby keyword or a reserved field name gets a `_field` suffix
+- A key that is a Ruby keyword or a reserved field name gets a `_field` suffix
   and a `serialize :json` line mapping it back.
 
 ```ruby run
@@ -253,6 +253,6 @@ end
 ```
 
 An empty array raises `ArgumentError` (`no samples to scaffold from`), and so
-does a root that isn't an object or an array of objects.
+does a root that is not an object or an array of objects.
 
 Upstream: [USAGE, Introspection](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#introspection) and [RBS for your own classes](https://github.com/aemadrid-twx/field_struct/blob/v0.16.0/USAGE.md#rbs-for-your-own-classes).

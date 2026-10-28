@@ -6,6 +6,7 @@ sidebar:
   order: 9
 ---
 
+You want a job to retry or give up based on why its action failed.
 `require 'actionable/job'` adds a mixin for job classes. It runs the action and
 turns the result into what the queue should do:
 
@@ -60,7 +61,7 @@ class ReindexDocumentJob < ActiveJob::Base
 end
 ```
 
-With Sidekiq it's the same mixin. Sidekiq retries any job that raises, so no
+With Sidekiq it is the same mixin. Sidekiq retries any job that raises, so no
 extra setup is needed:
 
 ```ruby
@@ -74,7 +75,7 @@ end
 
 ## 3. Check what happens
 
-Using ActiveJob's test adapter, so nothing really runs later:
+This uses ActiveJob's test adapter, so nothing really runs later:
 
 ```ruby run
 ActiveJob::Base.logger = Logger.new(nil)

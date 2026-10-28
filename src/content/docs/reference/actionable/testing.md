@@ -8,8 +8,8 @@ sidebar:
 ## RSpec support
 
 `require 'actionable/rspec'` (never loaded by the core) defines
-`Actionable::RSpec::Matchers` and `Actionable::RSpec::Stubs`, and when `RSpec`
-is defined includes both into every example group.
+`Actionable::RSpec::Matchers` and `Actionable::RSpec::Stubs`. When `RSpec` is
+defined, it includes both into every example group.
 
 ### `perform_actionable`
 
@@ -25,7 +25,7 @@ outcome. With no chained call it expects a success.
 | `.and_raise(error_class = StandardError, message = nil)` | `.run` raised an `error_class` |
 
 - A message is compared with `===`, so a String or a Regexp works.
-- Each chain also takes a block, called with `(result, exception)`; the matcher
+- Each chain also takes a block, called with `(result, exception)`. The matcher
   passes only if the block returns truthy.
 - `.run` is called inside a `rescue StandardError`, so an unexpected exception
   fails a non-`and_raise` expectation, and the failure message shows it with its
@@ -109,19 +109,19 @@ expect(Checkout.run(cart: cart).code).to eq(:refused)
 - A stubbed failure or skip carries the declared metadata of its code, and the
   declared message when you give none.
 - On an action that declares failures (or skips), a stub with an undeclared code
-  raises `ArgumentError`. `GEM_FAILURE_CODES` are exempt for failures; nothing is
+  raises `ArgumentError`. `GEM_FAILURE_CODES` are exempt for failures. Nothing is
   exempt for skips, so `allow_actionable_skip(action)` with no `code:` raises
   unless the action declares `:skipped`.
-- The output is shaped as a real run would shape it: through the code's output
-  schema when it has one (an `ArgumentError` when it breaks the schema), and, under
-  typed outcomes, empty for a code without one (an `ArgumentError` when you give
-  output for it). Under typed outcomes the helpers return the action's own result
+- The output is shaped as a real run would shape it. It goes through the code's
+  output schema when it has one (an `ArgumentError` when it breaks the schema).
+  Under typed outcomes, it is empty for a code without one (an `ArgumentError`
+  when you give output for it). Under typed outcomes the helpers return the action's own result
   classes.
 
 ## Outcome coverage
 
 `require 'actionable/rspec/coverage'` records every real `.run` of a named action
-as `[class name, outcome, code]` and, at the end of the suite, reports each
+as `[class name, outcome, code]`. At the end of the suite, it reports each
 action's declared outcomes that no spec reached. Neither the core nor
 `actionable/rspec` loads it.
 
@@ -148,8 +148,8 @@ report.to_baseline['SyncLater']   # => ["skipped:not_ready"]
 report.totals[:missing] >= 1      # => true
 ```
 
-Nested action runs and `run_each` items count. A stubbed `.run` never counts;
-the gem's stub helpers note their results in `Coverage.stubbed`, shown as
+Nested action runs and `run_each` items count. A stubbed `.run` never counts.
+The gem's stub helpers note their results in `Coverage.stubbed`, shown as
 "Stubbed only".
 
 A typical setup:
@@ -182,7 +182,7 @@ one process's runs as JSON.
 
 ### The report and the baseline
 
-`Actionable::Coverage::Report.new(files: [])` builds the report; `to_s` is a table
+`Actionable::Coverage::Report.new(files: [])` builds the report. `to_s` is a table
 of never-reached and stubbed-only outcomes plus totals, and `rows`, `totals`,
 `to_h` and `to_json` give the same data to a machine.
 
@@ -196,8 +196,8 @@ Actions: 2  Expected outcomes: 4  Reached: 1  Missing: 3
 
 Missing outcomes alone never fail a suite. With `baseline` set to a file of
 `{"Action::Name" => [outcome keys]}`, the report fails when an untested outcome
-isn't listed, or a listed one is now covered, no longer declared, or names an
-action that's gone. `Report#to_baseline` returns the current gaps in that shape;
+is not listed. It also fails when a listed one is now covered, no longer declared, or names an
+action that is gone. `Report#to_baseline` returns the current gaps in that shape, and
 `write_baseline(path = Coverage.baseline)` writes them (YAML for `.yml` / `.yaml`,
 JSON otherwise).
 
@@ -212,7 +212,7 @@ JSON otherwise).
 
 When RSpec is loaded, an `after(:suite)` hook does the above. For a sharded
 suite, merge the shard files in a later step with
-`Coverage.report!(files: 'tmp/actionable_coverage/*.json')`; a glob that matches
+`Coverage.report!(files: 'tmp/actionable_coverage/*.json')`. A glob that matches
 nothing raises `Actionable::Error`. Set `baseline` only for full runs, and use
 `only_observed = true` for targeted local runs.
 
