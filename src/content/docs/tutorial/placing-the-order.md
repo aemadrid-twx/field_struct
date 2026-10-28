@@ -6,8 +6,8 @@ sidebar:
   order: 4
 ---
 
-You can model an order. Now you need to *place* it: check that the books are in
-stock, set the copies aside and confirm. In this chapter you'll write that as an
+We can model an order. Now we need to _place_ it: check that the books are in
+stock, set the copies aside and confirm. Let's write that as an
 [Actionable](https://github.com/aemadrid-twx/actionable) action.
 
 An action is a service object. You subclass `Actionable::Action`, list its
@@ -99,11 +99,11 @@ class PlaceOrder < Actionable::Action
 end
 ```
 
-Here's what each part does:
+Here is what each part does:
 
 - **`fails :out_of_stock, '…'`** declares a way this action can fail, with a
   default message. Once an action declares a failure code, it can only fail with
-  declared codes; any other code raises `Actionable::DefinitionError` the first
+  declared codes. Any other code raises `Actionable::DefinitionError` the first
   time that `fail!` runs, so a typo can't quietly become a new failure code.
 - **`input { … }`** declares the arguments `.run` takes, with the same DSL as a
   FieldStruct. Here it takes one `Order`.
@@ -148,7 +148,7 @@ Output fields are on `result.output`, and also directly on the result as a
 shortcut: `result.order_number` is `result.output.order_number`.
 
 `status` is the outcome: one of `:success`, `:failure` or `:skipped`. On a
-failure, `code` adds the specific reason, as you'll see next.
+failure, `code` adds the specific reason, as we will see next.
 
 The steps really ran, so the copies are reserved:
 
@@ -158,7 +158,7 @@ STOCK  # => { '978-1-68050-981-8' => 1, '978-1-93778-549-9' => 0 }
 
 ## A declared failure
 
-Place the same order again. There's one copy of *Eloquent Ruby* left, and the
+Place the same order again. There is one copy of *Eloquent Ruby* left, and the
 order wants two:
 
 ```ruby run
@@ -173,13 +173,13 @@ STOCK            # => { '978-1-68050-981-8' => 1, '978-1-93778-549-9' => 0 }
 `fail!` stopped the run in `check_stock`, so `reserve_copies` never ran and the
 stock didn't change.
 
-`code` is what your code branches on; `message` is for people. The message
+`code` is what your code branches on, and `message` is for people. The message
 passed to `fail!` replaced the default from `fails`. Call `fail!(:out_of_stock)`
 with no message and the result carries the default, `"a book in the order is out
 of stock"`.
 
-Don't rely on `output` after a failure. Actionable only validates the output of a
-success.
+Don't rely on `output` after a failure. Actionable only validates the output of
+a success - a failure's output may be incomplete.
 
 ## Bad input never reaches your steps
 
@@ -227,10 +227,10 @@ checkout_message(PlaceOrder.run)                # => "Please check your order: O
 
 A `PlaceOrder` action that:
 
-- takes a typed `Order` as input and rejects bad input before any step runs,
-- runs three steps in order and stops early with a declared `:out_of_stock` failure,
-- returns a typed output (`order_number`, `total`) on success,
-- gives the caller one result to branch on with `success?`, `failure?`, `code` and `message`.
+- takes a typed `Order` as input and rejects bad input before any step runs
+- runs three steps in order and stops early with a declared `:out_of_stock` failure
+- returns a typed output (`order_number`, `total`) on success
+- gives the caller one result to branch on with `success?`, `failure?`, `code` and `message`
 
 Actions can do much more: skips for "nothing to do", lifecycle hooks, nested
 actions, batches and more. The actionable
@@ -238,5 +238,5 @@ actions, batches and more. The actionable
 and [USAGE reference](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md)
 cover them.
 
-**Next:** [When things go wrong](../when-things-go-wrong/), where you handle
+**Next:** [When things go wrong](../when-things-go-wrong/), where we handle
 every outcome of `PlaceOrder`, including a new one: a skip.

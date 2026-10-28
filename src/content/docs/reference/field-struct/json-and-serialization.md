@@ -82,7 +82,7 @@ Loose.from_json(Loose.new(data: { k: :v }).to_json).data # => { "k" => "v" }
 
 **Decimals.** JSON numbers with a fraction or exponent are parsed as
 `BigDecimal`, never through a Float, so a `:decimal` field gets the exact digits
-sent. A `:float` field still converts to Float; a `:value` field (and numbers
+sent. A `:float` field still converts to Float. A `:value` field (and numbers
 inside its Hashes and Arrays) holds the `BigDecimal`, which `to_json` writes
 back as a string.
 
@@ -138,12 +138,12 @@ serialize format_name, field_name: 'externalName', ...
 - Keys are field names, which must already be declared (declare fields first),
   or it raises `ArgumentError`: `serialize :json references undeclared field(s):
   :y. Declare fields before calling serialize.`
-- Values are external names; Symbols are converted to Strings.
+- Values are external names. Symbols are converted to Strings.
 - Fields not listed keep their own name.
 - `attributes` / `to_h` always use field names. Pattern matching too.
 - Declaring the same format again replaces the earlier mapping. A subclass
   inherits its parent's mappings, and redeclaring a format replaces it there.
-- Several formats can coexist. Only `:json` is used by the gem; read any other
+- Several formats can coexist. Only `:json` is used by the gem. Read any other
   from `Klass.metadata.serializations` (for a CSV or XML exporter, say).
 - Struct members of a `:union` use their own mapping too. `from_json` tries the
   members in order, so give struct members `unknown_attributes :raise` if the

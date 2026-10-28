@@ -5,9 +5,9 @@ sidebar:
   order: 5
 ---
 
-Every actionable run returns one result, and it's one of three kinds:
-`Success`, `Failure` or `Skipped`. Two of those are obvious. This page is
-mostly about the third, and about how a step stops the run.
+Every actionable run returns one result, and it is always one of three kinds:
+`Success`, `Failure` or `Skipped`. The first two are obvious. This page is
+mostly about the third one, and about how a step stops the run.
 
 ## Why a skip is its own outcome
 
@@ -18,7 +18,8 @@ puts it like this: a skip "is *not* a failure (no error, no retry/alert) and
 *not* a success (no real work), so conflating it with either loses information
 for observability, retries, and composition."
 
-So a skip is a strict third state. `success?` and `failure?` are both false:
+So a skip is a strict third state, and `success?` and `failure?` are both
+false:
 
 ```ruby run
 class SyncField < Actionable::Action
@@ -37,16 +38,16 @@ result.code       # => :not_ready
 ```
 
 `ok?` (that is, `!failure?`) is there for the common question "did anything go
-wrong?", which a success and a skip answer the same way.
+wrong?". A success and a skip answer it the same way.
 
-Each place that consumes a result treats a skip deliberately, as D17 lists:
+Each place that consumes a result handles a skip on purpose, as D17 lists:
 
 | Where | What a skip does |
 |---|---|
 | Lifecycle hooks | runs `on_skip`, never `on_success` or `on_failure`, then `always` |
 | Output | captured best-effort and never validated, like a failure |
 | Nested action | the parent continues as if the child succeeded, and decides its own outcome |
-| Transaction (Rails adapter) | commits: it isn't a failure, so nothing rolls back |
+| Transaction (Rails adapter) | commits: a skip is not a failure, so nothing rolls back |
 | Job adapter | `:ack`, not a retry |
 
 The nested case is easy to check:
@@ -68,7 +69,7 @@ Parent.run.finished   # => true
 ## Recording an outcome isn't stopping
 
 Each outcome has two verbs. `fail`, `succeed` and `skip` *record* a result and
-let the steps keep running; `fail!`, `succeed!` and `skip!` record it and stop.
+let the steps keep running. `fail!`, `succeed!` and `skip!` record it and stop.
 The last recorded result wins:
 
 ```ruby run
@@ -85,16 +86,16 @@ LastWins.run.success?   # => true
 
 D4 records that this split "deliberately fixes the old gem's inconsistency
 where a plain `fail` silently short-circuited because it set the `finished?`
-flag." Since a plain `fail` followed by more code is an easy mistake, the gem
-checks on an action's first run that each plain verb is its method's last
-expression, and raises a `DefinitionError` otherwise (USAGE, "Where a plain verb
+flag." But a plain `fail` followed by more code is an easy mistake to make. So
+on an action's first run the gem checks that each plain verb is its method's
+last expression, and raises a `DefinitionError` otherwise (USAGE, "Where a plain verb
 may go").
 
 ## Halting with throw, not exceptions
 
-The bang verbs stop the pipeline with `throw :actionable_halt`, caught by the
-runner. They don't raise. And the runner never rescues your exceptions, so a genuine
-error reaches you untouched:
+The bang verbs stop the pipeline with `throw :actionable_halt`, which the
+runner catches. They don't raise. And the runner never rescues your
+exceptions, so a real error reaches you untouched:
 
 ```ruby run
 class Broken < Actionable::Action
@@ -111,15 +112,15 @@ end
 error.message   # => "a real bug"
 ```
 
-This was one of the reasons for rebuilding the gem. The original
+This was one of the reasons we rebuilt the gem. The original
 "short-circuited via exceptions caught by a bare `rescue Exception` in the
 runner, which also swallowed genuine errors and resisted typing"
 ([first discussion](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/docs/origin/first_discussion.md)).
-It's now design invariant 2: "Control flow is `throw`/`catch`, never
+It is now design invariant 2: "Control flow is `throw`/`catch`, never
 exceptions."
 
-The result follows: a `Failure` always means the action *decided* to fail. A
-crash is an exception, and stays one.
+So a `Failure` always means the action _decided_ to fail. A crash is an
+exception, and it stays one.
 
 ## Related
 

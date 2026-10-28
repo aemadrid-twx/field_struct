@@ -6,7 +6,7 @@ sidebar:
   order: 13
 ---
 
-`fail`, `skip` and `succeed` record an outcome and keep going; only the bang
+`fail`, `skip` and `succeed` record an outcome and keep going. Only the bang
 forms (`fail!`, `skip!`, `succeed!`) stop. So this step still charges an
 expired card:
 
@@ -24,7 +24,7 @@ anything, so you find out in CI or in your editor.
 
 ## 1. Turn on the cop
 
-The cop ships in the gem but isn't loaded by `require 'actionable'`. Add it to
+The cop ships in the gem but is not loaded by `require 'actionable'`. Add it to
 `.rubocop.yml`:
 
 ```yaml title=".rubocop.yml"

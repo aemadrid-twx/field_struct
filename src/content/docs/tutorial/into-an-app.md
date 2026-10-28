@@ -8,8 +8,8 @@ sidebar:
 
 `Checkout` works in a script. Now it needs to live in an app: a JSON endpoint
 that places orders, a background job for when the payment gateway is slow, and
-specs. This chapter uses Rails' conventions, but the only extra gems it needs
-are ActiveJob and RSpec, so every example still runs on its own. To follow
+specs. We follow Rails' conventions here, but the only extra gems this chapter
+needs are ActiveJob and RSpec, so every example still runs on its own. To follow
 along, add `gem 'activejob'` and `gem 'rspec'` to your `Gemfile` (the examples
 are checked against ActiveJob 8 and RSpec 3.13).
 
@@ -98,7 +98,7 @@ end
 
 ## A gateway that times out
 
-Real payment gateways sometimes time out. That's not the customer's fault, and
+Real payment gateways sometimes time out. That is not the customer's fault, and
 trying again a little later usually works. `ChargePayment` gets a new declared
 failure for it. The test token `tok_timeout` stands in for a slow gateway:
 
@@ -197,7 +197,7 @@ class ApplicationController
 end
 ```
 
-The controller is what you'd write in a Rails app:
+The controller is what you would write in a Rails app:
 
 ```ruby title="app/controllers/orders_controller.rb" run
 class OrdersController < ApplicationController
@@ -239,7 +239,7 @@ STOCK['978-1-68050-981-8']                               # => 2
 ```
 
 The declined card put its copy back (the `on_failure` hook), so only the first
-order's copy is gone. A body that isn't JSON at all makes `from_json` raise
+order's copy is gone. A body that is not JSON at all makes `from_json` raise
 before `Checkout` runs, and your app's usual error handling takes over, as for
 any other exception.
 
@@ -251,7 +251,7 @@ adapter maps a result to what the queue should do with it:
 
 - **ack:** a success or a skip. The job is done.
 - **discard:** a failure that won't get better by trying again. The job
-  returns normally and isn't retried.
+  returns normally and is not retried.
 - **retry:** any other failure. The job raises
   `Actionable::Job::RetryableFailure`, so the queue tries it again later.
 
@@ -278,9 +278,9 @@ end
 
 - `include Actionable::Job::Mixin` adds `run_actionable`, which runs the action
   and raises `RetryableFailure` for a failure that should be retried.
-- `retry_on` is ActiveJob's own: when the job raises that error, it's enqueued
+- `retry_on` is ActiveJob's own: when the job raises that error, it is enqueued
   again in 30 seconds, up to 5 attempts in all.
-- The mixin isn't tied to ActiveJob. It works the same in a Sidekiq job.
+- The mixin is not tied to ActiveJob. It works the same in a Sidekiq job.
 
 To watch the queue, use ActiveJob's test adapter, which keeps enqueued jobs in a
 list instead of running them:
@@ -332,14 +332,14 @@ Actionable::Job.disposition(declined)                                # => :retry
 Actionable::Job.disposition(declined, permanent: %i[card_declined])  # => :discard
 ```
 
-Without the job's own list, a declined card would be retried too. That's why
+Without the job's own list, a declined card would be retried too. That is why
 `CheckoutJob` overrides `actionable_permanent_codes`.
 
 ## Specs
 
 Actionable ships an RSpec matcher and stub helpers. In `spec/spec_helper.rb`,
 load them after RSpec. (The specs below reuse the `order_json` helper from the
-job section; in your app, put it in `spec/support/`.)
+job section. In your app, put it in `spec/support/`.)
 
 ```ruby title="spec/spec_helper.rb" run
 require 'rspec'
@@ -378,7 +378,7 @@ end
 ```
 
 `allow_actionable_failure(ChargePayment, code: :card_declined)` makes
-`ChargePayment.run` return a real failure without running it. That's how you
+`ChargePayment.run` return a real failure without running it. That is how you
 test the parent's handling of a child's failure without a real gateway. The
 stubbed failure took its message from `ChargePayment`'s `fails` declaration.
 A stub with a code the action doesn't declare raises `ArgumentError`, since
@@ -426,16 +426,16 @@ RSpec::Core::Runner.run([])  # => 0
 
 ## What you built
 
-- An `OrdersController#create` that turns JSON into an `Order`, runs
+- an `OrdersController#create` that turns JSON into an `Order`, runs
   `Checkout` and maps each result to a response, with the HTTP status read from
-  the failure's metadata.
-- A `CheckoutJob` on ActiveJob that acknowledges a success, discards failures a
-  retry can't fix and retries a gateway timeout.
-- Specs that run `Checkout` with `perform_actionable`, and stub a child action,
-  or `Checkout` itself, with `allow_actionable_failure`.
+  the failure's metadata
+- a `CheckoutJob` on ActiveJob that acknowledges a success, discards failures a
+  retry can't fix and retries a gateway timeout
+- specs that run `Checkout` with `perform_actionable`, and stub a child action,
+  or `Checkout` itself, with `allow_actionable_failure`
 
-That's the end of the tutorial. You've gone from one typed `Book` to a checkout
-that's composed, tested and running in the background. From here:
+That is the end of the tutorial. We went from one typed `Book` to a checkout
+that is composed, tested and running in the background. From here:
 
 - The actionable [USAGE reference](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md)
   covers what this tutorial skipped: ActiveRecord transactions and

@@ -99,7 +99,7 @@ Returns a new instance of the same class with the given fields changed, like
   and no copy is returned. Cross-field validators rerun.
 - Unchanged fields are copied as they are, errors included. Callable defaults
   are not called again.
-- It's shallow: an unchanged nested struct or array is the same object in both.
+- It is shallow: an unchanged nested struct or array is the same object in both.
 - Keywords only (`with(**hash)` for a Hash). String keys work. Unknown keys
   follow `unknown_attributes`.
 - `with` with no changes returns an equal copy, not `self`.
@@ -162,7 +162,7 @@ User.new(age: 'x') == User.new(age: 'x')          # => true
 ## `inspect`
 
 Shows every field. An invalid instance appends its errors, so it never looks
-fine when it isn't. `sensitive: true` fields show `[FILTERED]`. An anonymous
+fine when it is not. `sensitive: true` fields show `[FILTERED]`. An anonymous
 class shows as `AnonymousFieldStruct`.
 
 ```ruby run
@@ -171,12 +171,12 @@ User.new(age: 30).inspect                # => '#<User name: nil, age: 30 errors:
 ```
 
 `FieldStruct.use_alias!(:FS)` shortens the `FieldStruct::` prefix in the
-`inspect` of `Field`, `Metadata`, `Errors`, `Registry` and type objects; see
+`inspect` of `Field`, `Metadata`, `Errors`, `Registry` and type objects. See
 [Registries and custom types](../registries-and-custom-types/#use_alias).
 
 ## Pattern matching
 
-Hash patterns match declared fields by canonical name; array patterns bind
+Hash patterns match declared fields by canonical name. Array patterns bind
 values in declaration order. Nested structs recurse. Errors are not part of
 either, and `serialize` names don't apply.
 
@@ -205,7 +205,7 @@ with `name`, `singular`, `plural` and `element`. `to_s` / `to_str` return
 `name`. `to_model` returns `self`. Persistence methods (`to_key`, `to_param`,
 `persisted?`) are not provided.
 
-`plural` is `element` with an `s` appended; there's no inflector.
+`plural` is `element` with an `s` appended. There is no inflector.
 
 ```ruby run
 class LineAddress < FieldStruct::Base; end

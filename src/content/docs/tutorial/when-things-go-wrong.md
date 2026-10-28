@@ -7,9 +7,9 @@ sidebar:
 ---
 
 `PlaceOrder` works when the books are in stock. Real checkouts also get orders
-that were already placed, books that ran out and forms full of typos. In this
-chapter you'll make each of those a clear outcome, and handle every one of
-them where you call the action.
+that were already placed, books that ran out and forms full of typos. Let's
+make each of those a clear outcome, and handle every one of them where we call
+the action.
 
 ## Where we left off
 
@@ -64,16 +64,16 @@ Every call to `PlaceOrder.run` ends in one of these:
 | A rule of your business said no | `Actionable::Failure` | `:failure` | a failure code you declare |
 | The input didn't match the `input` block | `Actionable::Failure` | `:failure` | `:invalid_input` |
 
-And then there's the case that isn't an outcome at all: a bug or an outage
-that raises an exception. You'll see all five in this chapter.
+And then there is the case that is not an outcome at all: a bug or an outage
+that raises an exception. We will see all five in this chapter.
 
 ## Skip an order that was already placed
 
 A customer double-clicks "Place order", or a retry sends the same order twice.
-Charging them twice would be wrong, but so would calling it a failure: the
-order *is* placed. That's what a **skip** is for: the action had nothing to do.
+Charging them twice would be wrong, but so would calling it a failure, because
+the order _is_ placed. That is what a skip is for: the action had nothing to do.
 
-Here's `PlaceOrder` again with the new lines marked. It remembers placed order
+Here is `PlaceOrder` again with the new lines marked. It remembers placed order
 numbers in `PLACED` (a database table in a real store) and skips any order it
 has already seen:
 
@@ -126,7 +126,7 @@ class PlaceOrder < Actionable::Action
 end
 ```
 
-What's new:
+What is new:
 
 - **`skips :already_placed, '…'`** declares a skip code with a default message,
   the way `fails` declares a failure code. Once an action declares a skip, it can
@@ -137,7 +137,7 @@ What's new:
   is the message argument: `nil` keeps the declared one.
 - **`http_status: 409`** after a failure's message is *metadata*: a free-form
   Hash Actionable stores on the result and never reads. Your app decides what
-  the keys mean. You'll use it to pick an HTTP status in a moment.
+  the keys mean. We will use it to pick an HTTP status in a moment.
 - **`fails :invalid_input, http_status: 422`** attaches metadata to the
   `:invalid_input` failure that Actionable builds itself.
 - **`fail!`'s keyword arguments** become the result's `errors`, keyed like
@@ -169,7 +169,7 @@ STOCK                # => { '978-1-68050-981-8' => 1, '978-1-93778-549-9' => 0 }
 ```
 
 The stock only went down once. In chapter 3 the second run was an
-`:out_of_stock` failure; now the action knows it has seen this order before.
+`:out_of_stock` failure. Now the action knows it has seen this order before.
 
 `ok?` is true for a success *and* a skip, and false only for a failure. Use it
 when "nothing to do" is as good as "done":
@@ -233,9 +233,9 @@ checkout_message(bad)       # => "Please check your order: Order is invalid"
 
 A result matches on its fields: `code`, `message`, `output`, `history` and, on a
 failure or skip, `metadata` (so `in Actionable::Failure(metadata: { http_status: })`
-works). `errors` isn't a field, so read it off the result, as the last branch does.
+works). `errors` is not a field, so read it off the result, as the last branch does.
 
-There's no `else`, on purpose. If the action someday gains an outcome this
+There is no `else`, on purpose. If the action someday gains an outcome this
 method doesn't handle, `case`/`in` raises `NoMatchingPatternError` instead of
 quietly doing the wrong thing:
 
@@ -262,7 +262,7 @@ breaks it). Decide whether your handler needs a branch for them.
 code can use without parsing that sentence.
 
 `errors` holds the keyword arguments of `fail!`, or the input's validation
-errors for `:invalid_input`. It's the same errors object a FieldStruct has:
+errors for `:invalid_input`. It is the same errors object a FieldStruct has:
 
 ```ruby run
 sold_out.errors[:lines]        # => ["978-1-68050-981-8 has 1 left"]
@@ -271,8 +271,8 @@ bad.errors.to_h                # => { order: ["is invalid"] }
 bad.errors.full_messages       # => ["Order is invalid"]
 ```
 
-`metadata` is what you declared next to the code. Failures and skips have it;
-one declared without metadata, or not declared at all, gives `{}`. A success has
+`metadata` is what you declared next to the code. Failures and skips have it.
+One declared without metadata, or not declared at all, gives `{}`. A success has
 no `metadata`:
 
 ```ruby run
@@ -308,11 +308,11 @@ again.to_h[:output]      # => { order_number: "A-1001", total: BigDecimal('89.93
 ## Exceptions are not outcomes
 
 Every outcome so far is one you declared or one Actionable makes for bad input.
-A bug, a lost database connection or a timeout isn't any of those, so
+A bug, a lost database connection or a timeout is not any of those, so
 Actionable doesn't turn it into a result. The exception goes straight up to the
 caller, the same as in any other Ruby method.
 
-To see it, break the stock: a frozen Hash can't be changed, so
+To see it, let's break the stock. A frozen Hash can't be changed, so
 `reserve_copies` raises:
 
 ```ruby run
@@ -336,22 +336,22 @@ PLACED    # => ["A-1001"]
 ```
 
 `check_stock` passed, `reserve_copies` raised, and `confirm` never ran. Nothing
-was undone, though: an action has no transaction of its own. If `reserve_copies`
-had changed some rows before it raised, they would stay changed. With
-ActiveRecord, Actionable's Rails adapter can wrap a run in a transaction; see
-[Rails adapter](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#rails-adapter).
+was undone, though. An action has no transaction of its own, so if
+`reserve_copies` had changed some rows before it raised, they would stay
+changed. With ActiveRecord, Actionable's Rails adapter can wrap a run in a
+transaction. See [Rails adapter](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#rails-adapter).
 
-Let exceptions reach your error tracker. Rescue one inside a step only when it's
-a case you can name, and turn it into a declared failure with `fail!`.
+Let exceptions reach your error tracker. Rescue one inside a step only when it
+is a case you can name, and turn it into a declared failure with `fail!`.
 
 ## What you built
 
-- A `PlaceOrder` that skips an order it has already placed, so a retry is safe.
-- A handler that matches every outcome with `case`/`in`, and raises if a new
-  one appears.
-- An HTTP status read from metadata declared next to each failure code.
-- A clear line between outcomes (results you handle) and exceptions (bugs and
-  outages you let raise).
+- a `PlaceOrder` that skips an order it has already placed, so a retry is safe
+- a handler that matches every outcome with `case`/`in`, and raises if a new
+  one appears
+- an HTTP status read from metadata declared next to each failure code
+- a clear line between outcomes (results you handle) and exceptions (bugs and
+  outages you let raise)
 
 More on skips, metadata and the verbs in the actionable
 [USAGE reference](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#declared-skips).

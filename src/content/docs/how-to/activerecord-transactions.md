@@ -6,9 +6,11 @@ sidebar:
   order: 10
 ---
 
-The Rails adapter adds two class macros: `transactional`, which wraps a run in
-a transaction, and `after_commit`, for side effects that must wait until the
-data is really saved. Load it once, for example in an initializer:
+You want an action's writes undone when it fails, and its emails sent only
+once the data is really saved. The Rails adapter adds two class macros for
+that: `transactional`, which wraps a run in a transaction, and `after_commit`,
+for side effects that must wait for the commit. Load it once, for example in
+an initializer:
 
 ```ruby
 require 'actionable/rails'
@@ -35,7 +37,7 @@ bob = Account.create!(balance: 0)
 ## 1. Make the action transactional
 
 `transactional model:` takes the model whose `transaction` to use (a class, or
-a symbol like `:account`). A success commits; a failure, or a raised exception,
+a symbol like `:account`). A success commits. A failure or a raised exception
 rolls back:
 
 ```ruby title="transfer.rb" run
@@ -78,12 +80,12 @@ Transfer.run(from_id: ann.id, to_id: bob.id, amount: 500).code     # => :insuffi
 [ann.reload.balance, bob.reload.balance]                           # => [70, 30]
 ```
 
-A skip commits too: there's nothing to undo.
+A skip commits too, since there is nothing to undo.
 
 ## 2. Send side effects after the commit
 
 `after_commit` hooks run only when the run succeeded and the data was
-committed. The failed transfer above sent nothing:
+committed. So the failed transfer above sent nothing:
 
 ```ruby run
 NOTIFICATIONS  # => ["moved 30"]
@@ -108,7 +110,7 @@ so don't send email from them.
 
 ## 3. Nest it in your own transaction
 
-Inside an open transaction the action takes its own savepoint, so a failed run
+Inside an open transaction the action takes its own savepoint. A failed run
 rolls back only its own writes, and the rest of your transaction still commits:
 
 ```ruby run

@@ -6,7 +6,7 @@ sidebar:
 ---
 
 Fields are declared on a `FieldStruct::Base` subclass with one of three macros.
-The type is always the second positional argument; everything after it is a
+The type is always the second positional argument. Everything after it is a
 keyword option.
 
 ```ruby
@@ -28,14 +28,14 @@ Account.new(email: 'a@b.co').valid? # => true
 Account.new.errors.to_h             # => { email: ["is required"] }
 ```
 
-- `name` is a Symbol or String; it's stored as a Symbol.
+- `name` is a Symbol or String. It is stored as a Symbol.
 - `type` is a registered name (`:string`, `:decimal`, …), a `FieldStruct::Base`
   subclass (a nested struct), or a `FieldStruct::Types::Base` subclass. See
   [Types](../types/).
 - Each macro returns the class's `Metadata`, so a line in IRB prints the
   fields declared so far.
-- Every field gets a reader and a setter. The setter coerces and validates;
-  see [Validation and errors](../validation-and-errors/).
+- Every field gets a reader and a setter. The setter coerces and validates.
+  See [Validation and errors](../validation-and-errors/).
 - Declaring a field again (in the same class or a subclass) replaces the earlier
   declaration.
 
@@ -119,8 +119,8 @@ Card.metadata[:number].sensitive?  # => true
 
 ### `rbs_type:`
 
-Replaces the type `FieldStruct::RBS.generate` derives for the field. It's not
-parsed (the `rbs` gem isn't a runtime dependency), so fully qualify constants.
+Replaces the type `FieldStruct::RBS.generate` derives for the field. It is not
+parsed (the `rbs` gem is not a runtime dependency), so fully qualify constants.
 See [Introspection and tooling](../introspection-and-tooling/#rbs-for-your-classes).
 
 ```ruby run
@@ -133,9 +133,9 @@ Report.metadata[:rows].rbs_type # => "::Array[::Hash[::Symbol, untyped]]"
 
 ## Options a type doesn't know
 
-An option name no registered type uses is **not** an error: it's kept verbatim
+An option name no registered type uses is **not** an error: it is kept verbatim
 in `Field#options` for downstream tooling (an Avro exporter, say). An option
-that *another* type uses is an error, because it's almost certainly a mistake.
+that *another* type uses is an error, because it is almost certainly a mistake.
 
 ```ruby run
 class Event < FieldStruct::Base
@@ -189,7 +189,7 @@ err.message # => "no FieldStruct type registered for :nope"
 ## Reserved field names
 
 These names are methods `FieldStruct::Base` calls on its own instances, so a
-field by that name would break it. They're listed in
+field by that name would break it. They are listed in
 `FieldStruct::Base::RESERVED_FIELD_NAMES`:
 
 `errors`, `attributes`, `attribute_names`, `assign_attributes`, `as_json`,

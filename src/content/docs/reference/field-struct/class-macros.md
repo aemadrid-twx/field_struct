@@ -1,6 +1,6 @@
 ---
 title: Class macros
-description: coercion_policy, unknown_attributes, immutable!, frozen!, validate and serialize — what each does and how it inherits.
+description: coercion_policy, unknown_attributes, immutable!, frozen!, validate and serialize - what each does and how it inherits.
 sidebar:
   order: 5
 ---
@@ -48,7 +48,7 @@ An unknown value raises `ArgumentError`: `unknown coercion policy :nope
 ## `unknown_attributes`
 
 What `new`, `assign_attributes`, `with` and `from_json` do with input keys that
-don't match a declared field. `:ignore` drops them silently; `:raise` raises
+don't match a declared field. `:ignore` drops them silently. `:raise` raises
 `FieldStruct::UnknownAttributeError`, whose `keys` names the extras (names only,
 never values). String keys are compared as Symbols.
 
@@ -83,7 +83,7 @@ end
 nested.message # => "unknown attribute(s) for Card: :cvv"
 ```
 
-- Declare it on **every** struct that reads input. It's inherited by
+- Declare it on **every** struct that reads input. It is inherited by
   subclasses, not by the structs a field nests: a nested class without it still
   drops its own unknown keys.
 - An error raised inside a nested struct's `new` propagates out of the parent,

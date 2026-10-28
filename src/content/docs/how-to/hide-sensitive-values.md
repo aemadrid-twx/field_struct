@@ -26,8 +26,9 @@ end
 
 ## 2. Check what gets printed
 
-`inspect` shows `[FILTERED]`, and so do `pp` and Ruby's `Logger`, which call `inspect` on the objects they print. A `nil` still shows
-as `nil`, so a missing value stays visible. Masking follows nested structs:
+`inspect` shows `[FILTERED]`, and so do `pp` and Ruby's `Logger`, which call
+`inspect` on the objects they print. A `nil` still shows as `nil`, so a missing
+value stays visible. Masking follows nested structs:
 
 ```ruby run
 card = Card.new(number: '4111111111111111', brand: 'visa')

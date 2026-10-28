@@ -63,8 +63,8 @@ end
 ## Assert an action's outcome
 
 `perform_actionable(...)` runs the action with those arguments. Chain
-`and_succeed`, `and_fail(code)`, `and_skip(code)` or `and_raise(ErrorClass)`;
-a message argument is matched with `===`, so a Regexp works. A block gets
+`and_succeed`, `and_fail(code)`, `and_skip(code)` or `and_raise(ErrorClass)`.
+A message argument is matched with `===`, so a Regexp works. A block gets
 `(result, exception)` for anything else you want to check, and must return a
 truthy value for the spec to pass:
 
@@ -94,8 +94,8 @@ On an action that declares failures, `and_fail` with an undeclared code raises
 ## Stub a collaborator action
 
 To test `Checkout` without running `Charge`, stub `Charge.run` to return a real
-result. `allow_actionable_*` permits the call; `stub_actionable_*` also expects
-it:
+result. `allow_actionable_*` permits the call, and `stub_actionable_*` also
+expects it:
 
 ```ruby title="spec/checkout_spec.rb" run
 RSpec.describe Checkout do

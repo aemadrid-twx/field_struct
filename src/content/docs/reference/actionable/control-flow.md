@@ -78,7 +78,7 @@ HaltOnly.run.code   # => :success
 ### `fail_with`
 
 `fail_with` copies every error of `source` (anything with a FieldStruct-style
-`errors`) into the failure. It's how the gem builds `:invalid_input` and
+`errors`) into the failure. It is how the gem builds `:invalid_input` and
 `:invalid_output`, exposed for validating a side struct:
 
 ```ruby run
@@ -135,12 +135,12 @@ by `notify` still notifies. The rule: **in a step or hook method, a plain
 recording verb must be the method's last expression, or explicitly end it.**
 Bang verbs can go anywhere.
 
-On an action's first run, every step method (case-step branch targets included)
-and hook method (`on_success` / `on_failure` / `on_skip` / `always`, and
-`after_commit` with the Rails adapter) is parsed with Prism. A misplaced verb
+On an action's first run, Prism parses every step method and hook method. That
+includes case-step branch targets, and `on_success` / `on_failure` / `on_skip` /
+`always` (plus `after_commit` with the Rails adapter). A misplaced verb
 raises `DefinitionError` naming the action, method, `file:line` and verb, and
-suggesting the bang form. The check runs once per class; a failing check raises
-on every run until it's fixed.
+suggesting the bang form. The check runs once per class. A failing check raises
+on every run until it is fixed.
 
 ```ruby run
 class Leaky < Actionable::Action
@@ -174,7 +174,7 @@ end
 
 The check is skipped where it can't be done: without Prism (Ruby 3.2 without the
 `prism` gem), or without readable source (a method from `eval` or
-`define_method`). Helper methods that steps call aren't checked. Switch it off
+`define_method`). Helper methods that steps call are not checked. Switch it off
 with `Actionable.verb_position_check = false`
 ([details](../actions-and-steps/#turning-the-verb-position-check-off)); the
 [RuboCop cop](../rubocop/) applies the same rules as a lint.

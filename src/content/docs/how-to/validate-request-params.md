@@ -61,7 +61,7 @@ JSON.generate(errors: bad.errors.to_h)  # => '{"errors":{"email":["is invalid"],
 ```
 
 A value that can't be coerced at all says what was expected, never what was
-sent, so it's safe to return and to log:
+sent, so it is safe to return and to log:
 
 ```ruby run
 SignupParams.new('email' => 'ann@example.com', 'age' => 'abc').errors[:age]  # => ["could not be coerced: Integer fields expect a base-10 integer, got a String that is not one"]
@@ -127,7 +127,7 @@ result.to_api_h(index: 0)                  # => { index: 0, status: :failure, id
 
 :::caution
 Pass params as keywords, with `**`. A Hash passed positionally is not read as
-input: the action only accepts an already-built input struct there, so every
+input. The action only accepts an already-built input struct there, so every
 required field comes back as `"is required"`:
 
 ```ruby run

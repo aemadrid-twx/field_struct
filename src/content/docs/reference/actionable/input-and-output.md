@@ -45,7 +45,7 @@ result.errors[:n]   # => ["is required"]
 
 The input struct follows its own FieldStruct settings, so unknown keywords are
 dropped unless the schema says `unknown_attributes :raise`. Typed input is
-keyword-only; positional arguments aren't mapped to fields.
+keyword-only; positional arguments are not mapped to fields.
 
 ### Discriminated input (`input_for`)
 
@@ -93,7 +93,7 @@ With neither block, `.run`'s arguments go to the action's own `initialize`
 
 `output { … }` declares the typed payload of a success. At the end of the run,
 and again after each lifecycle hook, the runner reads the instance variables
-named like declared fields, overlays any `succeed` keywords (keywords win), and
+named like declared fields. It overlays any `succeed` keywords (keywords win) and
 builds the struct:
 
 ```ruby run
@@ -167,6 +167,6 @@ end
 ```
 
 The same check applies to the output blocks of `fails` and `skips`. Input
-fields aren't checked: they're read as `input.x`.
+fields are not checked: they are read as `input.x`.
 
 Upstream: [USAGE, Output](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#output) and [Input](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#input).

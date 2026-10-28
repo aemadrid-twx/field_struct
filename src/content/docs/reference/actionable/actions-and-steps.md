@@ -5,8 +5,8 @@ sidebar:
   order: 1
 ---
 
-An action is a subclass of `Actionable::Action`. You list its steps, write each
-step as an instance method, and call `.run`, which returns one
+To write an action, subclass `Actionable::Action`, list its steps and write each
+step as an instance method. Then call `.run`, which returns one
 [result](../results/). The gem is published as `actionable-rb` and required as
 `actionable`.
 
@@ -71,7 +71,7 @@ propagates out of `.run`.
 Anything else raises `ArgumentError` (`unsupported step target: 5`). Steps run in
 declaration order.
 
-Step, hook and case-step methods may be private; they're called with `__send__`.
+Step, hook and case-step methods may be private; they are called with `__send__`.
 `Action.steps` returns the declared steps as an ordered `Set`.
 
 ### Guards: `if:` and `unless:`
@@ -131,13 +131,13 @@ Checkout.steps.to_a.last.options     # => {}
 | `step :x` and `case_step :x` | **two** steps: a method step and a case step are different types |
 
 Each hook phase is its own list, so `on_success :x` and `always :x` are two
-hooks. There's no way to remove an inherited step or hook; guard it off instead.
+hooks. There is no way to remove an inherited step or hook; guard it off instead.
 
 ### Inheritance
 
 A subclass gets a copy of its parent's steps, hooks, `input`/`output` schemas,
 `input_for`, declared failures and skips, `measure` setting and `typed_outcomes`
-setting at the moment it's defined, and can add to or override them.
+setting at the moment it is defined. It can add to or override them.
 
 ## Case steps
 
@@ -184,8 +184,8 @@ Route.run(kind: 'zed').picked   # => "z"
 Route.run(kind: 'x').picked     # => "default"
 ```
 
-A branch's guard is checked after it's picked. A matched branch whose guard
-opts out does nothing; it does **not** fall through to the next branch or the
+A branch's guard is checked after it is picked. A matched branch whose guard
+opts out does nothing. It does _not_ fall through to the next branch or the
 `default`:
 
 ```ruby run
@@ -218,7 +218,7 @@ Notify.run(kind: 'push').sent   # => "email"
 | `expose:` | all | which of the child's output fields are copied back onto the parent as instance variables |
 
 Only output fields the child actually set (an instance variable it assigned, or
-a `succeed` / `skip` keyword) are copied, so a field it left `nil` or at its
+a `succeed` / `skip` keyword) are copied. So a field it left `nil` or at its
 default never overwrites the parent's value.
 
 | Child outcome | Parent |
@@ -255,7 +255,7 @@ A child's failure crosses intact: its code, message, every error, its
 `metadata` and its result class. It doesn't go through the parent's `fail`, so
 an override of `fail` in a host base class never sees it. What the parent
 declares for that code with [`fails`](../declared-outcomes/) fills in metadata
-keys the child didn't set, and a parent that declares failures must declare the
+keys the child didn't set. A parent that declares failures must declare the
 codes its children can fail with.
 
 ## Checks before a run
@@ -299,6 +299,6 @@ Actionable.verb_position_check = true
 
 Off, `.run` never parses source or loads Prism, and the
 [`Actionable/VerbNotLast` cop](../rubocop/) is the only guard. A class that ran
-while the check was off is checked on its first run after it's back on.
+while the check was off is checked on its first run after it is back on.
 
 Upstream: [USAGE, Steps](https://github.com/aemadrid-twx/actionable/blob/v1.10.0/USAGE.md#steps).
