@@ -48,11 +48,14 @@ ships today:
 conversion to/from CSV, XML, Avro, Protobuf (separate `field_struct-<format>`
 gems: they carry dependencies).
 
-**JSON Schema export is core** (ruled 2026-10-25): `FieldStruct::JSONSchema`
-sits beside `FieldStruct::RBS` because it has no dependency and actionable needs
-it for action contracts (tool and API schemas). It describes the canonical
-`to_json` output; it does not make FieldStruct a schema validator (see "What
-FieldStruct isn't").
+**Exporters are adapters, not core** (ruled 2026-10-27, reversing the
+2026-10-25 "JSON Schema is core" ruling): JSON Schema, Avro and later Protobuf
+live in the `aemadrid-twx/field_struct-adapters` monorepo as their own gems,
+so an app loads only the formats it uses and each releases on its own
+schedule. Core keeps `FieldStruct::Introspection`, the public field walk they
+are all built on, and documents it for third-party adapters. JSON Schema
+describes the canonical `to_json` output; it does not make FieldStruct a
+schema validator (see "What FieldStruct isn't").
 
 ---
 

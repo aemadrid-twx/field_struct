@@ -313,18 +313,6 @@ module FieldStruct
         "#{name || "AnonymousFieldStruct"}\n#{metadata.describe}"
       end
 
-      # The JSON Schema (draft 2020-12) of this class's JSON; see
-      # {FieldStruct::JSONSchema.generate}. The method name is the one tool
-      # libraries look for (RubyLLM takes any object that responds to it as
-      # tool parameters).
-      #
-      # @param serialization [Symbol] the +serialize+ format whose external
-      #   names become property names
-      # @return [Hash{String=>Object}]
-      def to_json_schema(serialization: :json)
-        JSONSchema.generate(self, serialization: serialization)
-      end
-
       # Parse a JSON string and build an instance.
       #
       #   Person.from_json('{"name":"Alice","address":{"street":"1","city":"NYC"}}')
